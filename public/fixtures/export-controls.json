@@ -1,0 +1,706 @@
+{
+  "input": {
+    "hypothesis": "The US extends semiconductor export controls to legacy nodes",
+    "mode": "explore",
+    "target": null,
+    "horizonDays": 180,
+    "positions": [
+      {
+        "ticker": "SMH",
+        "side": "short",
+        "size": 1,
+        "stopPct": 10,
+        "targetPct": 20
+      }
+    ]
+  },
+  "llm": {
+    "nodes": [
+      {
+        "id": "legacy-controls-expand",
+        "kind": "event",
+        "statement": "The United States extends semiconductor export controls to selected legacy-node equipment",
+        "resolution": "Commerce publishes a rule adding defined legacy-node equipment to licensing controls",
+        "base": 0.34,
+        "lagDays": [
+          20,
+          90
+        ],
+        "rationale": "Policy pressure has shifted from frontier AI chips toward the equipment stack that supports military and industrial demand.",
+        "analogs": [
+          "2022 and 2023 BIS semiconductor rules"
+        ],
+        "assumptions": [
+          "The rule covers meaningful tool categories rather than a symbolic list"
+        ],
+        "confidence": "medium",
+        "marketQuery": "US legacy semiconductor export controls 2026",
+        "isRoot": true,
+        "isTarget": false
+      },
+      {
+        "id": "china-retaliation",
+        "kind": "event",
+        "statement": "China responds with procurement guidance favoring domestic semiconductor suppliers",
+        "resolution": "A central or provincial procurement notice specifies domestic-sourcing preferences",
+        "base": 0.42,
+        "lagDays": [
+          15,
+          75
+        ],
+        "rationale": "Procurement restrictions are easier to implement than an immediate broad export ban.",
+        "analogs": [
+          "China critical-minerals export controls"
+        ],
+        "assumptions": [
+          "Domestic suppliers can meet minimum qualification thresholds"
+        ],
+        "confidence": "medium",
+        "marketQuery": "China domestic semiconductor procurement guidance",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "inventory-build",
+        "kind": "event",
+        "statement": "Affected Chinese fabs pull forward equipment and spare-parts orders",
+        "resolution": "Supplier commentary reports order acceleration from affected Chinese customers",
+        "base": 0.31,
+        "lagDays": [
+          5,
+          35
+        ],
+        "rationale": "Customers often build buffer inventory ahead of licensing uncertainty.",
+        "analogs": [
+          "2020 Huawei supply-chain pull-forward"
+        ],
+        "assumptions": [
+          "Suppliers can ship before the effective date"
+        ],
+        "confidence": "high",
+        "marketQuery": "China semiconductor equipment inventory pull forward",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "foundry-capex-slowdown",
+        "kind": "event",
+        "statement": "Affected foundries defer part of 2027 capacity expansion",
+        "resolution": "Capex guidance is cut by at least 5 percent versus the prior plan",
+        "base": 0.38,
+        "lagDays": [
+          60,
+          180
+        ],
+        "rationale": "Restricted tools and uncertain end demand can delay marginal fab projects.",
+        "analogs": [
+          "2019 memory capex cuts"
+        ],
+        "assumptions": [
+          "Financing and local subsidies do not fully offset the restriction"
+        ],
+        "confidence": "medium",
+        "marketQuery": "China foundry capex reduction 2027",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "allied-exemption",
+        "kind": "event",
+        "statement": "Allied fabs receive a narrow licensing exemption for existing facilities",
+        "resolution": "A Commerce clarification grants case-by-case licenses for named allied facilities",
+        "base": 0.35,
+        "lagDays": [
+          20,
+          100
+        ],
+        "rationale": "An exemption can protect allied supply chains without removing leverage over Chinese expansion.",
+        "analogs": [
+          "Validated end-user licensing arrangements"
+        ],
+        "assumptions": [
+          "Allies accept reporting conditions"
+        ],
+        "confidence": "low",
+        "marketQuery": "semiconductor export control allied licensing exemption",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "tool-vendor-guidance-cut",
+        "kind": "event",
+        "statement": "Equipment vendors reduce China revenue guidance",
+        "resolution": "A major equipment vendor cuts China revenue guidance by more than 5 percent",
+        "base": 0.29,
+        "lagDays": [
+          45,
+          150
+        ],
+        "rationale": "Licensing uncertainty hits service and spare-parts revenue before new tool orders are formally canceled.",
+        "analogs": [
+          "2022 equipment-vendor China guidance revisions"
+        ],
+        "assumptions": [
+          "China remains a material share of revenue"
+        ],
+        "confidence": "medium",
+        "marketQuery": "semiconductor equipment vendor China revenue guidance cut",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "semiconductor-etf",
+        "kind": "numeric",
+        "name": "VanEck Semiconductor ETF",
+        "unit": "USD/share",
+        "ticker": "SMH",
+        "current": 260,
+        "baselineMove": 0,
+        "sigma": 20,
+        "rationale": "The ETF captures equipment, logic, and memory exposure while diversifying company-specific effects.",
+        "assumptions": [
+          "AI demand remains a partial offset to China weakness"
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "tsmc-adr",
+        "kind": "numeric",
+        "name": "Taiwan Semiconductor ADR",
+        "unit": "USD/share",
+        "ticker": "TSM",
+        "current": 210,
+        "baselineMove": 0,
+        "sigma": 18,
+        "rationale": "TSMC is sensitive to both broader semiconductor risk appetite and demand from the China supply chain.",
+        "assumptions": [
+          "Leading-edge demand stays resilient"
+        ],
+        "confidence": "high"
+      }
+    ],
+    "edges": [
+      {
+        "source": "legacy-controls-expand",
+        "target": "china-retaliation",
+        "mechanism": "New restrictions increase the incentive for procurement retaliation",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.52,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "legacy-controls-expand",
+        "target": "inventory-build",
+        "mechanism": "Fabs pull forward purchases before licensing uncertainty bites",
+        "assumptions": [],
+        "confidence": "high",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.68,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "legacy-controls-expand",
+        "target": "foundry-capex-slowdown",
+        "mechanism": "Tool uncertainty delays marginal capacity projects",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.55,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "legacy-controls-expand",
+        "target": "allied-exemption",
+        "mechanism": "Supply-chain risk creates pressure for narrow allied licenses",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.4,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "china-retaliation",
+        "target": "tool-vendor-guidance-cut",
+        "mechanism": "Domestic procurement preference reduces addressable demand",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.46,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "allied-exemption",
+        "target": "inventory-build",
+        "mechanism": "A clear exemption reduces the need for precautionary orders",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "inhibit",
+        "strength": 0.45,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "inventory-build",
+        "target": "semiconductor-etf",
+        "mechanism": "Near-term pull-forward temporarily supports equipment revenue",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": 3,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "foundry-capex-slowdown",
+        "target": "semiconductor-etf",
+        "mechanism": "Deferred capacity lowers equipment and materials demand",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": -7,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "tool-vendor-guidance-cut",
+        "target": "semiconductor-etf",
+        "mechanism": "Lower China guidance reprices equipment earnings",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": -5,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "allied-exemption",
+        "target": "semiconductor-etf",
+        "mechanism": "A narrow carve-out limits the downside to global supply chains",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": 2.5,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "semiconductor-etf",
+        "target": "tsmc-adr",
+        "mechanism": "Sector risk appetite transmits into the leading foundry valuation",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": null,
+        "beta": 0.78,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      }
+    ],
+    "summary": {
+      "headline": "Legacy-node controls create a short inventory pull-forward but a larger medium-term capex and vendor-guidance risk.",
+      "mainUncertainty": "How broadly the rule defines controlled equipment and whether allied licenses arrive quickly.",
+      "followUps": [
+        "BIS rule text",
+        "Equipment-vendor China bookings",
+        "Foundry capex guidance"
+      ]
+    }
+  },
+  "graph": {
+    "id": "a3140d30-5fb0-46f8-90ae-43a9363015c7",
+    "hypothesis": "The US extends semiconductor export controls to legacy nodes",
+    "mode": "explore",
+    "target": null,
+    "horizonDays": 180,
+    "nodes": [
+      {
+        "id": "legacy-controls-expand",
+        "kind": "event",
+        "statement": "The United States extends semiconductor export controls to selected legacy-node equipment",
+        "resolution": "Commerce publishes a rule adding defined legacy-node equipment to licensing controls",
+        "base": 0.34,
+        "lagDays": [
+          20,
+          90
+        ],
+        "rationale": "Policy pressure has shifted from frontier AI chips toward the equipment stack that supports military and industrial demand.",
+        "analogs": [
+          "2022 and 2023 BIS semiconductor rules"
+        ],
+        "assumptions": [
+          "The rule covers meaningful tool categories rather than a symbolic list"
+        ],
+        "confidence": "medium",
+        "marketQuery": "US legacy semiconductor export controls 2026",
+        "isRoot": true,
+        "isTarget": false
+      },
+      {
+        "id": "china-retaliation",
+        "kind": "event",
+        "statement": "China responds with procurement guidance favoring domestic semiconductor suppliers",
+        "resolution": "A central or provincial procurement notice specifies domestic-sourcing preferences",
+        "base": 0.42,
+        "lagDays": [
+          15,
+          75
+        ],
+        "rationale": "Procurement restrictions are easier to implement than an immediate broad export ban.",
+        "analogs": [
+          "China critical-minerals export controls"
+        ],
+        "assumptions": [
+          "Domestic suppliers can meet minimum qualification thresholds"
+        ],
+        "confidence": "medium",
+        "marketQuery": "China domestic semiconductor procurement guidance",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "inventory-build",
+        "kind": "event",
+        "statement": "Affected Chinese fabs pull forward equipment and spare-parts orders",
+        "resolution": "Supplier commentary reports order acceleration from affected Chinese customers",
+        "base": 0.31,
+        "lagDays": [
+          5,
+          35
+        ],
+        "rationale": "Customers often build buffer inventory ahead of licensing uncertainty.",
+        "analogs": [
+          "2020 Huawei supply-chain pull-forward"
+        ],
+        "assumptions": [
+          "Suppliers can ship before the effective date"
+        ],
+        "confidence": "high",
+        "marketQuery": "China semiconductor equipment inventory pull forward",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "foundry-capex-slowdown",
+        "kind": "event",
+        "statement": "Affected foundries defer part of 2027 capacity expansion",
+        "resolution": "Capex guidance is cut by at least 5 percent versus the prior plan",
+        "base": 0.38,
+        "lagDays": [
+          60,
+          180
+        ],
+        "rationale": "Restricted tools and uncertain end demand can delay marginal fab projects.",
+        "analogs": [
+          "2019 memory capex cuts"
+        ],
+        "assumptions": [
+          "Financing and local subsidies do not fully offset the restriction"
+        ],
+        "confidence": "medium",
+        "marketQuery": "China foundry capex reduction 2027",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "allied-exemption",
+        "kind": "event",
+        "statement": "Allied fabs receive a narrow licensing exemption for existing facilities",
+        "resolution": "A Commerce clarification grants case-by-case licenses for named allied facilities",
+        "base": 0.35,
+        "lagDays": [
+          20,
+          100
+        ],
+        "rationale": "An exemption can protect allied supply chains without removing leverage over Chinese expansion.",
+        "analogs": [
+          "Validated end-user licensing arrangements"
+        ],
+        "assumptions": [
+          "Allies accept reporting conditions"
+        ],
+        "confidence": "low",
+        "marketQuery": "semiconductor export control allied licensing exemption",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "tool-vendor-guidance-cut",
+        "kind": "event",
+        "statement": "Equipment vendors reduce China revenue guidance",
+        "resolution": "A major equipment vendor cuts China revenue guidance by more than 5 percent",
+        "base": 0.29,
+        "lagDays": [
+          45,
+          150
+        ],
+        "rationale": "Licensing uncertainty hits service and spare-parts revenue before new tool orders are formally canceled.",
+        "analogs": [
+          "2022 equipment-vendor China guidance revisions"
+        ],
+        "assumptions": [
+          "China remains a material share of revenue"
+        ],
+        "confidence": "medium",
+        "marketQuery": "semiconductor equipment vendor China revenue guidance cut",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "semiconductor-etf",
+        "kind": "numeric",
+        "name": "VanEck Semiconductor ETF",
+        "unit": "USD/share",
+        "ticker": "SMH",
+        "current": 260,
+        "baselineMove": 0,
+        "sigma": 20,
+        "rationale": "The ETF captures equipment, logic, and memory exposure while diversifying company-specific effects.",
+        "assumptions": [
+          "AI demand remains a partial offset to China weakness"
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "tsmc-adr",
+        "kind": "numeric",
+        "name": "Taiwan Semiconductor ADR",
+        "unit": "USD/share",
+        "ticker": "TSM",
+        "current": 210,
+        "baselineMove": 0,
+        "sigma": 18,
+        "rationale": "TSMC is sensitive to both broader semiconductor risk appetite and demand from the China supply chain.",
+        "assumptions": [
+          "Leading-edge demand stays resilient"
+        ],
+        "confidence": "high"
+      }
+    ],
+    "edges": [
+      {
+        "id": "legacy-controls-expand->china-retaliation",
+        "source": "legacy-controls-expand",
+        "target": "china-retaliation",
+        "mechanism": "New restrictions increase the incentive for procurement retaliation",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.52
+      },
+      {
+        "id": "legacy-controls-expand->inventory-build",
+        "source": "legacy-controls-expand",
+        "target": "inventory-build",
+        "mechanism": "Fabs pull forward purchases before licensing uncertainty bites",
+        "assumptions": [],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.68
+      },
+      {
+        "id": "legacy-controls-expand->foundry-capex-slowdown",
+        "source": "legacy-controls-expand",
+        "target": "foundry-capex-slowdown",
+        "mechanism": "Tool uncertainty delays marginal capacity projects",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.55
+      },
+      {
+        "id": "legacy-controls-expand->allied-exemption",
+        "source": "legacy-controls-expand",
+        "target": "allied-exemption",
+        "mechanism": "Supply-chain risk creates pressure for narrow allied licenses",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.4
+      },
+      {
+        "id": "china-retaliation->tool-vendor-guidance-cut",
+        "source": "china-retaliation",
+        "target": "tool-vendor-guidance-cut",
+        "mechanism": "Domestic procurement preference reduces addressable demand",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.46
+      },
+      {
+        "id": "allied-exemption->inventory-build",
+        "source": "allied-exemption",
+        "target": "inventory-build",
+        "mechanism": "A clear exemption reduces the need for precautionary orders",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.45
+      },
+      {
+        "id": "inventory-build->semiconductor-etf",
+        "source": "inventory-build",
+        "target": "semiconductor-etf",
+        "mechanism": "Near-term pull-forward temporarily supports equipment revenue",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": 3
+      },
+      {
+        "id": "foundry-capex-slowdown->semiconductor-etf",
+        "source": "foundry-capex-slowdown",
+        "target": "semiconductor-etf",
+        "mechanism": "Deferred capacity lowers equipment and materials demand",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": -7
+      },
+      {
+        "id": "tool-vendor-guidance-cut->semiconductor-etf",
+        "source": "tool-vendor-guidance-cut",
+        "target": "semiconductor-etf",
+        "mechanism": "Lower China guidance reprices equipment earnings",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": -5
+      },
+      {
+        "id": "allied-exemption->semiconductor-etf",
+        "source": "allied-exemption",
+        "target": "semiconductor-etf",
+        "mechanism": "A narrow carve-out limits the downside to global supply chains",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": 2.5
+      },
+      {
+        "id": "semiconductor-etf->tsmc-adr",
+        "source": "semiconductor-etf",
+        "target": "tsmc-adr",
+        "mechanism": "Sector risk appetite transmits into the leading foundry valuation",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "nn",
+        "beta": 0.78
+      }
+    ],
+    "sources": [],
+    "model": "fixture-seed",
+    "generatedAt": "2026-09-01T21:26:57.931Z",
+    "summary": {
+      "headline": "Legacy-node controls create a short inventory pull-forward but a larger medium-term capex and vendor-guidance risk.",
+      "mainUncertainty": "How broadly the rule defines controlled equipment and whether allied licenses arrive quickly.",
+      "followUps": [
+        "BIS rule text",
+        "Equipment-vendor China bookings",
+        "Foundry capex guidance"
+      ]
+    }
+  },
+  "markets": {
+    "legacy-controls-expand": [],
+    "china-retaliation": [],
+    "inventory-build": [],
+    "foundry-capex-slowdown": [],
+    "allied-exemption": [],
+    "tool-vendor-guidance-cut": []
+  },
+  "quotes": {
+    "SMH": {
+      "symbol": "SMH",
+      "price": 545.22,
+      "changePct": -2.05,
+      "currency": "USD",
+      "time": "2026-09-01T20:00:00.000Z"
+    },
+    "TSM": {
+      "symbol": "TSM",
+      "price": 414,
+      "changePct": -0.318,
+      "currency": "USD",
+      "time": "2026-09-01T20:00:02.000Z"
+    }
+  }
+}

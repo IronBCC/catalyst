@@ -28,6 +28,57 @@
 - Middle devs write leaf components only. A leaf declares its own props `interface` in its own file and imports nothing from `src/lib`. Containers sanitize URLs with `safeHref` before passing them down.
 - No worker installs dependencies, runs `git`, or edits another worker's files. Every worker report is a claim; the Lead re-runs the oracle before merging.
 
+## Build log — 2026-09-01, complete
+
+`npm run check` green: 103 unit tests pass, 1 skipped (the paid live test), production
+build clean, 11 Playwright specs pass. `npx tsc --noEmit` and `npx eslint .` both clean.
+
+Verified against the running app rather than inferred: CSP / nosniff / no-referrer
+headers present on `/`; `POST /api/generate` without a key returns 503; `/api/markets`
+returns live Polymarket rows; `/api/quote?symbols=BZ=F` returned a real Yahoo price;
+`/fixtures/hormuz.json` serves.
+
+**Not verified: the live OpenRouter path.** No API key exists on this machine, so
+`npm run test:live` has never run and no request has ever reached OpenRouter. The
+fixtures were produced by the offline path — hand-written seed graphs through the real
+`repairGraph` — with live Polymarket and Yahoo data attached. Every other test mocks the
+provider. This is stated in the README too.
+
+### Deviations from the plan as written
+- `create-next-app` has no `--no-import-alias` any more, so the default `@/*` alias
+  stays and every module uses it. Scaffolding also had to happen in a temp directory and
+  be copied in, because the CLI refuses a directory that already holds `docs/`.
+- `vitest.config.mts`, not `.ts` (Vite warns about ESM in a file loaded as CJS), with a
+  `resolve.alias` so tests can use `@/…` as well.
+- `experimental_useObject` is a deprecated alias in `@ai-sdk/react` 4.0.92; the code uses
+  `useObject`.
+- `Verdict` and `VerdictSchema` live in `schema.ts`, not `engine/verdict.ts`, so
+  `ThesisInput` can name them without the schema module importing the engine.
+- `compactGraph` takes the engine's `Computed` maps instead of a flat probability map,
+  and prints a move for numeric nodes rather than a probability they do not have.
+- `ParamSlider`'s `applyNewOnly` is not used: "Apply to world" stays visible on Baseline
+  and forks, because hiding it strands the user on a read-only world.
+- The Monte-Carlo drag cache was dropped. React 19's lint forbids both the ref and the
+  effect that would implement it, and sampling measures in single-digit milliseconds at
+  these graph sizes. Marked with a `ponytail:` comment and an upgrade path (a worker).
+- Two comparison defaults were added because the plan's own e2e expectations require
+  them: with no compare world selected, a slider measures against the same world before
+  the drag, and "new" means new relative to the world this one forked from.
+- Playwright specs written by the middles needed lead fixes at the gate: they assumed a
+  graph existed without generating one, used the raw persist payload instead of
+  zustand's `{ state, version }` envelope, mocked `/api/markets` without matching its
+  query string, and mocked branch responses in LLM shape rather than repaired shape.
+
+### Real bugs the gate caught
+- `useComputed` returned the raw graph instead of the applied one, so nodes added by a
+  world never reached the canvas.
+- React Flow fitted the view before measuring the cards, which rendered the graph
+  outside its own container and under the rail.
+- The failure banner could not distinguish a missing key from an upstream error; the
+  fetch status is now captured and shown.
+
+---
+
 ## Roster
 
 | Role | Worker | Launch | Workspace |

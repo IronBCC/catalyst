@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-bg: #0b0e11;
+  --color-panel: #12161b;
+  --color-line: #1f262e;
+  --color-fg: #c9d1d9;
+  --color-muted: #7d8590;
+  --color-gold: #e3b341;
+  --color-green: #3fb950;
+  --color-red: #f85149;
+  --color-blue: #58a6ff;
+  --color-orange: #d29922;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}

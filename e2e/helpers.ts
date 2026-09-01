@@ -185,19 +185,34 @@ export const DEFAULT_THESIS = {
   marketView: "The model sits above Polymarket on closure odds.",
 };
 
+/** Matches the `MarketMatch` shape produced by src/lib/market.ts. */
 export const DEFAULT_MARKETS = [
   {
-    id: "hormuz-2026",
-    question: "Will the Strait of Hormuz close in 2026?",
-    yes: 0.275,
+    title: "Will the Strait of Hormuz close to tanker traffic in 2026?",
     url: "https://polymarket.com/event/hormuz-2026",
+    yes: 0.275,
+    volume: 1_250_000,
     endDate: "2026-12-31",
+    source: "polymarket" as const,
   },
 ];
 
+/** Matches the `Quote` shape produced by src/lib/market.ts. */
 export const DEFAULT_QUOTES = {
-  "BZ=F": { ticker: "BZ=F", price: 72.4, currency: "USD", asOf: "2026-09-01T00:00:00.000Z" },
-  JETS: { ticker: "JETS", price: 24.1, currency: "USD", asOf: "2026-09-01T00:00:00.000Z" },
+  "BZ=F": {
+    symbol: "BZ=F",
+    price: 72.4,
+    changePct: 0.8,
+    currency: "USD",
+    time: "2026-09-01T00:00:00.000Z",
+  },
+  JETS: {
+    symbol: "JETS",
+    price: 24.1,
+    changePct: -0.4,
+    currency: "USD",
+    time: "2026-09-01T00:00:00.000Z",
+  },
 };
 
 export type MockSpec = {

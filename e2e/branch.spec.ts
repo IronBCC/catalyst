@@ -21,21 +21,20 @@ const BRANCH_STRESS_RESPONSE = {
         isRoot: false,
         isTarget: false,
       },
+      // The route returns edges already repaired, exactly as the server does:
+      // an event feeding a numeric is an "en" edge carrying an impact.
       edges: [
         {
+          id: "mine-warfare->brent",
+          kind: "en",
           source: "mine-warfare",
           target: "brent",
           mechanism: "Mines extend the closure",
           assumptions: [],
           confidence: "medium",
+          support: "model_assumption",
           sourceIds: [],
-          polarity: "promote",
-          strength: 0.66,
-          impact: null,
-          beta: null,
-          threshold: null,
-          direction: null,
-          width: null,
+          impact: 14,
         },
       ],
     },
@@ -83,6 +82,12 @@ test("branches from rail, injects a stress candidate, and adopts Polymarket odds
   await mockApi(page, { branch: BRANCH_STRESS_RESPONSE });
   await page.goto("/");
 
+  // Branching needs a graph, and the branch box lives on the rail's second pane.
+  await page.locator(sel(T.hypothesisInput)).fill("The Strait of Hormuz closes to traffic");
+  await page.locator(sel(T.generateButton)).click();
+  await expect(page.locator(sel(T.node("hormuz-closes")))).toBeVisible();
+
+  await page.locator(sel(T.railPane("branch"))).click();
   await expect(page.locator(sel(T.branchInput))).toBeVisible();
   await page.locator(sel(T.branchInput)).fill("Iran lays mines in the strait");
   await page.locator(sel(T.branchButton)).click();
@@ -90,6 +95,8 @@ test("branches from rail, injects a stress candidate, and adopts Polymarket odds
   await expect(page.locator(sel(T.node("mine-warfare"))).first()).toBeVisible();
   await expect(page.locator(sel(T.nodeNewPill))).toBeVisible();
 
+  // The stress panel lives at the bottom of the thesis tab.
+  await page.locator(sel(T.tab("thesis"))).click();
   await expect(page.locator(sel(T.stressButton))).toBeVisible();
   await page.locator(sel(T.stressButton)).click();
   await expect(page.locator(sel(T.stressCandidate))).toHaveCount(3);
@@ -99,6 +106,7 @@ test("branches from rail, injects a stress candidate, and adopts Polymarket odds
   await firstCandidate.locator(sel(T.injectCandidate)).click();
   await expect(page.locator(sel(T.logEntry)).last()).toHaveText(/Black swan:/);
 
+  await page.locator(sel(T.tab("map"))).click();
   await page.locator(sel(T.node("mine-warfare"))).first().click();
   await expect(page.locator(sel(T.adoptMarket))).toBeVisible();
   await page.locator(sel(T.adoptMarket)).click();

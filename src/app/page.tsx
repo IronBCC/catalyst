@@ -31,7 +31,7 @@ export default function Home() {
       {offline ? (
         <Banner
           tone="warn"
-          message="live generation off, examples work"
+          message="live generation off (503), examples work"
           onDismiss={() => setDismissed(true)}
         />
       ) : null}
@@ -89,12 +89,12 @@ export default function Home() {
           id="rail-drawer"
           className={`${
             railOpen ? "fixed inset-y-0 left-0 z-20 w-80" : "hidden"
-          } lg:static lg:block lg:w-80`}
+          } shrink-0 lg:static lg:block lg:w-80`}
         >
           <Rail />
         </div>
 
-        <main className="flex min-h-0 flex-1 flex-col">
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
           <div data-testid="panel-map" hidden={tab !== "map"} className="min-h-0 flex-1">
             <Canvas />
           </div>
@@ -118,7 +118,7 @@ export default function Home() {
           id="inspector-drawer"
           className={`${
             inspectorOpen ? "fixed inset-y-0 right-0 z-20 w-96" : "hidden"
-          } lg:static lg:block lg:w-96`}
+          } shrink-0 lg:static lg:block lg:w-96`}
         >
           <Inspector />
         </div>

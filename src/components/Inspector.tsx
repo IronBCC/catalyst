@@ -111,7 +111,6 @@ export default function Inspector() {
 
       {node ? <NodePanel
         node={node}
-        onBaseline={onBaseline}
         transientValue={
           transient?.type === "override" && transient.nodeId === node.id ? transient.value : null
         }
@@ -145,7 +144,6 @@ export default function Inspector() {
       {edge ? (
         <EdgePanel
           edge={edge}
-          onBaseline={onBaseline}
           onParam={(param, value) =>
             mutate({ type: "setEdgeParam", edgeId: edge.id, param, value }, `${edge.id} ${param}`)
           }
@@ -160,7 +158,6 @@ export default function Inspector() {
 
 function NodePanel(props: {
   node: Node;
-  onBaseline: boolean;
   transientValue: number | null;
   pinned: boolean;
   p: number | null;
@@ -260,7 +257,6 @@ function NodePanel(props: {
         step={slider.step}
         value={slider.value}
         format={slider.format}
-        applyNewOnly={props.onBaseline}
         onInput={(v) => props.onInput(slider.toEdit(v))}
         onApply={props.onApply}
         onApplyNew={() => props.onApplyNew(`${headline} = ${slider.format(slider.value)}`)}
@@ -341,7 +337,6 @@ function NodePanel(props: {
 
 function EdgePanel(props: {
   edge: Edge;
-  onBaseline: boolean;
   onParam(param: "strength" | "impact" | "beta", value: number): void;
   onCut(): void;
 }) {
@@ -389,7 +384,6 @@ function EdgePanel(props: {
         step={param.step}
         value={param.value}
         format={(v) => (param.name === "strength" ? v.toFixed(2) : signed(v))}
-        applyNewOnly={props.onBaseline}
         onInput={(v) => props.onParam(param.name, v)}
         onApply={() => props.onParam(param.name, param.value)}
         onApplyNew={() => props.onParam(param.name, param.value)}

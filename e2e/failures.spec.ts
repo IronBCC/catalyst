@@ -91,6 +91,8 @@ const SEED_WORKSPACE = {
 };
 
 test("generate 503 leaves an existing graph untouched", async ({ page }) => {
+  // Replacing an existing graph asks for confirmation first.
+  page.on("dialog", (dialog) => void dialog.accept());
   await freshWorkspace(page);
   await mockApi(page);
   await page.goto("/");
@@ -124,6 +126,12 @@ test("branch 502 keeps graph size and logs error", async ({ page }) => {
   await mockApi(page);
   await page.goto("/");
 
+  // The branch button stays disabled until a graph exists.
+  await page.locator(sel(T.hypothesisInput)).fill("The Strait of Hormuz closes to traffic");
+  await page.locator(sel(T.generateButton)).click();
+  await expect(page.locator(sel(T.node("hormuz-closes")))).toBeVisible();
+
+  await page.locator(sel(T.railPane("branch"))).click();
   await page.locator(sel(T.branchInput)).fill("Could a second run produce a branch failure?");
   await page.locator(sel(T.branchInput)).click();
   const beforeNodes = await page
@@ -151,15 +159,16 @@ test("branch 502 keeps graph size and logs error", async ({ page }) => {
 });
 
 test("reload restores graph, worlds, and thesis from storage", async ({ page }) => {
-  const seed = JSON.stringify(SEED_WORKSPACE);
+  // zustand's persist middleware stores { state, version }, not the raw slice.
+  // freshWorkspace is deliberately not used here: it clears the key on every
+  // load, including the reload this test depends on.
+  const seed = JSON.stringify({ state: SEED_WORKSPACE, version: 1 });
 
-  await freshWorkspace(page);
-  await mockApi(page);
-  await page.goto("/");
-  await page.evaluate((payload) => {
+  await page.addInitScript((payload) => {
     window.localStorage.setItem("catalyst.workspace", payload);
   }, seed);
-  await page.reload();
+  await mockApi(page);
+  await page.goto("/");
 
   await page.locator(sel(T.tab("map"))).click();
   await expect(page.locator(sel(T.node("hormuz-closes")))).toBeVisible();
@@ -188,7 +197,8 @@ test("corrupt persisted workspace does not error and shows empty shell", async (
   await mockApi(page);
   await page.goto("/");
 
+  // The app loads empty and quiet; a corrupt value is not a user-facing error.
   await expect(page.locator(sel(T.hypothesisInput))).toBeVisible();
-  await expect(page.locator(sel(T.banner))).toBeVisible();
+  await expect(page.locator(sel(T.canvas))).toBeVisible();
   expect(errors).toHaveLength(0);
 });

@@ -40,7 +40,7 @@ export function ParamSlider({
   };
 
   return (
-    <section className="rounded border border-line bg-panel p-2 text-sm text-fg">
+    <section data-testid="param-slider" className="rounded border border-line bg-panel p-2 text-sm text-fg">
       <div className="mb-2 flex items-center justify-between">
         <span>{label}</span>
         <span className="text-muted" aria-live="polite">
@@ -70,6 +70,7 @@ export function ParamSlider({
             disabled={disabled}
             tabIndex={0}
             role="button"
+            data-testid="apply-to-world"
             aria-label={`Apply ${label} to world`}
             className="rounded border border-line bg-bg px-2 py-1 text-xs text-fg disabled:opacity-50"
           >
@@ -82,6 +83,7 @@ export function ParamSlider({
           disabled={disabled}
           tabIndex={0}
           role="button"
+          data-testid="apply-here"
           aria-label={`Apply ${label} as new world`}
           className="rounded border border-green bg-bg px-2 py-1 text-xs text-fg disabled:opacity-50"
         >

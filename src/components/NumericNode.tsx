@@ -131,6 +131,7 @@ function NumericNodeInner({
 export default memo(function NumericNodeCard(props: NodeProps) {
   const { data, selected } = props as unknown as { data: NumericNodeData; selected?: boolean };
   return (
+    <div data-testid={`node-${props.id}`}>
     <NumericNodeInner
       node={data.node}
       result={data.result}
@@ -139,5 +140,6 @@ export default memo(function NumericNodeCard(props: NodeProps) {
       isNew={data.isNew}
       selected={selected || data.selected}
     />
+    </div>
   );
 });

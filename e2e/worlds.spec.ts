@@ -12,7 +12,13 @@ test("worlds: root override creates a world and preserves baseline probability",
   await mockApi(page);
   await page.goto("/");
 
-  const root = DEFAULT_LLM_GRAPH.nodes.find((node) => node.isRoot)?.id ?? "hormuz-closes";
+  // Nothing exists until a graph is generated.
+  await page.getByTestId("hypothesis-input").fill("The Strait of Hormuz closes to traffic");
+  await page.getByTestId("generate").click();
+
+  const root =
+    DEFAULT_LLM_GRAPH.nodes.find((node) => node.kind === "event" && node.isRoot)?.id ??
+    "hormuz-closes";
   const rootNode = page.getByTestId(T.node(root));
 
   await expect(rootNode).toBeVisible();
@@ -32,6 +38,9 @@ test("worlds: root override creates a world and preserves baseline probability",
   await expect(beforeDelta).toBeVisible();
   await expect(beforeDelta).toHaveText(/^[+-]\d+(\.\d+)?pp$/);
 
+  // The worlds table and the compare selector live on the scenarios tab.
+  await page.getByTestId(T.tab("scenarios")).click();
+
   const baselineRow = page.getByTestId(T.worldRow("baseline"));
   const baselineProb = await baselineRow
     .getByTestId(T.worldProbability)
@@ -40,8 +49,10 @@ test("worlds: root override creates a world and preserves baseline probability",
 
   const worlds = page.getByTestId(/world-row-/);
   await expect(worlds).toHaveCount(1);
+  await page.getByTestId(T.tab("map")).click();
   await expect(page.getByTestId(T.applyToWorld)).toBeVisible();
   await page.getByTestId(T.applyToWorld).click();
+  await page.getByTestId(T.tab("scenarios")).click();
   await expect(worlds).toHaveCount(2);
 
   await expect(baselineRow.getByTestId(T.worldProbability)).toHaveText(baselineProb);
@@ -57,6 +68,7 @@ test("worlds: root override creates a world and preserves baseline probability",
     } else {
       await compare.selectOption({ index: 1 });
     }
+    await page.getByTestId(T.tab("map")).click();
     const deltaAfterCompare = rootNode.getByTestId(T.nodeDelta);
     await expect(deltaAfterCompare).toBeVisible();
   }

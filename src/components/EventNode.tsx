@@ -26,6 +26,7 @@ type EventNodeData = {
   compareP: number | null;
   pinned: boolean | null;
   adopted: boolean;
+  adoptedPct?: number | null;
   isNew: boolean;
   onPath: boolean;
   selected: boolean;
@@ -42,6 +43,7 @@ export interface EventNodeComponentProps {
   compareP: number | null;
   pinned: boolean | null;
   adopted: boolean;
+  adoptedPct?: number | null;
   isNew: boolean;
   onPath: boolean;
   selected: boolean;
@@ -59,7 +61,9 @@ function compareBadge(compareP: number | null, p: number): ReactNode | null {
     return null;
   }
   const sign = delta >= 0 ? "+" : "";
-  return <span className="rounded-full bg-line px-2 py-0.5 text-xs text-fg">{`${sign}${delta.toFixed(0)}pp`}</span>;
+  return (
+    <span data-testid="node-delta" className="rounded-full bg-line px-2 py-0.5 text-xs text-fg">{`${sign}${delta.toFixed(0)}pp`}</span>
+  );
 }
 
 function confidenceDot(confidence: Confidence): string {
@@ -78,6 +82,7 @@ const EventNodeInner = ({
   compareP,
   pinned,
   adopted,
+  adoptedPct,
   isNew,
   onPath,
   selected,
@@ -104,7 +109,7 @@ const EventNodeInner = ({
         </div>
       </div>
       <div className="mb-2 flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-2 py-0.5 ${isCompareUp ? "bg-green/20 text-green" : "bg-red/20 text-red"}`}>{pct(p)}</span>
+        <span data-testid="node-probability" className={`rounded-full px-2 py-0.5 ${isCompareUp ? "bg-green/20 text-green" : "bg-red/20 text-red"}`}>{pct(p)}</span>
         {compareBadge(compareP, p)}
         {result.fixed !== null && <span className="text-muted">pin</span>}
         <span className="inline-flex items-center gap-1">
@@ -114,8 +119,18 @@ const EventNodeInner = ({
       </div>
       <div className="mb-2 flex flex-wrap gap-2">
         {pinned !== null && <span className="rounded-full bg-line px-2 py-0.5 text-muted">🔒 pinned</span>}
-        {adopted && <span className="rounded-full bg-blue/20 px-2 py-0.5 text-blue">market</span>}
-        {isNew && <span className="rounded-full bg-gold/20 px-2 py-0.5 text-gold">new</span>}
+        {adopted && (
+          <span data-testid="node-market" className="rounded-full bg-blue/20 px-2 py-0.5 text-blue">
+            {adoptedPct === null || adoptedPct === undefined
+              ? "market"
+              : `Polymarket ${Math.round(adoptedPct * 1000) / 10}%`}
+          </span>
+        )}
+        {isNew && (
+          <span data-testid="node-new" className="rounded-full bg-gold/20 px-2 py-0.5 text-gold">
+            new
+          </span>
+        )}
         {onPath && <span className="rounded-full bg-gold/20 px-2 py-0.5 text-gold">path</span>}
       </div>
       {pinned === true && <p className="text-muted text-[11px]">intervention: pinned</p>}
@@ -126,17 +141,21 @@ const EventNodeInner = ({
 
 export default memo(function EventNodeCard(props: NodeProps) {
   const { data, selected } = props as unknown as { data: EventNodeData; selected?: boolean };
+  // The testid lives on a wrapper because React Flow owns the outer element.
   return (
+    <div data-testid={`node-${props.id}`}>
     <EventNodeInner
       node={data.node}
       result={data.result}
       compareP={data.compareP}
       pinned={data.pinned}
       adopted={data.adopted}
+      adoptedPct={data.adoptedPct}
       isNew={data.isNew}
       onPath={data.onPath}
       selected={selected || data.selected}
     />
+    </div>
   );
 });
 

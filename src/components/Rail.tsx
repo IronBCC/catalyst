@@ -184,6 +184,7 @@ export default function Rail() {
             key={p}
             type="button"
             role="tab"
+            data-testid={`rail-pane-${p}`}
             aria-selected={pane === p}
             onClick={() => setPane(p)}
             className={`flex-1 rounded border px-2 py-1 ${
@@ -335,13 +336,7 @@ export default function Rail() {
         {log.map((entry) => (
           <div
             key={entry.id}
-            data-testid={
-              entry.kind === "summary"
-                ? "log-summary"
-                : entry.kind === "error"
-                  ? "log-error"
-                  : "log-entry"
-            }
+            data-testid="log-entry"
             className={
               entry.kind === "error"
                 ? "text-red"
@@ -350,7 +345,17 @@ export default function Rail() {
                   : "text-muted"
             }
           >
-            <p>{entry.text}</p>
+            <p
+              data-testid={
+                entry.kind === "summary"
+                  ? "log-summary"
+                  : entry.kind === "error"
+                    ? "log-error"
+                    : "log-text"
+              }
+            >
+              {entry.text}
+            </p>
             {entry.followUps?.length ? (
               <div className="mt-1 flex flex-wrap gap-1">
                 {entry.followUps.map((f) => (

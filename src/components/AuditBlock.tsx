@@ -26,7 +26,7 @@ function formatValue(value: number): string {
 
 export function AuditBlock({ terms, final, fixed }: AuditBlockProps): ReactElement {
   return (
-    <section className="w-full rounded-md border border-line bg-bg p-3">
+    <section data-testid="audit-block" className="w-full rounded-md border border-line bg-bg p-3">
       <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">
         Audit
       </div>

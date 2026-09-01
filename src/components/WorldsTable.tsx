@@ -62,6 +62,7 @@ export function WorldsTable(props: WorldsTableProps): React.ReactElement {
             return (
               <tr
                 key={rowId}
+                data-testid={`world-row-${rowId}`}
                 className={`border-t border-line ${
                   isActive ? "border-l-4 border-l-gold bg-bg" : ""
                 }`}
@@ -92,7 +93,9 @@ export function WorldsTable(props: WorldsTableProps): React.ReactElement {
                     ) : null}
                   </div>
                 </td>
-                <td className="pr-3 align-top text-muted">{fmtPercent(row.rootP)}</td>
+                <td data-testid="world-probability" className="pr-3 align-top text-muted">
+                  {fmtPercent(row.rootP)}
+                </td>
                 <td className="pr-3 align-top">
                   {row.targetP === null ? (
                     <span className="text-muted">—</span>

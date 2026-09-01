@@ -5,6 +5,7 @@ import {
   Background,
   ReactFlow,
   ReactFlowProvider,
+  useNodesInitialized,
   useReactFlow,
   type Edge as FlowEdge,
   type Node as FlowNode,
@@ -33,10 +34,23 @@ function Flow() {
   const { graph, computed, compare, mc, diff, verdict } = useComputed();
   const selection = useStore((s) => s.selection);
   const select = useStore((s) => s.select);
-  const markets = useStore((s) => s.markets);
+  const worlds = useStore((s) => s.worlds);
+  const activeWorldId = useStore((s) => s.activeWorldId);
   const { fitView } = useReactFlow();
+  const nodesInitialized = useNodesInitialized();
 
   const ids = graph?.nodes.map((n) => n.id).join() ?? "";
+
+  // "adopted" means the world actually took the market's number, not merely
+  // that a market was found for the node.
+  const adopted = useMemo(() => {
+    const world = worlds.find((w) => w.id === activeWorldId);
+    const map = new Map<string, number>();
+    for (const edit of world?.edits ?? []) {
+      if (edit.type === "adoptMarket") map.set(edit.nodeId, edit.value);
+    }
+    return map;
+  }, [activeWorldId, worlds]);
 
   const nodes = useMemo<FlowNode[]>(() => {
     if (!graph || !computed) return [];
@@ -55,12 +69,14 @@ function Flow() {
           id: n.id,
           type: "event",
           position,
+          ...CARD.event,
           data: {
             node: n,
             result: result ?? { p: n.base, fixed: null, terms: [] },
             compareP: compare?.events.get(n.id)?.p ?? null,
             pinned: result?.fixed === "pin" ? true : null,
-            adopted: (markets[n.id]?.length ?? 0) > 0,
+            adopted: adopted.has(n.id),
+            adoptedPct: adopted.get(n.id) ?? null,
             isNew,
             onPath: graph.edges.some((e) => onPath.has(e.id) && (e.source === n.id || e.target === n.id)),
             selected,
@@ -73,6 +89,7 @@ function Flow() {
         id: n.id,
         type: "numeric",
         position,
+        ...CARD.numeric,
         data: {
           node: n,
           result: result ?? { move: n.baselineMove, level: n.current, fixed: null, terms: [] },
@@ -83,7 +100,7 @@ function Flow() {
         },
       } satisfies FlowNode;
     });
-  }, [compare, computed, diff, graph, markets, mc, selection, verdict]);
+  }, [adopted, compare, computed, diff, graph, mc, selection, verdict]);
 
   const edges = useMemo<FlowEdge[]>(() => {
     if (!graph) return [];
@@ -103,15 +120,16 @@ function Flow() {
     }));
   }, [graph, selection, verdict]);
 
+  // Fitting before React Flow has measured the cards produces a transform that
+  // pushes the graph outside its own container.
   useEffect(() => {
-    if (!ids) return;
-    const t = setTimeout(() => fitView({ padding: 0.2, duration: 200 }), 50);
-    return () => clearTimeout(t);
-  }, [ids, fitView]);
+    if (!ids || !nodesInitialized) return;
+    void fitView({ padding: 0.2, duration: 200 });
+  }, [ids, nodesInitialized, fitView]);
 
   if (!graph) {
     return (
-      <div className="grid h-full place-items-center text-xs text-muted">
+      <div data-testid="canvas" className="grid h-full place-items-center text-xs text-muted">
         Pick an example or write a hypothesis to build a causal graph.
       </div>
     );
@@ -129,10 +147,10 @@ function Flow() {
         nodesFocusable
         edgesFocusable
         proOptions={{ hideAttribution: true }}
+        minZoom={0.2}
         onNodeClick={(_, n) => select({ type: "node", id: n.id })}
         onEdgeClick={(_, e) => select({ type: "edge", id: e.id })}
         onPaneClick={() => select(null)}
-        fitView
       >
         <Background color="#1f262e" gap={24} />
       </ReactFlow>

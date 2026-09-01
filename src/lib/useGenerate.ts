@@ -21,10 +21,21 @@ export function useGenerate() {
 
   const input = useRef<GenerateInput | null>(null);
   const lastCount = useRef(0);
+  const lastStatus = useRef<number | null>(null);
+
+  // The SDK reports a failed request as a generic Error, so the HTTP status is
+  // captured on the way past. Without it the banner cannot tell a missing key
+  // (503) from an upstream failure (502).
+  const trackedFetch = useCallback<typeof fetch>(async (url, init) => {
+    const response = await fetch(url, init);
+    lastStatus.current = response.status;
+    return response;
+  }, []);
 
   const { object, submit, isLoading, stop } = useObject({
     api: "/api/generate",
     schema: LlmGraph,
+    fetch: trackedFetch,
     onFinish({ object, error }) {
       if (error || !object || !input.current) return;
       const graph = repairGraph(object, input.current, "openrouter");
@@ -38,11 +49,13 @@ export function useGenerate() {
       lastCount.current = 0;
     },
     onError(error) {
+      const status = lastStatus.current;
+      const message = status ? `${error.message} (${status})` : error.message;
       setDraft(null);
-      setStatus({ phase: "error", message: error.message });
+      setStatus({ phase: "error", message });
       pushLog({
         kind: "error",
-        text: `Generation failed: ${error.message}`,
+        text: `Generation failed: ${message}`,
         retry: () => {
           if (input.current) start(input.current);
         },
@@ -55,6 +68,7 @@ export function useGenerate() {
     (next: GenerateInput) => {
       input.current = next;
       lastCount.current = 0;
+      lastStatus.current = null;
       setDraft(null);
       setStatus({ phase: "generating", message: "mapping causes…" });
       pushLog({ kind: "user", text: next.hypothesis });

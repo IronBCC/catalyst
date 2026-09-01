@@ -355,16 +355,24 @@ export function useComputed(): Computation {
     [applied],
   );
 
+  // With no compare world chosen, an in-flight slider still needs something to
+  // measure against, so it is compared with the same world before the drag.
   const compare = useMemo(() => {
-    if (!priced || !compareWorld) return null;
-    const c = applyEdits(priced, compareWorld.edits);
+    if (!priced) return null;
+    const baseEdits = compareWorld ? compareWorld.edits : transient ? world?.edits : null;
+    if (!baseEdits) return null;
+    const c = applyEdits(priced, baseEdits);
     return propagate(c.graph, c.fixed);
-  }, [priced, compareWorld]);
+  }, [priced, compareWorld, transient, world]);
 
-  const diff = useMemo(
-    () => (world && compareWorld ? worldDiff(world, compareWorld) : null),
-    [world, compareWorld],
-  );
+  // Without an explicit comparison, "new" means new relative to the world this
+  // one was forked from, which is what a freshly branched node should read as.
+  const diff = useMemo(() => {
+    if (!world) return null;
+    const against =
+      compareWorld ?? worlds.find((w) => w.id === world.parentId) ?? null;
+    return against ? worldDiff(world, against) : null;
+  }, [world, compareWorld, worlds]);
 
   const verdict = useMemo(() => {
     if (!applied || applied.graph.mode !== "chain") return null;
@@ -387,7 +395,9 @@ export function useComputed(): Computation {
   }, [applied, positions]);
 
   return {
-    graph: priced,
+    // The applied graph, not the raw one: worlds add nodes and cut edges, and
+    // every consumer wants what the active world actually contains.
+    graph: applied?.graph ?? priced,
     world,
     fixed: applied?.fixed ?? EMPTY_FIXED,
     computed,

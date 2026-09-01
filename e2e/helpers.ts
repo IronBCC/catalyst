@@ -1,4 +1,6 @@
 import type { Page, Route } from "@playwright/test";
+import { repairGraph } from "@/lib/engine/repair";
+import type { GenerateInput, Graph, LlmGraph } from "@/lib/schema";
 
 /**
  * Every e2e spec runs against mocked routes: no OpenRouter key, no Polymarket,
@@ -6,7 +8,7 @@ import type { Page, Route } from "@playwright/test";
  * schema-valid, so a spec that only needs "some graph appeared" needs no setup.
  */
 
-export const DEFAULT_LLM_GRAPH = {
+export const DEFAULT_LLM_GRAPH: LlmGraph = {
   nodes: [
     {
       id: "hormuz-closes",
@@ -151,6 +153,7 @@ function edge(source: string, target: string, mechanism: string, params: EdgePar
   };
 }
 
+/** Already repaired, like the real /api/branch response. */
 export const DEFAULT_BRANCH = {
   candidates: [
     {
@@ -170,7 +173,18 @@ export const DEFAULT_BRANCH = {
         isTarget: false,
       },
       edges: [
-        edge("mine-warfare", "brent", "Mines extend the closure", { impact: 12 }),
+        {
+          id: "mine-warfare->brent",
+          kind: "en",
+          source: "mine-warfare",
+          target: "brent",
+          mechanism: "Mines extend the closure",
+          assumptions: [],
+          confidence: "medium",
+          support: "model_assumption",
+          sourceIds: [],
+          impact: 12,
+        },
       ],
     },
   ],
@@ -233,7 +247,8 @@ const isFailure = (v: unknown): v is { status: number; body?: unknown } =>
 export async function mockApi(page: Page, spec: MockSpec = {}) {
   const route = async (name: keyof MockSpec, fallback: unknown, asText: boolean) => {
     const configured = name in spec ? spec[name] : fallback;
-    await page.route(`**/api/${name}`, async (r: Route) => {
+    // The glob must tolerate a query string: /api/markets?q=…
+    await page.route(`**/api/${name}*`, async (r: Route) => {
       if (isFailure(configured)) {
         await r.fulfill({
           status: configured.status,
@@ -251,11 +266,12 @@ export async function mockApi(page: Page, spec: MockSpec = {}) {
   };
 
   // /api/generate streams the object as plain text, the others answer JSON.
+  // The two proxies wrap their payload the way their handlers do.
   await route("generate", DEFAULT_LLM_GRAPH, true);
   await route("branch", { candidates: DEFAULT_BRANCH.candidates }, false);
   await route("thesis", DEFAULT_THESIS, false);
-  await route("markets", DEFAULT_MARKETS, false);
-  await route("quote", DEFAULT_QUOTES, false);
+  await route("markets", { data: DEFAULT_MARKETS, error: null }, false);
+  await route("quote", { data: DEFAULT_QUOTES, error: null }, false);
 }
 
 /** Wipe persisted state so a spec starts from an empty workspace. */
@@ -267,4 +283,28 @@ export async function freshWorkspace(page: Page) {
       /* private mode */
     }
   });
+}
+
+export const DEFAULT_INPUT: GenerateInput = {
+  hypothesis: "The Strait of Hormuz closes to commercial tanker traffic",
+  mode: "explore",
+  target: null,
+  horizonDays: 90,
+  positions: [],
+};
+
+/** The default graph as the app would hold it, built through the real repair. */
+export function defaultGraph(): Graph {
+  return repairGraph(DEFAULT_LLM_GRAPH, DEFAULT_INPUT, "fixture");
+}
+
+/** A fixture file exactly as public/fixtures/<slug>.json is shaped. */
+export function defaultFixture() {
+  return {
+    input: DEFAULT_INPUT,
+    llm: DEFAULT_LLM_GRAPH,
+    graph: defaultGraph(),
+    markets: {},
+    quotes: {},
+  };
 }

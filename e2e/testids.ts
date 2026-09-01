@@ -15,6 +15,7 @@ export const T = {
   disclaimer: "disclaimer",
 
   // rail
+  railPane: (name: "hypothesis" | "branch") => `rail-pane-${name}`,
   hypothesisInput: "hypothesis-input",
   positionsInput: "positions-input",
   generateButton: "generate",

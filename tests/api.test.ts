@@ -4,7 +4,7 @@ import type { Graph } from "@/lib/schema";
 import { handleBranch } from "@/lib/api/branch";
 import { handleGenerate } from "@/lib/api/generate";
 import { chatResponse, fakeFetch } from "./helpers/fakeFetch";
-import { repairBranch } from "./stubs/repair";
+import { repairBranch } from "@/lib/engine/repair";
 
 const graph: Graph = {
   id: "hormuz",

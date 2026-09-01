@@ -17,7 +17,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${jetbrains.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-bg text-fg font-mono">
         {children}
-        <footer className="shrink-0 border-t border-line px-3 py-1.5 text-[11px] text-muted">
+        <footer
+          data-testid="disclaimer"
+          className="shrink-0 border-t border-line px-3 py-1.5 text-[11px] text-muted"
+        >
           Model estimates, not investment advice
         </footer>
       </body>

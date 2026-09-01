@@ -1,0 +1,809 @@
+{
+  "input": {
+    "hypothesis": "Democrats take the House in the 2026 midterms",
+    "mode": "explore",
+    "target": null,
+    "horizonDays": 90,
+    "positions": []
+  },
+  "llm": {
+    "nodes": [
+      {
+        "id": "democrats-take-house",
+        "kind": "event",
+        "statement": "Democrats win a House majority in the 2026 midterms",
+        "resolution": "Associated Press calls enough House races for a Democratic majority",
+        "base": 0.48,
+        "lagDays": [
+          60,
+          90
+        ],
+        "rationale": "A narrow national environment makes turnout and a small number of suburban districts decisive.",
+        "analogs": [
+          "2018 House midterm",
+          "2022 House midterm"
+        ],
+        "assumptions": [
+          "The number of competitive districts remains near current estimates"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Democrats win House 2026 midterms",
+        "isRoot": true,
+        "isTarget": false
+      },
+      {
+        "id": "suburban-turnout",
+        "kind": "event",
+        "statement": "Suburban turnout exceeds 2022 levels in competitive districts",
+        "resolution": "Certified turnout in targeted suburban counties exceeds the 2022 share",
+        "base": 0.52,
+        "lagDays": [
+          30,
+          90
+        ],
+        "rationale": "College-educated suburban turnout has been the most consistent margin driver in close House races.",
+        "analogs": [
+          "2018 suburban turnout surge"
+        ],
+        "assumptions": [
+          "Turnout operations remain funded through Election Day"
+        ],
+        "confidence": "medium",
+        "marketQuery": "2026 suburban voter turnout House districts",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "soft-landing",
+        "kind": "event",
+        "statement": "Unemployment remains below 4.5 percent into the election",
+        "resolution": "The October employment report shows unemployment below 4.5 percent",
+        "base": 0.58,
+        "lagDays": [
+          30,
+          85
+        ],
+        "rationale": "A stable labor market reduces the penalty typically borne by the incumbent party.",
+        "analogs": [
+          "1998 and 2022 midterm labor markets"
+        ],
+        "assumptions": [
+          "A recession does not begin before October"
+        ],
+        "confidence": "medium",
+        "marketQuery": "US unemployment October 2026 forecast",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "candidate-recruitment",
+        "kind": "event",
+        "statement": "Democrats field credible candidates in most open suburban seats",
+        "resolution": "Party filings show candidates with prior elected or military experience in targeted seats",
+        "base": 0.62,
+        "lagDays": [
+          0,
+          45
+        ],
+        "rationale": "Candidate quality matters disproportionately where partisan registration is nearly balanced.",
+        "analogs": [
+          "2018 candidate recruitment cycle"
+        ],
+        "assumptions": [
+          "Primary contests do not nominate unelectable outliers"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Democratic candidate recruitment 2026 House",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "inflation-reacceleration",
+        "kind": "event",
+        "statement": "Headline inflation reaccelerates above 3.5 percent before Election Day",
+        "resolution": "Three-month annualized headline CPI exceeds 3.5 percent",
+        "base": 0.25,
+        "lagDays": [
+          20,
+          80
+        ],
+        "rationale": "A visible cost-of-living shock changes the retrospective economic vote faster than policy messaging can.",
+        "analogs": [
+          "2022 inflation shock"
+        ],
+        "assumptions": [
+          "Energy and shelter inflation rise together"
+        ],
+        "confidence": "medium",
+        "marketQuery": "US CPI inflation above 3.5 2026",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "health-policy-agenda",
+        "kind": "event",
+        "statement": "A Democratic House prioritizes drug-pricing oversight hearings",
+        "resolution": "The incoming committee agenda lists drug-pricing oversight as a first-quarter priority",
+        "base": 0.5,
+        "lagDays": [
+          65,
+          90
+        ],
+        "rationale": "A majority shift changes committee subpoena and hearing priorities even without Senate control.",
+        "analogs": [
+          "2019 House oversight agenda"
+        ],
+        "assumptions": [
+          "Leadership assigns health policy to a high-profile committee"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Democratic House drug pricing oversight 2027",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "sp500",
+        "kind": "numeric",
+        "name": "S&P 500 ETF",
+        "unit": "USD/share",
+        "ticker": "SPY",
+        "current": 610,
+        "baselineMove": 0,
+        "sigma": 12,
+        "rationale": "The broad index reflects the macro outcome more than a single congressional result.",
+        "assumptions": [
+          "Monetary policy remains the dominant market driver"
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "healthcare-etf",
+        "kind": "numeric",
+        "name": "Health Care Select Sector SPDR",
+        "unit": "USD/share",
+        "ticker": "XLV",
+        "current": 150,
+        "baselineMove": 0,
+        "sigma": 10,
+        "rationale": "Managed-care and pharma valuations are sensitive to oversight and reimbursement headlines.",
+        "assumptions": [
+          "Sector earnings remain otherwise on guidance"
+        ],
+        "confidence": "medium"
+      }
+    ],
+    "edges": [
+      {
+        "source": "suburban-turnout",
+        "target": "democrats-take-house",
+        "mechanism": "Higher participation improves margins in marginal suburban districts",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.58,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "soft-landing",
+        "target": "democrats-take-house",
+        "mechanism": "A stable labor market limits the incumbent-party economic penalty",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.34,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "candidate-recruitment",
+        "target": "democrats-take-house",
+        "mechanism": "Stronger challengers convert national sentiment into individual-seat wins",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.42,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "inflation-reacceleration",
+        "target": "democrats-take-house",
+        "mechanism": "A renewed inflation shock weakens the incumbent economic case",
+        "assumptions": [],
+        "confidence": "high",
+        "sourceIds": [],
+        "polarity": "inhibit",
+        "strength": 0.56,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "democrats-take-house",
+        "target": "health-policy-agenda",
+        "mechanism": "Committee control sets the oversight calendar",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.72,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "soft-landing",
+        "target": "sp500",
+        "mechanism": "A stable employment backdrop supports earnings multiples",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": 4,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "inflation-reacceleration",
+        "target": "sp500",
+        "mechanism": "Higher inflation raises discount-rate and margin concerns",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": -6,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "democrats-take-house",
+        "target": "healthcare-etf",
+        "mechanism": "Oversight risk modestly discounts health-care policy-sensitive names",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": -2.5,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "sp500",
+        "target": "healthcare-etf",
+        "mechanism": "Broad risk appetite transmits into the defensive sector",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": null,
+        "beta": 0.62,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      }
+    ],
+    "summary": {
+      "headline": "The House outcome rests on suburban turnout and inflation, while the market effect is more sector-specific than index-wide.",
+      "mainUncertainty": "Whether late inflation changes the national vote enough to outweigh candidate quality.",
+      "followUps": [
+        "Competitive-district polling",
+        "October employment report",
+        "Three-month annualized CPI"
+      ]
+    }
+  },
+  "graph": {
+    "id": "56867bbf-a78b-493d-a03d-cd36dc392a7b",
+    "hypothesis": "Democrats take the House in the 2026 midterms",
+    "mode": "explore",
+    "target": null,
+    "horizonDays": 90,
+    "nodes": [
+      {
+        "id": "democrats-take-house",
+        "kind": "event",
+        "statement": "Democrats win a House majority in the 2026 midterms",
+        "resolution": "Associated Press calls enough House races for a Democratic majority",
+        "base": 0.48,
+        "lagDays": [
+          60,
+          90
+        ],
+        "rationale": "A narrow national environment makes turnout and a small number of suburban districts decisive.",
+        "analogs": [
+          "2018 House midterm",
+          "2022 House midterm"
+        ],
+        "assumptions": [
+          "The number of competitive districts remains near current estimates"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Democrats win House 2026 midterms",
+        "isRoot": true,
+        "isTarget": false
+      },
+      {
+        "id": "suburban-turnout",
+        "kind": "event",
+        "statement": "Suburban turnout exceeds 2022 levels in competitive districts",
+        "resolution": "Certified turnout in targeted suburban counties exceeds the 2022 share",
+        "base": 0.52,
+        "lagDays": [
+          30,
+          90
+        ],
+        "rationale": "College-educated suburban turnout has been the most consistent margin driver in close House races.",
+        "analogs": [
+          "2018 suburban turnout surge"
+        ],
+        "assumptions": [
+          "Turnout operations remain funded through Election Day"
+        ],
+        "confidence": "medium",
+        "marketQuery": "2026 suburban voter turnout House districts",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "soft-landing",
+        "kind": "event",
+        "statement": "Unemployment remains below 4.5 percent into the election",
+        "resolution": "The October employment report shows unemployment below 4.5 percent",
+        "base": 0.58,
+        "lagDays": [
+          30,
+          85
+        ],
+        "rationale": "A stable labor market reduces the penalty typically borne by the incumbent party.",
+        "analogs": [
+          "1998 and 2022 midterm labor markets"
+        ],
+        "assumptions": [
+          "A recession does not begin before October"
+        ],
+        "confidence": "medium",
+        "marketQuery": "US unemployment October 2026 forecast",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "candidate-recruitment",
+        "kind": "event",
+        "statement": "Democrats field credible candidates in most open suburban seats",
+        "resolution": "Party filings show candidates with prior elected or military experience in targeted seats",
+        "base": 0.62,
+        "lagDays": [
+          0,
+          45
+        ],
+        "rationale": "Candidate quality matters disproportionately where partisan registration is nearly balanced.",
+        "analogs": [
+          "2018 candidate recruitment cycle"
+        ],
+        "assumptions": [
+          "Primary contests do not nominate unelectable outliers"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Democratic candidate recruitment 2026 House",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "inflation-reacceleration",
+        "kind": "event",
+        "statement": "Headline inflation reaccelerates above 3.5 percent before Election Day",
+        "resolution": "Three-month annualized headline CPI exceeds 3.5 percent",
+        "base": 0.25,
+        "lagDays": [
+          20,
+          80
+        ],
+        "rationale": "A visible cost-of-living shock changes the retrospective economic vote faster than policy messaging can.",
+        "analogs": [
+          "2022 inflation shock"
+        ],
+        "assumptions": [
+          "Energy and shelter inflation rise together"
+        ],
+        "confidence": "medium",
+        "marketQuery": "US CPI inflation above 3.5 2026",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "health-policy-agenda",
+        "kind": "event",
+        "statement": "A Democratic House prioritizes drug-pricing oversight hearings",
+        "resolution": "The incoming committee agenda lists drug-pricing oversight as a first-quarter priority",
+        "base": 0.5,
+        "lagDays": [
+          65,
+          90
+        ],
+        "rationale": "A majority shift changes committee subpoena and hearing priorities even without Senate control.",
+        "analogs": [
+          "2019 House oversight agenda"
+        ],
+        "assumptions": [
+          "Leadership assigns health policy to a high-profile committee"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Democratic House drug pricing oversight 2027",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "sp500",
+        "kind": "numeric",
+        "name": "S&P 500 ETF",
+        "unit": "USD/share",
+        "ticker": "SPY",
+        "current": 610,
+        "baselineMove": 0,
+        "sigma": 12,
+        "rationale": "The broad index reflects the macro outcome more than a single congressional result.",
+        "assumptions": [
+          "Monetary policy remains the dominant market driver"
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "healthcare-etf",
+        "kind": "numeric",
+        "name": "Health Care Select Sector SPDR",
+        "unit": "USD/share",
+        "ticker": "XLV",
+        "current": 150,
+        "baselineMove": 0,
+        "sigma": 10,
+        "rationale": "Managed-care and pharma valuations are sensitive to oversight and reimbursement headlines.",
+        "assumptions": [
+          "Sector earnings remain otherwise on guidance"
+        ],
+        "confidence": "medium"
+      }
+    ],
+    "edges": [
+      {
+        "id": "suburban-turnout->democrats-take-house",
+        "source": "suburban-turnout",
+        "target": "democrats-take-house",
+        "mechanism": "Higher participation improves margins in marginal suburban districts",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.58
+      },
+      {
+        "id": "soft-landing->democrats-take-house",
+        "source": "soft-landing",
+        "target": "democrats-take-house",
+        "mechanism": "A stable labor market limits the incumbent-party economic penalty",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.34
+      },
+      {
+        "id": "candidate-recruitment->democrats-take-house",
+        "source": "candidate-recruitment",
+        "target": "democrats-take-house",
+        "mechanism": "Stronger challengers convert national sentiment into individual-seat wins",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.42
+      },
+      {
+        "id": "inflation-reacceleration->democrats-take-house",
+        "source": "inflation-reacceleration",
+        "target": "democrats-take-house",
+        "mechanism": "A renewed inflation shock weakens the incumbent economic case",
+        "assumptions": [],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.56
+      },
+      {
+        "id": "democrats-take-house->health-policy-agenda",
+        "source": "democrats-take-house",
+        "target": "health-policy-agenda",
+        "mechanism": "Committee control sets the oversight calendar",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.72
+      },
+      {
+        "id": "soft-landing->sp500",
+        "source": "soft-landing",
+        "target": "sp500",
+        "mechanism": "A stable employment backdrop supports earnings multiples",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": 4
+      },
+      {
+        "id": "inflation-reacceleration->sp500",
+        "source": "inflation-reacceleration",
+        "target": "sp500",
+        "mechanism": "Higher inflation raises discount-rate and margin concerns",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": -6
+      },
+      {
+        "id": "democrats-take-house->healthcare-etf",
+        "source": "democrats-take-house",
+        "target": "healthcare-etf",
+        "mechanism": "Oversight risk modestly discounts health-care policy-sensitive names",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": -2.5
+      },
+      {
+        "id": "sp500->healthcare-etf",
+        "source": "sp500",
+        "target": "healthcare-etf",
+        "mechanism": "Broad risk appetite transmits into the defensive sector",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "nn",
+        "beta": 0.62
+      }
+    ],
+    "sources": [],
+    "model": "fixture-seed",
+    "generatedAt": "2026-09-01T21:26:52.957Z",
+    "summary": {
+      "headline": "The House outcome rests on suburban turnout and inflation, while the market effect is more sector-specific than index-wide.",
+      "mainUncertainty": "Whether late inflation changes the national vote enough to outweigh candidate quality.",
+      "followUps": [
+        "Competitive-district polling",
+        "October employment report",
+        "Three-month annualized CPI"
+      ]
+    }
+  },
+  "markets": {
+    "democrats-take-house": [
+      {
+        "title": "Will the Democratic Party control the House after the 2026 Midterm elections?",
+        "url": "https://polymarket.com/event/which-party-will-win-the-house-in-2026",
+        "yes": 0.885,
+        "volume": 5650538.446437,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Republican Party control the House after the 2026 Midterm elections?",
+        "url": "https://polymarket.com/event/which-party-will-win-the-house-in-2026",
+        "yes": 0.115,
+        "volume": 4325331.607436,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Democratic Party control the Senate after the 2026 Midterm elections?",
+        "url": "https://polymarket.com/event/which-party-will-win-the-senate-in-2026",
+        "yes": 0.505,
+        "volume": 2398918.5969219995,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Republican Party control the Senate after the 2026 Midterm elections?",
+        "url": "https://polymarket.com/event/which-party-will-win-the-senate-in-2026",
+        "yes": 0.495,
+        "volume": 1665528.125825,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Democrats win exactly 48 House seats in California in the 2026 midterm elections?",
+        "url": "https://polymarket.com/event/how-many-house-seats-will-the-democrats-win-in-california",
+        "yes": 0.505,
+        "volume": 7083.299233999999,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "suburban-turnout": [
+      {
+        "title": "Will voter turnout be 62% or higher in the 2026 Russian parliamentary election?",
+        "url": "https://polymarket.com/event/russia-parliamentary-election-turnout",
+        "yes": 0.1065,
+        "volume": 25073.461908000005,
+        "endDate": "2026-09-20T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will there be between 120m and 125m votes cast in the 2026 U.S. House of Representatives midterm elections?",
+        "url": "https://polymarket.com/event/2026-midterms-house-turnout",
+        "yes": 0.19,
+        "volume": 8224.560825,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will voter turnout be between 78% and 80% in the 2026 New Zealand general election?",
+        "url": "https://polymarket.com/event/new-zealand-election-turnout",
+        "yes": 0.365,
+        "volume": 7419.445769999999,
+        "endDate": "2026-11-07T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will voter turnout be between 56% and 59% in the 2026 Russian parliamentary election?",
+        "url": "https://polymarket.com/event/russia-parliamentary-election-turnout",
+        "yes": 0.103,
+        "volume": 6537.757379,
+        "endDate": "2026-09-20T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will voter turnout be between 47% and 50% in the 2026 Russian parliamentary election?",
+        "url": "https://polymarket.com/event/russia-parliamentary-election-turnout",
+        "yes": 0.1,
+        "volume": 6471.555176999999,
+        "endDate": "2026-09-20T00:00:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "soft-landing": [],
+    "candidate-recruitment": [
+      {
+        "title": "Will the Democratic Party candidate win the 2026 NY-10 House election by 0%-45%?",
+        "url": "https://polymarket.com/event/ny-10-house-margin-of-victory-2026",
+        "yes": 0.055,
+        "volume": 1493.33,
+        "endDate": "2026-11-03T12:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Republican Party candidate win the 2026 AR-01 House election by 45%-50%?",
+        "url": "https://polymarket.com/event/ar-01-house-margin-of-victory-2026",
+        "yes": 0.09,
+        "volume": 1120.6333300000001,
+        "endDate": "2026-11-03T12:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Republican Party candidate win the 2026 AR-01 House election by 0%-15%?",
+        "url": "https://polymarket.com/event/ar-01-house-margin-of-victory-2026",
+        "yes": 0.04,
+        "volume": 780.68,
+        "endDate": "2026-11-03T12:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Democratic Party candidate win the 2026 OR-03 House election by 25%-35%?",
+        "url": "https://polymarket.com/event/or-03-house-margin-of-victory-2026",
+        "yes": 0.05,
+        "volume": 632.3,
+        "endDate": "2026-11-03T12:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Republican Party candidate win the 2026 MD-01 House election by 18%-21%?",
+        "url": "https://polymarket.com/event/md-01-house-margin-of-victory-2026",
+        "yes": 0.205,
+        "volume": 405.74253600000003,
+        "endDate": "2026-11-03T12:00:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "inflation-reacceleration": [
+      {
+        "title": "Will annual inflation be 3.4% in August?",
+        "url": "https://polymarket.com/event/august-inflation-us-annual-1786474662954",
+        "yes": 0.47,
+        "volume": 16974.747864,
+        "endDate": "2026-09-11T03:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will annual inflation be 3.3% in August?",
+        "url": "https://polymarket.com/event/august-inflation-us-annual-1786474662954",
+        "yes": 0.355,
+        "volume": 11472.223388999999,
+        "endDate": "2026-09-11T03:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will annual inflation be 3.5% in August?",
+        "url": "https://polymarket.com/event/august-inflation-us-annual-1786474662954",
+        "yes": 0.105,
+        "volume": 10417.476217000001,
+        "endDate": "2026-09-11T03:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will monthly inflation increase by 0.5% or more in August?",
+        "url": "https://polymarket.com/event/august-inflation-us-monthly-1786474662954",
+        "yes": 0.15,
+        "volume": 6903.526654,
+        "endDate": "2026-09-11T03:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will monthly inflation increase by 0.4% in August?",
+        "url": "https://polymarket.com/event/august-inflation-us-monthly-1786474662954",
+        "yes": 0.455,
+        "volume": 5690.572236000002,
+        "endDate": "2026-09-11T03:59:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "health-policy-agenda": []
+  },
+  "quotes": {
+    "SPY": {
+      "symbol": "SPY",
+      "price": 761.78,
+      "changePct": -0.687,
+      "currency": "USD",
+      "time": "2026-09-01T20:00:00.000Z"
+    },
+    "XLV": {
+      "symbol": "XLV",
+      "price": 171.67,
+      "changePct": 0.663,
+      "currency": "USD",
+      "time": "2026-09-01T20:00:00.000Z"
+    }
+  }
+}

@@ -1,0 +1,720 @@
+{
+  "input": {
+    "hypothesis": "Photonic interconnects get adopted in datacenters faster than expected",
+    "mode": "explore",
+    "target": null,
+    "horizonDays": 365,
+    "positions": []
+  },
+  "llm": {
+    "nodes": [
+      {
+        "id": "photonics-accelerates",
+        "kind": "event",
+        "statement": "Photonic interconnects are adopted in datacenters faster than expected",
+        "resolution": "Two hyperscalers disclose production deployments of photonic interconnects",
+        "base": 0.25,
+        "lagDays": [
+          90,
+          365
+        ],
+        "rationale": "AI cluster power density makes electrical reach and SerDes power a binding design constraint.",
+        "analogs": [
+          "400G and 800G optical transceiver adoption"
+        ],
+        "assumptions": [
+          "AI cluster build-outs remain capital intensive"
+        ],
+        "confidence": "medium",
+        "marketQuery": "hyperscaler photonic interconnect production deployment",
+        "isRoot": true,
+        "isTarget": false
+      },
+      {
+        "id": "co-packaged-optics-win",
+        "kind": "event",
+        "statement": "A co-packaged optics design wins a production AI-network slot",
+        "resolution": "A supplier names a production co-packaged optics program with shipment timing",
+        "base": 0.3,
+        "lagDays": [
+          90,
+          300
+        ],
+        "rationale": "A named production win turns optical interconnect demand from a lab roadmap into a bill-of-materials pull.",
+        "analogs": [
+          "Early 800G design-win disclosures"
+        ],
+        "assumptions": [
+          "The customer does not revert to pluggable optics at qualification"
+        ],
+        "confidence": "low",
+        "marketQuery": "co-packaged optics production design win",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "switch-asic-power-wall",
+        "kind": "event",
+        "statement": "Switch ASIC power consumption breaches rack thermal design targets",
+        "resolution": "A hyperscaler technical disclosure reports a power or thermal limit requiring optical redesign",
+        "base": 0.46,
+        "lagDays": [
+          30,
+          240
+        ],
+        "rationale": "Electrical I/O power rises rapidly at higher speeds and creates a direct incentive for optical links closer to the ASIC.",
+        "analogs": [
+          "51.2T switch thermal constraints"
+        ],
+        "assumptions": [
+          "Power is a higher priority than component-cost minimization"
+        ],
+        "confidence": "medium",
+        "marketQuery": "switch ASIC power thermal limit co packaged optics",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "hyperscaler-capex",
+        "kind": "event",
+        "statement": "Hyperscaler AI datacenter capex remains above guidance",
+        "resolution": "Two major hyperscalers raise annual AI infrastructure capex guidance",
+        "base": 0.58,
+        "lagDays": [
+          0,
+          180
+        ],
+        "rationale": "Higher cluster deployment volumes shorten the time needed to justify new interconnect architectures.",
+        "analogs": [
+          "2023 to 2025 AI capex revisions"
+        ],
+        "assumptions": [
+          "GPU supply remains available enough to deploy new clusters"
+        ],
+        "confidence": "high",
+        "marketQuery": "hyperscaler AI datacenter capex guidance",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "packaging-yield-delay",
+        "kind": "event",
+        "statement": "Advanced packaging yields delay photonic module qualification",
+        "resolution": "A supplier delays a planned volume-ramp date by at least one quarter for yield reasons",
+        "base": 0.36,
+        "lagDays": [
+          60,
+          270
+        ],
+        "rationale": "Thermal alignment and heterogeneous integration can convert a design win into a slower revenue ramp.",
+        "analogs": [
+          "Silicon photonics packaging yield ramps"
+        ],
+        "assumptions": [
+          "Alternative packaging houses cannot qualify quickly"
+        ],
+        "confidence": "medium",
+        "marketQuery": "silicon photonics packaging yield delay",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "interoperability-standard",
+        "kind": "event",
+        "statement": "An open optical-interconnect standard gains multi-vendor support",
+        "resolution": "Three major networking vendors announce compatible products or a formal standards profile",
+        "base": 0.4,
+        "lagDays": [
+          90,
+          300
+        ],
+        "rationale": "Interoperability lowers the procurement risk of adopting an interconnect architecture early.",
+        "analogs": [
+          "OIF and Ethernet optical standards"
+        ],
+        "assumptions": [
+          "Standards work maps to purchasable modules rather than a long research process"
+        ],
+        "confidence": "low",
+        "marketQuery": "open optical interconnect standard multi vendor",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "coherent",
+        "kind": "numeric",
+        "name": "Coherent Corp",
+        "unit": "USD/share",
+        "ticker": "COHR",
+        "current": 95,
+        "baselineMove": 0,
+        "sigma": 28,
+        "rationale": "Coherent has exposure to optical components and datacenter interconnect demand.",
+        "assumptions": [
+          "Datacenter optical mix matters more than legacy industrial demand"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "lumentum",
+        "kind": "numeric",
+        "name": "Lumentum Holdings",
+        "unit": "USD/share",
+        "ticker": "LITE",
+        "current": 75,
+        "baselineMove": 0,
+        "sigma": 30,
+        "rationale": "Lumentum is a liquid optical-component proxy with leverage to higher-speed transceiver demand.",
+        "assumptions": [
+          "Inventory digestion does not dominate the optical demand cycle"
+        ],
+        "confidence": "medium"
+      }
+    ],
+    "edges": [
+      {
+        "source": "switch-asic-power-wall",
+        "target": "photonics-accelerates",
+        "mechanism": "Power and thermal constraints increase the value of optical I/O",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.48,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "hyperscaler-capex",
+        "target": "photonics-accelerates",
+        "mechanism": "More AI clusters justify earlier architecture transitions",
+        "assumptions": [],
+        "confidence": "high",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.44,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "interoperability-standard",
+        "target": "photonics-accelerates",
+        "mechanism": "Multi-vendor support reduces procurement and lock-in risk",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.4,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "photonics-accelerates",
+        "target": "co-packaged-optics-win",
+        "mechanism": "Faster adoption makes a production design win more likely",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": "promote",
+        "strength": 0.66,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "packaging-yield-delay",
+        "target": "co-packaged-optics-win",
+        "mechanism": "Yield delays postpone qualification and volume shipments",
+        "assumptions": [],
+        "confidence": "high",
+        "sourceIds": [],
+        "polarity": "inhibit",
+        "strength": 0.58,
+        "impact": null,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "photonics-accelerates",
+        "target": "coherent",
+        "mechanism": "Faster optical deployment lifts datacenter component demand",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": 18,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "co-packaged-optics-win",
+        "target": "coherent",
+        "mechanism": "A named program validates incremental component revenue",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": 12,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "packaging-yield-delay",
+        "target": "coherent",
+        "mechanism": "Delayed qualification defers the expected revenue ramp",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": -8,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "photonics-accelerates",
+        "target": "lumentum",
+        "mechanism": "Higher-speed optical links increase demand for optical components",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": 14,
+        "beta": null,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "coherent",
+        "target": "lumentum",
+        "mechanism": "Optical-component peers share part of the same demand cycle",
+        "assumptions": [],
+        "confidence": "medium",
+        "sourceIds": [],
+        "polarity": null,
+        "strength": null,
+        "impact": null,
+        "beta": 0.55,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      }
+    ],
+    "summary": {
+      "headline": "Power constraints and capex can pull photonics forward, but packaging yield remains the gate on a production ramp.",
+      "mainUncertainty": "Whether co-packaged optics clears qualification before pluggable optics improve enough to defer adoption.",
+      "followUps": [
+        "Hyperscaler network architecture disclosures",
+        "Supplier production design wins",
+        "Advanced packaging yield commentary"
+      ]
+    }
+  },
+  "graph": {
+    "id": "ef7eca79-a763-4b81-a59f-46d6c2faa639",
+    "hypothesis": "Photonic interconnects get adopted in datacenters faster than expected",
+    "mode": "explore",
+    "target": null,
+    "horizonDays": 365,
+    "nodes": [
+      {
+        "id": "photonics-accelerates",
+        "kind": "event",
+        "statement": "Photonic interconnects are adopted in datacenters faster than expected",
+        "resolution": "Two hyperscalers disclose production deployments of photonic interconnects",
+        "base": 0.25,
+        "lagDays": [
+          90,
+          365
+        ],
+        "rationale": "AI cluster power density makes electrical reach and SerDes power a binding design constraint.",
+        "analogs": [
+          "400G and 800G optical transceiver adoption"
+        ],
+        "assumptions": [
+          "AI cluster build-outs remain capital intensive"
+        ],
+        "confidence": "medium",
+        "marketQuery": "hyperscaler photonic interconnect production deployment",
+        "isRoot": true,
+        "isTarget": false
+      },
+      {
+        "id": "co-packaged-optics-win",
+        "kind": "event",
+        "statement": "A co-packaged optics design wins a production AI-network slot",
+        "resolution": "A supplier names a production co-packaged optics program with shipment timing",
+        "base": 0.3,
+        "lagDays": [
+          90,
+          300
+        ],
+        "rationale": "A named production win turns optical interconnect demand from a lab roadmap into a bill-of-materials pull.",
+        "analogs": [
+          "Early 800G design-win disclosures"
+        ],
+        "assumptions": [
+          "The customer does not revert to pluggable optics at qualification"
+        ],
+        "confidence": "low",
+        "marketQuery": "co-packaged optics production design win",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "switch-asic-power-wall",
+        "kind": "event",
+        "statement": "Switch ASIC power consumption breaches rack thermal design targets",
+        "resolution": "A hyperscaler technical disclosure reports a power or thermal limit requiring optical redesign",
+        "base": 0.46,
+        "lagDays": [
+          30,
+          240
+        ],
+        "rationale": "Electrical I/O power rises rapidly at higher speeds and creates a direct incentive for optical links closer to the ASIC.",
+        "analogs": [
+          "51.2T switch thermal constraints"
+        ],
+        "assumptions": [
+          "Power is a higher priority than component-cost minimization"
+        ],
+        "confidence": "medium",
+        "marketQuery": "switch ASIC power thermal limit co packaged optics",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "hyperscaler-capex",
+        "kind": "event",
+        "statement": "Hyperscaler AI datacenter capex remains above guidance",
+        "resolution": "Two major hyperscalers raise annual AI infrastructure capex guidance",
+        "base": 0.58,
+        "lagDays": [
+          0,
+          180
+        ],
+        "rationale": "Higher cluster deployment volumes shorten the time needed to justify new interconnect architectures.",
+        "analogs": [
+          "2023 to 2025 AI capex revisions"
+        ],
+        "assumptions": [
+          "GPU supply remains available enough to deploy new clusters"
+        ],
+        "confidence": "high",
+        "marketQuery": "hyperscaler AI datacenter capex guidance",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "packaging-yield-delay",
+        "kind": "event",
+        "statement": "Advanced packaging yields delay photonic module qualification",
+        "resolution": "A supplier delays a planned volume-ramp date by at least one quarter for yield reasons",
+        "base": 0.36,
+        "lagDays": [
+          60,
+          270
+        ],
+        "rationale": "Thermal alignment and heterogeneous integration can convert a design win into a slower revenue ramp.",
+        "analogs": [
+          "Silicon photonics packaging yield ramps"
+        ],
+        "assumptions": [
+          "Alternative packaging houses cannot qualify quickly"
+        ],
+        "confidence": "medium",
+        "marketQuery": "silicon photonics packaging yield delay",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "interoperability-standard",
+        "kind": "event",
+        "statement": "An open optical-interconnect standard gains multi-vendor support",
+        "resolution": "Three major networking vendors announce compatible products or a formal standards profile",
+        "base": 0.4,
+        "lagDays": [
+          90,
+          300
+        ],
+        "rationale": "Interoperability lowers the procurement risk of adopting an interconnect architecture early.",
+        "analogs": [
+          "OIF and Ethernet optical standards"
+        ],
+        "assumptions": [
+          "Standards work maps to purchasable modules rather than a long research process"
+        ],
+        "confidence": "low",
+        "marketQuery": "open optical interconnect standard multi vendor",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "coherent",
+        "kind": "numeric",
+        "name": "Coherent Corp",
+        "unit": "USD/share",
+        "ticker": "COHR",
+        "current": 95,
+        "baselineMove": 0,
+        "sigma": 28,
+        "rationale": "Coherent has exposure to optical components and datacenter interconnect demand.",
+        "assumptions": [
+          "Datacenter optical mix matters more than legacy industrial demand"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "lumentum",
+        "kind": "numeric",
+        "name": "Lumentum Holdings",
+        "unit": "USD/share",
+        "ticker": "LITE",
+        "current": 75,
+        "baselineMove": 0,
+        "sigma": 30,
+        "rationale": "Lumentum is a liquid optical-component proxy with leverage to higher-speed transceiver demand.",
+        "assumptions": [
+          "Inventory digestion does not dominate the optical demand cycle"
+        ],
+        "confidence": "medium"
+      }
+    ],
+    "edges": [
+      {
+        "id": "switch-asic-power-wall->photonics-accelerates",
+        "source": "switch-asic-power-wall",
+        "target": "photonics-accelerates",
+        "mechanism": "Power and thermal constraints increase the value of optical I/O",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.48
+      },
+      {
+        "id": "hyperscaler-capex->photonics-accelerates",
+        "source": "hyperscaler-capex",
+        "target": "photonics-accelerates",
+        "mechanism": "More AI clusters justify earlier architecture transitions",
+        "assumptions": [],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.44
+      },
+      {
+        "id": "interoperability-standard->photonics-accelerates",
+        "source": "interoperability-standard",
+        "target": "photonics-accelerates",
+        "mechanism": "Multi-vendor support reduces procurement and lock-in risk",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.4
+      },
+      {
+        "id": "photonics-accelerates->co-packaged-optics-win",
+        "source": "photonics-accelerates",
+        "target": "co-packaged-optics-win",
+        "mechanism": "Faster adoption makes a production design win more likely",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.66
+      },
+      {
+        "id": "packaging-yield-delay->co-packaged-optics-win",
+        "source": "packaging-yield-delay",
+        "target": "co-packaged-optics-win",
+        "mechanism": "Yield delays postpone qualification and volume shipments",
+        "assumptions": [],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.58
+      },
+      {
+        "id": "photonics-accelerates->coherent",
+        "source": "photonics-accelerates",
+        "target": "coherent",
+        "mechanism": "Faster optical deployment lifts datacenter component demand",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": 18
+      },
+      {
+        "id": "co-packaged-optics-win->coherent",
+        "source": "co-packaged-optics-win",
+        "target": "coherent",
+        "mechanism": "A named program validates incremental component revenue",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": 12
+      },
+      {
+        "id": "packaging-yield-delay->coherent",
+        "source": "packaging-yield-delay",
+        "target": "coherent",
+        "mechanism": "Delayed qualification defers the expected revenue ramp",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": -8
+      },
+      {
+        "id": "photonics-accelerates->lumentum",
+        "source": "photonics-accelerates",
+        "target": "lumentum",
+        "mechanism": "Higher-speed optical links increase demand for optical components",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": 14
+      },
+      {
+        "id": "coherent->lumentum",
+        "source": "coherent",
+        "target": "lumentum",
+        "mechanism": "Optical-component peers share part of the same demand cycle",
+        "assumptions": [],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "nn",
+        "beta": 0.55
+      }
+    ],
+    "sources": [],
+    "model": "fixture-seed",
+    "generatedAt": "2026-09-01T21:27:02.534Z",
+    "summary": {
+      "headline": "Power constraints and capex can pull photonics forward, but packaging yield remains the gate on a production ramp.",
+      "mainUncertainty": "Whether co-packaged optics clears qualification before pluggable optics improve enough to defer adoption.",
+      "followUps": [
+        "Hyperscaler network architecture disclosures",
+        "Supplier production design wins",
+        "Advanced packaging yield commentary"
+      ]
+    }
+  },
+  "markets": {
+    "photonics-accelerates": [],
+    "co-packaged-optics-win": [
+      {
+        "title": "Will the Republican Party win the CO-01 House seat?",
+        "url": "https://polymarket.com/event/co-01-house-election-winner",
+        "yes": 0.023,
+        "volume": 26100.245752000003,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Democratic Party win the CO-01 House seat?",
+        "url": "https://polymarket.com/event/co-01-house-election-winner",
+        "yes": 0.9685,
+        "volume": 16952.879496999998,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Democratic Party win the CO-05 House seat?",
+        "url": "https://polymarket.com/event/co-05-house-election-winner",
+        "yes": 0.285,
+        "volume": 10613.557347999998,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Republican Party win the CO-04 House seat?",
+        "url": "https://polymarket.com/event/co-04-house-election-winner",
+        "yes": 0.635,
+        "volume": 8920.506376000001,
+        "endDate": "2026-11-03T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Democratic Party win the CO-08 House seat?",
+        "url": "https://polymarket.com/event/co-08-house-election-winner",
+        "yes": 0.78,
+        "volume": 8279.875027,
+        "endDate": "2026-11-04T00:00:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "switch-asic-power-wall": [
+      {
+        "title": "Lisa Murkowski leaves the Republican Party in 2026?",
+        "url": "https://polymarket.com/event/lisa-murkowski-leaves-the-republican-party-in-2026",
+        "yes": 0.195,
+        "volume": 4783.528638,
+        "endDate": "2027-01-01T04:59:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "hyperscaler-capex": [],
+    "packaging-yield-delay": [],
+    "interoperability-standard": []
+  },
+  "quotes": {
+    "COHR": {
+      "symbol": "COHR",
+      "price": 272.03,
+      "changePct": -2.088,
+      "currency": "USD",
+      "time": "2026-09-01T20:00:03.000Z"
+    },
+    "LITE": {
+      "symbol": "LITE",
+      "price": 868.95,
+      "changePct": -5.008,
+      "currency": "USD",
+      "time": "2026-09-01T20:00:01.000Z"
+    }
+  }
+}

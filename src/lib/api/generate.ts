@@ -1,6 +1,6 @@
 import { streamObject } from "ai";
 import { HttpError, jsonError, readJson } from "@/lib/http";
-import { defaultDeps, hasKey, llm, type Deps } from "@/lib/llm";
+import { defaultDeps, hasKey, llm } from "@/lib/llm";
 import { GENERATE_SYSTEM, generatePrompt } from "@/lib/prompts";
 import { GenerateInputSchema, LlmGraph } from "@/lib/schema";
 

@@ -1,6 +1,6 @@
 import { HttpError, jsonError, readJson } from "@/lib/http";
 import { repairBranch } from "@/lib/engine/repair";
-import { defaultDeps, hasKey, structured, type Deps } from "@/lib/llm";
+import { defaultDeps, hasKey, structured } from "@/lib/llm";
 import { BRANCH_SYSTEM, branchPrompt } from "@/lib/prompts";
 import { BranchInputSchema, LlmBranch } from "@/lib/schema";
 
@@ -8,7 +8,7 @@ type RepairBranch = typeof repairBranch;
 
 export async function handleBranch(
   req: Request,
-  deps: Deps = defaultDeps(),
+  deps = defaultDeps(),
   repair: RepairBranch = repairBranch,
 ): Promise<Response> {
   if (!hasKey(deps)) return jsonError(503, "live generation off");

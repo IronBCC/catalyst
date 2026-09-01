@@ -7,7 +7,6 @@ import type {
   GenerateInput,
   Graph,
   Node,
-  NumericNode,
   Source,
 } from "@/lib/schema";
 import { breakCycles } from "@/lib/engine/topo";
@@ -15,7 +14,6 @@ import { breakCycles } from "@/lib/engine/topo";
 type RawGraph = z.infer<typeof LlmGraph>;
 type RawNode = RawGraph["nodes"][number];
 type RawEdge = RawGraph["edges"][number];
-type RawBranchItem = z.infer<typeof LlmBranchItem>;
 
 const finite = (value: unknown, fallback: number) =>
   typeof value === "number" && Number.isFinite(value) ? value : fallback;

@@ -6,7 +6,15 @@ import type {
   ThesisInput,
 } from "@/lib/schema";
 
-export type Computed = { p: Record<string, number> };
+/**
+ * The prompt only needs one number per node, but taking the engine's `Computed`
+ * directly means callers never have to reshape it (and never accidentally hand
+ * the model a stale probability map).
+ */
+type NodeStates = {
+  events: Map<string, { p: number }>;
+  numerics: Map<string, { move: number }>;
+};
 
 export const GENERATE_SYSTEM = [
   "Build a dated causal graph using crisp, resolvable statements within the requested horizon.",
@@ -72,19 +80,14 @@ const edgeParameter = (edge: Edge) => {
   }
 };
 
-export function compactGraph(graph: Graph, computed: Computed): string {
+export function compactGraph(graph: Graph, computed: NodeStates): string {
   const nodes = graph.nodes.map((node) => {
     const statement = node.kind === "event" ? node.statement : node.name;
-    const probability = computed.p[node.id] ?? (node.kind === "event" ? node.base : 0);
-    return (
-      node.id +
-      " | " +
-      node.kind +
-      " | " +
-      statement +
-      " | p=" +
-      probability.toFixed(2)
-    );
+    const state =
+      node.kind === "event"
+        ? "p=" + (computed.events.get(node.id)?.p ?? node.base).toFixed(2)
+        : "move=" + (computed.numerics.get(node.id)?.move ?? node.baselineMove).toFixed(1) + "%";
+    return node.id + " | " + node.kind + " | " + statement + " | " + state;
   });
   const edges = graph.edges.map(
     (edge) =>

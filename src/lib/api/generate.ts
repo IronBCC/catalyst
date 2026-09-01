@@ -1,11 +1,8 @@
 import { streamObject } from "ai";
-import type { repairGraph as repairGraphType } from "../../../tests/stubs/repair";
 import { HttpError, jsonError, readJson } from "@/lib/http";
 import { defaultDeps, hasKey, llm, type Deps } from "@/lib/llm";
 import { GENERATE_SYSTEM, generatePrompt } from "@/lib/prompts";
 import { GenerateInputSchema, LlmGraph } from "@/lib/schema";
-
-export type PendingGraphRepair = typeof repairGraphType;
 
 const errorResponse = (error: unknown) =>
   error instanceof HttpError

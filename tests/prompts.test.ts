@@ -64,11 +64,14 @@ const graph: Graph = {
 
 describe("prompts", () => {
   it("compacts every node and edge with probabilities rounded to two decimals", () => {
-    const compact = compactGraph(graph, { p: { closure: 0.618, brent: 0.1 } });
+    const compact = compactGraph(graph, {
+      events: new Map([["closure", { p: 0.618 }]]),
+      numerics: new Map([["brent", { move: 12.4 }]]),
+    });
 
     expect(compact.split("\n")).toEqual([
       "closure | event | The Strait of Hormuz closes to tanker traffic | p=0.62",
-      "brent | numeric | Brent crude | p=0.10",
+      "brent | numeric | Brent crude | move=12.4%",
       "closure->brent | en | 35 | The closure removes seaborne supply",
     ]);
   });

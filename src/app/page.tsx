@@ -5,12 +5,21 @@ import Banner from "@/components/Banner";
 import Canvas from "@/components/Canvas";
 import Inspector from "@/components/Inspector";
 import Rail from "@/components/Rail";
+import SessionId from "@/components/SessionId";
 import Scenarios from "@/components/Scenarios";
 import Thesis from "@/components/Thesis";
 import Verdict from "@/components/Verdict";
+import Worlds, { CompareStrip } from "@/components/Worlds";
 import { useStore } from "@/store";
 
 const TABS = ["map", "scenarios", "thesis"] as const;
+
+/** The ids are the selector contract; these are what a reader sees. */
+const TAB_LABEL: Record<(typeof TABS)[number], string> = {
+  map: "affected areas",
+  scenarios: "worlds",
+  thesis: "thesis",
+};
 
 export default function Home() {
   const tab = useStore((s) => s.tab);
@@ -63,14 +72,18 @@ export default function Home() {
                 tab === t ? "border-gold text-gold" : "border-line text-muted"
               }`}
             >
-              {t}
+              {TAB_LABEL[t]}
             </button>
           ))}
         </nav>
 
+        <Worlds />
+
         <div className="flex-1">
           <Verdict />
         </div>
+
+        <SessionId />
 
         <button
           type="button"
@@ -83,6 +96,8 @@ export default function Home() {
           inspector
         </button>
       </header>
+
+      <CompareStrip />
 
       <div className="flex min-h-0 flex-1">
         <div

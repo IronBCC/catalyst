@@ -10,6 +10,10 @@ import { stopTriggers, tornado, type Target } from "@/lib/engine/sensitivity";
 import { isNumeric } from "@/lib/schema";
 import { useComputed, useStore } from "@/store";
 
+const TOP_DRIVERS = 5;
+const TOP_WORLDS = 3;
+const TOP_TRIGGERS = 5;
+
 export default function Scenarios() {
   const { graph, computed, mc, diff } = useComputed();
   const worlds = useStore((s) => s.worlds);
@@ -40,9 +44,14 @@ export default function Scenarios() {
     });
   }, [graph, numerics, worlds]);
 
+  // P&L only exists when there are positions. Without them the select falls back
+  // to its first option while the state still said "pnl", which asked the engine
+  // for a node that does not exist and drew a tornado of zeroes.
+  const selected = focus === "pnl" && positions.length === 0 ? (numerics[0]?.id ?? "pnl") : focus;
+
   const target: Target = useMemo(
-    () => (focus === "pnl" ? { type: "pnl" } : { type: "numeric", id: focus }),
-    [focus],
+    () => (selected === "pnl" ? { type: "pnl" } : { type: "numeric", id: selected }),
+    [selected],
   );
 
   const tornadoRows = useMemo(() => {
@@ -58,6 +67,10 @@ export default function Scenarios() {
     return stopTriggers(applied.graph, applied.fixed, positions, stop);
   }, [activeWorldId, graph, positions, worlds]);
 
+  // A tornado of twenty bars answers nothing. The few that move the outcome are
+  // the answer, and each one is spelled out underneath rather than left as a bar.
+  const topRows = useMemo(() => tornadoRows.slice(0, TOP_DRIVERS), [tornadoRows]);
+
   const labels = useMemo(() => {
     const map: Record<string, string> = {};
     for (const n of graph?.nodes ?? []) map[n.id] = n.kind === "event" ? n.statement : n.name;
@@ -68,9 +81,9 @@ export default function Scenarios() {
     return <p className="p-3 text-xs text-muted">Build a graph to see scenarios.</p>;
   }
 
-  const focused =
-    focus === "pnl" ? mc.pnl : (mc.numeric.get(focus) ?? null);
-  const unit = focus === "pnl" ? "%" : (numerics.find((n) => n.id === focus)?.unit ?? "%");
+  const focused = selected === "pnl" ? mc.pnl : (mc.numeric.get(selected) ?? null);
+  const unit =
+    selected === "pnl" ? "%" : (numerics.find((n) => n.id === selected)?.unit ?? "%");
 
   return (
     <div className="flex flex-col gap-4 p-3 text-xs">
@@ -80,7 +93,7 @@ export default function Scenarios() {
         </label>
         <select
           id="focus"
-          value={focus}
+          value={selected}
           onChange={(e) => setFocus(e.target.value)}
           className="rounded border border-line bg-bg p-1 text-fg"
         >
@@ -97,7 +110,7 @@ export default function Scenarios() {
         <section data-testid="histogram">
           <Histogram samples={focused.samples} q={focused.q} unit={unit} />
           <p className="mt-1 text-muted">
-            {focus === "pnl" && mc.pnl
+            {selected === "pnl" && mc.pnl
               ? `P(loss) ${Math.round(mc.pnl.pLoss * 100)}%` +
                 (mc.pnl.pStop !== null ? ` · P(stop) ${Math.round(mc.pnl.pStop * 100)}%` : "") +
                 (mc.pnl.pTarget !== null
@@ -110,30 +123,69 @@ export default function Scenarios() {
 
       {mc.clusters.length ? (
         <section>
-          <h3 className="mb-1 text-muted">Most likely worlds</h3>
-          <ul className="space-y-0.5">
-            {mc.clusters.slice(0, 3).map((c, i) => (
-              <li key={i} className="text-fg">
-                {Object.entries(c.states)
-                  .map(([id, on]) => `${labels[id] ?? id} ${on ? "✓ yes" : "✗ no"}`)
-                  .join(" · ")}{" "}
-                <span className="text-muted">{Math.round(c.share * 100)}%</span>
+          <h3 className="mb-1 text-muted">
+            Most likely worlds
+            <span className="ml-2 text-muted">
+              top {Math.min(TOP_WORLDS, mc.clusters.length)} of {mc.clusters.length}
+            </span>
+          </h3>
+          <ol className="space-y-1">
+            {mc.clusters.slice(0, TOP_WORLDS).map((c, i) => (
+              <li key={i} className="rounded border border-line p-2">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="text-fg">world {i + 1}</span>
+                  <span className="text-gold">{Math.round(c.share * 100)}% of runs</span>
+                </div>
+                <ul className="mt-1 space-y-0.5">
+                  {Object.entries(c.states).map(([id, on]) => (
+                    <li key={id} className={on ? "text-green" : "text-muted"}>
+                      {on ? "yes" : "no"} · {labels[id] ?? id}
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
-          </ul>
+          </ol>
         </section>
       ) : null}
 
       <section data-testid="tornado">
-        <h3 className="mb-1 text-muted">What moves it most</h3>
-        <Tornado rows={tornadoRows} labels={labels} unit={unit} />
+        <h3 className="mb-1 text-muted">
+          What moves it most
+          <span className="ml-2 text-muted">
+            top {Math.min(TOP_DRIVERS, tornadoRows.length)} of {tornadoRows.length}
+          </span>
+        </h3>
+        <Tornado rows={topRows} labels={labels} unit={unit} />
+        <ol className="mt-2 space-y-1">
+          {topRows.map((row) => (
+            <li key={row.nodeId} className="rounded border border-line p-2">
+              <p className="text-fg">{labels[row.nodeId] ?? row.nodeId}</p>
+              <p className="text-muted">
+                off {row.low.toFixed(1)}
+                {unit} · on {row.high.toFixed(1)}
+                {unit} ·{" "}
+                <span className={row.delta >= 0 ? "text-green" : "text-red"}>
+                  swing {row.delta >= 0 ? "+" : ""}
+                  {row.delta.toFixed(1)}
+                  {unit}
+                </span>
+              </p>
+            </li>
+          ))}
+        </ol>
       </section>
 
       {triggers.length ? (
         <section>
-          <h3 className="mb-1 text-muted">What hits my stop</h3>
+          <h3 className="mb-1 text-muted">
+            What hits my stop
+            <span className="ml-2 text-muted">
+              top {Math.min(TOP_TRIGGERS, triggers.length)} of {triggers.length}
+            </span>
+          </h3>
           <ul className="space-y-0.5">
-            {triggers.map((t) => (
+            {triggers.slice(0, TOP_TRIGGERS).map((t) => (
               <li key={t.nodeId} className="text-red">
                 {labels[t.nodeId] ?? t.nodeId} → {t.pnl.toFixed(1)}%
               </li>

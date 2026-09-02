@@ -106,14 +106,16 @@ function NumericNodeInner({
 
   return (
     <div
-      className={`w-[260px] rounded-md border p-3 text-xs text-fg ${selected ? "ring-2 ring-blue" : "border-line"} bg-panel`}
+      className={`flex h-[140px] w-[260px] flex-col overflow-hidden rounded-md border p-3 text-xs text-fg ${selected ? "ring-2 ring-blue" : "border-line"} bg-panel`}
       tabIndex={0}
       role="button"
       aria-label={node.name}
     >
-      <Handle type="target" position={Position.Top} className="!bg-line" />
+      <Handle type="target" position={Position.Left} className="!bg-line" />
       <div className="mb-2">
-        <h3 className="font-semibold text-fg">{node.name}</h3>
+        <h3 className="line-clamp-2 font-semibold text-fg" title={node.name}>
+          {node.name}
+        </h3>
       </div>
       <div className="mb-2 flex items-center gap-2">
         <span className="rounded-full bg-blue/20 px-2 py-0.5 text-blue">{valueLine}</span>
@@ -123,7 +125,7 @@ function NumericNodeInner({
       {strip ? <DistStrip q={strip} unit={node.unit} current={result.level} /> : <p className="text-muted">level {showCurrent}</p>}
       <div className="mt-1 text-muted">{valueLine}</div>
       <div className="text-muted">compare: {showCurrent}</div>
-      <Handle type="source" position={Position.Bottom} className="!bg-line" />
+      <Handle type="source" position={Position.Right} className="!bg-line" />
     </div>
   );
 }

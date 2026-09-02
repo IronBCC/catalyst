@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { atNodeLimit, looksLikeEvent, MAX_GRAPH_NODES, nodeBudget } from "@/lib/branching";
 import { EXAMPLES } from "@/lib/examples";
 import { formatPositions, parsePositions } from "@/lib/positions";
 import { compactGraph } from "@/lib/prompts";
@@ -16,7 +17,7 @@ import { useGenerate } from "@/lib/useGenerate";
 const HORIZONS = [30, 90, 180, 365];
 
 export default function Rail() {
-  const [pane, setPane] = useState<"hypothesis" | "branch">("hypothesis");
+  const [paneChoice, setPane] = useState<"hypothesis" | "branch" | null>(null);
   const [hypothesis, setHypothesis] = useState("");
   const [mode, setMode] = useState<GenerateInput["mode"]>("explore");
   const [target, setTarget] = useState("");
@@ -25,22 +26,29 @@ export default function Rail() {
   const [branchText, setBranchText] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const graph = useStore((s) => s.graph);
   const log = useStore((s) => s.log);
   const status = useStore((s) => s.status);
   const selection = useStore((s) => s.selection);
   const positions = useStore((s) => s.positions);
   const setPositions = useStore((s) => s.setPositions);
   const setGraph = useStore((s) => s.setGraph);
-  const mutate = useStore((s) => s.mutate);
+  const branchWorld = useStore((s) => s.branchWorld);
   const pushLog = useStore((s) => s.pushLog);
   const setStatus = useStore((s) => s.setStatus);
   const setTab = useStore((s) => s.setTab);
+  const select = useStore((s) => s.select);
   const importWorkspace = useStore((s) => s.importWorkspace);
   const reset = useStore((s) => s.reset);
 
-  const { computed } = useComputed();
+  // The applied graph, not the raw one: a second branch has to see the nodes the
+  // first one added, or it cannot attach to them.
+  const { graph, computed } = useComputed();
   const { start, isLoading } = useGenerate();
+
+  // Once a graph exists the useful next move is asking what else it touches, so
+  // the rail lands on the branch pane. Derived rather than stored, so it follows
+  // the graph without an effect and still yields to an explicit click.
+  const pane = graph ? (paneChoice ?? "branch") : "hypothesis";
 
   const input = useCallback(
     (): GenerateInput => ({
@@ -90,6 +98,13 @@ export default function Rail() {
   const submitBranch = useCallback(
     async function run(text: string) {
       if (!graph || !computed || !text.trim()) return;
+      if (atNodeLimit(graph)) {
+        pushLog({
+          kind: "error",
+          text: `This world already has ${MAX_GRAPH_NODES} nodes. Switch to a smaller world before branching again.`,
+        });
+        return;
+      }
       setBusy(true);
       setStatus({ phase: "branching", message: "exploring a branch…" });
       try {
@@ -109,8 +124,24 @@ export default function Rail() {
         const body = await res.json();
         const candidate = body?.candidates?.[0];
         if (!candidate) throw new Error("no candidate returned");
-        mutate({ type: "addNode", node: candidate.node, edges: candidate.edges }, text.trim());
-        pushLog({ kind: "world", text: `Branch: ${text.trim()}` });
+        // "What if X" means assume X, so the new event is pinned true. Adding it
+        // at its own base rate leaves the map almost unchanged, which reads as
+        // the branch having done nothing.
+        branchWorld(
+          [
+            { type: "addNode", node: candidate.node, edges: candidate.edges },
+            ...(candidate.node.kind === "event"
+              ? [{ type: "pin" as const, nodeId: candidate.node.id, value: true }]
+              : []),
+          ],
+          text.trim(),
+        );
+        select({ type: "node", id: candidate.node.id });
+        setTab("map");
+        pushLog({
+          kind: "world",
+          text: `Branch: ${text.trim()} — assumed true, ${candidate.edges.length} link${candidate.edges.length === 1 ? "" : "s"} into the graph`,
+        });
         setStatus({ phase: "idle", message: "" });
         setBranchText("");
       } catch (e) {
@@ -125,7 +156,7 @@ export default function Rail() {
         setBusy(false);
       }
     },
-    [computed, graph, mutate, pushLog, selection, setStatus],
+    [branchWorld, computed, graph, pushLog, select, selection, setStatus, setTab],
   );
 
   const exportWorkspace = useCallback(() => {
@@ -191,7 +222,7 @@ export default function Rail() {
               pane === p ? "border-gold text-gold" : "border-line text-muted"
             }`}
           >
-            {p}
+            {p === "branch" ? "what if" : "hypothesis"}
           </button>
         ))}
       </div>
@@ -318,12 +349,17 @@ export default function Rail() {
           <button
             type="button"
             data-testid="branch"
-            disabled={busy || !graph}
+            disabled={busy || !graph || atNodeLimit(graph)}
             onClick={() => void submitBranch(branchText)}
             className="rounded border border-blue px-2 py-1 text-blue disabled:opacity-50"
           >
-            {busy ? "branching…" : "Branch"}
+            {busy ? "exploring…" : "Explore what if"}
           </button>
+          <p className="text-muted">
+            {atNodeLimit(graph)
+              ? `This world is full at ${MAX_GRAPH_NODES} nodes.`
+              : `Creates a new world. Room for ${nodeBudget(graph)} more nodes.`}
+          </p>
         </div>
       )}
 
@@ -357,21 +393,30 @@ export default function Rail() {
               {entry.text}
             </p>
             {entry.followUps?.length ? (
-              <div className="mt-1 flex flex-wrap gap-1">
-                {entry.followUps.map((f) => (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() => {
-                      setPane("branch");
-                      setBranchText(f);
-                      setTab("map");
-                    }}
-                    className="rounded-full border border-line px-2 py-0.5 text-muted hover:border-blue hover:text-blue"
-                  >
-                    Branch: {f}
-                  </button>
-                ))}
+              <div className="mt-1 space-y-1">
+                {entry.followUps.map((f) =>
+                  looksLikeEvent(f) ? (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => {
+                        setPane("branch");
+                        setBranchText(f);
+                        setTab("map");
+                      }}
+                      className="block w-full rounded-full border border-line px-2 py-0.5 text-left text-muted hover:border-blue hover:text-blue"
+                      title="Explore this as a what-if"
+                    >
+                      What if: {f}
+                    </button>
+                  ) : (
+                    // Research actions are not counterfactuals; offering them as
+                    // one-click what-ifs would pin an instruction as an event.
+                    <p key={f} className="px-2 text-muted">
+                      Watch: {f}
+                    </p>
+                  ),
+                )}
               </div>
             ) : null}
             {entry.retry ? (

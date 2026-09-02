@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { AuditBlock } from "@/components/AuditBlock";
+import { atNodeLimit, MAX_GRAPH_NODES } from "@/lib/branching";
 import MarketSays from "@/components/MarketSays";
 import { ParamSlider } from "@/components/ParamSlider";
 import { compactGraph } from "@/lib/prompts";
@@ -19,6 +20,7 @@ export default function Inspector() {
   const setTransient = useStore((s) => s.setTransient);
   const commitTransient = useStore((s) => s.commitTransient);
   const mutate = useStore((s) => s.mutate);
+  const branchWorld = useStore((s) => s.branchWorld);
   const removeEditsFor = useStore((s) => s.removeEditsFor);
   const pushLog = useStore((s) => s.pushLog);
   const setStatus = useStore((s) => s.setStatus);
@@ -50,6 +52,13 @@ export default function Inspector() {
   const branchHere = useCallback(
     async (nodeId: string) => {
       if (!graph || !computed || !branchText.trim()) return;
+      if (atNodeLimit(graph)) {
+        pushLog({
+          kind: "error",
+          text: `This world already has ${MAX_GRAPH_NODES} nodes. Switch to a smaller world before branching again.`,
+        });
+        return;
+      }
       setStatus({ phase: "branching", message: "exploring a branch…" });
       try {
         const res = await fetch("/api/branch", {
@@ -68,11 +77,20 @@ export default function Inspector() {
         const body = await res.json();
         const candidate = body?.candidates?.[0];
         if (!candidate) throw new Error("no candidate returned");
-        mutate(
-          { type: "addNode", node: candidate.node, edges: candidate.edges },
+        // Same as the rail: assert the event, and give it its own world.
+        branchWorld(
+          [
+            { type: "addNode", node: candidate.node, edges: candidate.edges },
+            ...(candidate.node.kind === "event"
+              ? [{ type: "pin" as const, nodeId: candidate.node.id, value: true }]
+              : []),
+          ],
           branchText.trim(),
         );
-        pushLog({ kind: "world", text: `Branch: ${branchText.trim()}` });
+        pushLog({
+          kind: "world",
+          text: `Branch: ${branchText.trim()} — assumed true, ${candidate.edges.length} link${candidate.edges.length === 1 ? "" : "s"} into the graph`,
+        });
         setStatus({ phase: "idle", message: "" });
         setBranchText("");
       } catch (e) {
@@ -80,7 +98,7 @@ export default function Inspector() {
         pushLog({ kind: "error", text: `Branch failed: ${(e as Error).message}` });
       }
     },
-    [branchText, computed, graph, mutate, pushLog, setStatus],
+    [branchText, branchWorld, computed, graph, pushLog, setStatus],
   );
 
   if (!graph) {
@@ -311,7 +329,7 @@ function NodePanel(props: {
 
       <div className="flex flex-col gap-1 border-t border-line pt-2">
         <label className="text-muted" htmlFor="branch-here">
-          Branch here
+          What if, from this node
         </label>
         <textarea
           id="branch-here"
@@ -326,7 +344,7 @@ function NodePanel(props: {
           onClick={props.onBranch}
           className="rounded border border-blue px-2 py-0.5 text-blue"
         >
-          Branch here
+          Explore what if
         </button>
       </div>
     </div>

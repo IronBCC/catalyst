@@ -13,6 +13,10 @@ export const T = {
   tab: (name: "map" | "scenarios" | "thesis") => `tab-${name}`,
   panel: (name: "map" | "scenarios" | "thesis") => `panel-${name}`,
   disclaimer: "disclaimer",
+  worldSwitcher: "world-switcher",
+  worldOption: (id: string) => `world-option-${id}`,
+  compareStrip: "compare-strip",
+  clearCompare: "clear-compare",
 
   // rail
   railPane: (name: "hypothesis" | "branch") => `rail-pane-${name}`,

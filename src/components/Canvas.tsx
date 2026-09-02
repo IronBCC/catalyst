@@ -3,6 +3,8 @@
 import { useEffect, useMemo } from "react";
 import {
   Background,
+  Controls,
+  MiniMap,
   ReactFlow,
   ReactFlowProvider,
   useNodesInitialized,
@@ -21,7 +23,16 @@ import { useComputed, useStore } from "@/store";
 const NODE_TYPES = { event: EventNode, numeric: NumericNode };
 const EDGE_TYPES = { causal: CausalEdge };
 
-const CARD = { event: { width: 260, height: 132 }, numeric: { width: 260, height: 112 } };
+// These must match the fixed card sizes in EventNode.tsx and NumericNode.tsx.
+// A card taller than the box the layout reserved for it overlaps its neighbour.
+const CARD = { event: { width: 260, height: 168 }, numeric: { width: 260, height: 140 } };
+
+/**
+ * A long chain is wider than any screen, and fitting all of it makes the cards
+ * unreadable. The initial fit stops here and the rest is panned to, with the
+ * minimap for orientation.
+ */
+const FIT_MIN_ZOOM = 0.5;
 
 /** How thick the edge is drawn: every parameter kind squashed into 0..1. */
 function weightOf(edge: { kind: string; strength?: number; impact?: number; beta?: number }) {
@@ -39,7 +50,6 @@ function Flow() {
   const { fitView } = useReactFlow();
   const nodesInitialized = useNodesInitialized();
 
-  const ids = graph?.nodes.map((n) => n.id).join() ?? "";
 
   // "adopted" means the world actually took the market's number, not merely
   // that a market was found for the node.
@@ -121,11 +131,16 @@ function Flow() {
   }, [graph, selection, verdict]);
 
   // Fitting before React Flow has measured the cards produces a transform that
-  // pushes the graph outside its own container.
+  // pushes the graph outside its own container, so the fit waits for
+  // measurement and then re-runs whenever the layout actually moves.
+  const layoutSignature = nodes.map((n) => `${n.id}:${Math.round(n.position.x)}`).join();
   useEffect(() => {
-    if (!ids || !nodesInitialized) return;
-    void fitView({ padding: 0.2, duration: 200 });
-  }, [ids, nodesInitialized, fitView]);
+    if (!layoutSignature || !nodesInitialized) return;
+    const frame = requestAnimationFrame(() => {
+      void fitView({ padding: 0.1, duration: 200, minZoom: FIT_MIN_ZOOM });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [layoutSignature, nodesInitialized, fitView]);
 
   if (!graph) {
     return (
@@ -146,13 +161,22 @@ function Flow() {
         nodesConnectable={false}
         nodesFocusable
         edgesFocusable
-        proOptions={{ hideAttribution: true }}
-        minZoom={0.2}
+        minZoom={0.1}
         onNodeClick={(_, n) => select({ type: "node", id: n.id })}
         onEdgeClick={(_, e) => select({ type: "edge", id: e.id })}
         onPaneClick={() => select(null)}
+        fitView
+        fitViewOptions={{ padding: 0.1, minZoom: FIT_MIN_ZOOM }}
       >
         <Background color="#1f262e" gap={24} />
+        <Controls showInteractive={false} className="!bg-panel !text-fg" />
+        <MiniMap
+          pannable
+          zoomable
+          className="!bg-panel"
+          maskColor="rgba(11, 14, 17, 0.7)"
+          nodeColor={(node) => (node.type === "numeric" ? "#58a6ff" : "#e3b341")}
+        />
       </ReactFlow>
     </div>
   );

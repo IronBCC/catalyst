@@ -6,8 +6,8 @@
 export type LayoutBox = { id: string; width: number; height: number };
 export type LayoutEdge = { source: string; target: string };
 
-const RANK_GAP = 140;
-const ROW_GAP = 40;
+const RANK_GAP = 120;
+const ROW_GAP = 28;
 
 export function layoutLR(
   nodes: LayoutBox[],

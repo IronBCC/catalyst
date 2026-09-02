@@ -93,20 +93,29 @@ const EventNodeInner = ({
 
   return (
     <div
-      className={`w-[260px] rounded-md border p-3 text-xs text-fg ${selected ? "ring-2 ring-blue" : "border-line"} bg-panel ${
+      className={`flex h-[168px] w-[260px] flex-col overflow-hidden rounded-md border p-3 text-xs text-fg ${selected ? "ring-2 ring-blue" : "border-line"} bg-panel ${
         node.isTarget ? "ring-2 ring-gold" : ""
       }`}
       tabIndex={0}
       role="button"
       aria-label={node.statement}
     >
-      <Handle type="target" position={Position.Top} className="!bg-line" />
-      <div className="mb-2 flex items-start justify-between gap-2">
-        <div className="space-y-1">
-          <h3 className={`font-semibold ${node.isRoot ? "text-gold" : "text-fg"}`}>{node.statement}</h3>
-          <p className="text-muted">{node.resolution}</p>
-          <p className="text-muted">lag +{lagMin}–{lagMax}d</p>
-        </div>
+      <Handle type="target" position={Position.Left} className="!bg-line" />
+      {/* The card is a map label, not the whole record: full text lives in the
+          inspector, so everything here is clamped to keep the box a fixed size. */}
+      <div className="mb-2 min-h-0 flex-1 space-y-1 overflow-hidden">
+        <h3
+          className={`line-clamp-2 font-semibold ${node.isRoot ? "text-gold" : "text-fg"}`}
+          title={node.statement}
+        >
+          {node.statement}
+        </h3>
+        <p className="line-clamp-2 text-muted" title={node.resolution}>
+          {node.resolution}
+        </p>
+        <p className="text-muted">
+          lag +{lagMin}–{lagMax}d
+        </p>
       </div>
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <span data-testid="node-probability" className={`rounded-full px-2 py-0.5 ${isCompareUp ? "bg-green/20 text-green" : "bg-red/20 text-red"}`}>{pct(p)}</span>
@@ -134,7 +143,7 @@ const EventNodeInner = ({
         {onPath && <span className="rounded-full bg-gold/20 px-2 py-0.5 text-gold">path</span>}
       </div>
       {pinned === true && <p className="text-muted text-[11px]">intervention: pinned</p>}
-      <Handle type="source" position={Position.Bottom} className="!bg-line" />
+      <Handle type="source" position={Position.Right} className="!bg-line" />
     </div>
   );
 };

@@ -14,13 +14,20 @@ five thousand paths, and a sensitivity pass ranks what actually moves the outcom
 
 ## What it does
 
+The three tabs follow the model: a **hypothesis** is the root question, **affected
+areas** is the generated causal map it implies, and a **world** is a named set of
+assumed changes to that map.
+
 - **Causal map.** Events and numeric variables laid out left to right in causal order.
   Every edge carries the mechanism behind it, the assumptions it rests on, and whether
   it is backed by evidence or is a modelling assumption.
 - **Interventions, not correlations.** Pinning a node or dragging its slider is a
   do-operator: it fixes that node and lets only its descendants move. Parents stay put.
 - **Worlds.** Baseline is read-only. Any edit forks a new world, so the original model
-  is always one click away and two worlds can be compared column by column.
+  is always one click away and two worlds can be compared column by column. Every
+  what-if forks its own world from wherever you are, named after the question, so
+  branching twice gives two worlds to switch between rather than one that quietly
+  accumulates every assumption. A world is capped at 40 nodes.
 - **Distributions.** Monte-Carlo with Student-t tails, seeded so the same graph always
   gives the same numbers. P&L, stops and take-profits come out of the quantiles rather
   than a fixed percentage.
@@ -195,6 +202,10 @@ filtered through `safeHref`, which allows only `http:` and `https:`, and rendere
   and the assumptions list are there because those numbers deserve suspicion.
 - Polymarket matching is token overlap, not semantics; check the question before
   adopting its price.
+- Follow-up suggestions are filtered by a keyword shape test before they are offered
+  as one-click what-ifs, because the model returns research actions there ("track
+  UKMTO reports weekly") alongside real outcomes. The test is conservative and
+  deliberately crude: anything it cannot read as an outcome stays plain text.
 - Yahoo quotes are unofficial and unauthenticated. They fail open: a missing quote means
   the node keeps its modelled level.
 - The graph is forced to a DAG. Feedback loops are broken at the weakest edge, which is

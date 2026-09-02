@@ -12,6 +12,26 @@ five thousand paths, and a sensitivity pass ranks what actually moves the outcom
 
 **Model estimates, not investment advice.**
 
+![Catalyst: a hypothesis becomes a causal map, a what-if forks a world, and the outcome distribution follows](docs/media/demo.gif)
+
+*16 seconds, no narration. [Same walkthrough as MP4](docs/media/demo.mp4).*
+
+## What it looks like
+
+| | |
+|---|---|
+| ![The hypothesis form](docs/media/01-hypothesis.png) | ![The causal map](docs/media/02-map.png) |
+| **Ask.** A hypothesis, a mode, a horizon, and any positions you hold. | **The map.** Events and market variables in causal order, each with its probability and lag. |
+| ![A node in the inspector](docs/media/03-inspector.png) | ![A forked world](docs/media/04-world.png) |
+| **Inspect.** How the number is built, what the model rests on, what the market says — and a correction box when it is wrong. | **Intervene.** Assuming the root happens forks a world; only its descendants move. |
+| ![The outcome distribution](docs/media/05-outcomes.png) | ![The world switcher](docs/media/07-worlds.png) |
+| **Outcomes.** Monte-Carlo distribution, the scenarios that dominate, and what moves the number most. | **Switch.** Every what-if is its own world, one click from every other. |
+
+![The thesis card](docs/media/06-thesis.png)
+
+*The thesis card: a leg, an entry, a stop and a take-profit read off the quantiles, with
+what would invalidate it and what would confirm it.*
+
 ## What it does
 
 The three tabs follow the model: a **hypothesis** is the root question, **affected

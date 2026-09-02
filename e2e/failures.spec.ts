@@ -112,6 +112,9 @@ test("generate 503 leaves an existing graph untouched", async ({ page }) => {
     });
   });
 
+  // With a graph on screen the rail sits on the branch pane, so getting back to
+  // the hypothesis box takes a click.
+  await page.locator(sel(T.railPane("hypothesis"))).click();
   await page.locator(sel(T.hypothesisInput)).fill("Could a second run crash production?", { timeout: 1000 });
   await page.locator(sel(T.generateButton)).click();
 

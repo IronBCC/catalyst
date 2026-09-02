@@ -54,6 +54,7 @@ export type State = Workspace & {
   setGraph(g: Graph, snapshot?: { markets: State["markets"]; quotes: State["quotes"] }): void;
   setDraft(g: Graph | null): void;
   mutate(edit: Edit | Edit[], name?: string): void;
+  branchWorld(edits: Edit[], name: string): void;
   removeEditsFor(nodeId: string): void;
   setTransient(e: Edit | null): void;
   commitTransient(asNew: boolean, name?: string): void;
@@ -138,6 +139,17 @@ export function createCatalystStore(storage: StateStorage | null): UseBoundStore
             w.id === active.id ? { ...w, edits: [...w.edits, ...edits] } : w,
           ),
         };
+      }),
+
+    // A what-if always gets its own world, forked from wherever you are, so
+    // branching twice gives two worlds to switch between rather than one world
+    // quietly accumulating every assumption ever made.
+    branchWorld: (edits, name) =>
+      set((s) => {
+        const active = s.worlds.find((w) => w.id === s.activeWorldId);
+        if (!active) return {};
+        const forked = forkWorld(active, name, edits);
+        return { worlds: [...s.worlds, forked], activeWorldId: forked.id, transient: null };
       }),
 
     removeEditsFor: (nodeId) =>

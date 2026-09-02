@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { AuditBlock } from "@/components/AuditBlock";
+import { atNodeLimit, MAX_GRAPH_NODES } from "@/lib/branching";
 import MarketSays from "@/components/MarketSays";
 import { ParamSlider } from "@/components/ParamSlider";
 import { compactGraph } from "@/lib/prompts";
@@ -51,6 +52,13 @@ export default function Inspector() {
   const branchHere = useCallback(
     async (nodeId: string) => {
       if (!graph || !computed || !branchText.trim()) return;
+      if (atNodeLimit(graph)) {
+        pushLog({
+          kind: "error",
+          text: `This world already has ${MAX_GRAPH_NODES} nodes. Switch to a smaller world before branching again.`,
+        });
+        return;
+      }
       setStatus({ phase: "branching", message: "exploring a branch…" });
       try {
         const res = await fetch("/api/branch", {
@@ -321,7 +329,7 @@ function NodePanel(props: {
 
       <div className="flex flex-col gap-1 border-t border-line pt-2">
         <label className="text-muted" htmlFor="branch-here">
-          Branch here
+          What if, from this node
         </label>
         <textarea
           id="branch-here"
@@ -336,7 +344,7 @@ function NodePanel(props: {
           onClick={props.onBranch}
           className="rounded border border-blue px-2 py-0.5 text-blue"
         >
-          Branch here
+          Explore what if
         </button>
       </div>
     </div>

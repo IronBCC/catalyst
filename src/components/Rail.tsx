@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { atNodeLimit, looksLikeEvent, MAX_GRAPH_NODES, nodeBudget } from "@/lib/branching";
 import { EXAMPLES } from "@/lib/examples";
 import { formatPositions, parsePositions } from "@/lib/positions";
 import { compactGraph } from "@/lib/prompts";
@@ -97,6 +98,13 @@ export default function Rail() {
   const submitBranch = useCallback(
     async function run(text: string) {
       if (!graph || !computed || !text.trim()) return;
+      if (atNodeLimit(graph)) {
+        pushLog({
+          kind: "error",
+          text: `This world already has ${MAX_GRAPH_NODES} nodes. Switch to a smaller world before branching again.`,
+        });
+        return;
+      }
       setBusy(true);
       setStatus({ phase: "branching", message: "exploring a branch…" });
       try {
@@ -214,7 +222,7 @@ export default function Rail() {
               pane === p ? "border-gold text-gold" : "border-line text-muted"
             }`}
           >
-            {p}
+            {p === "branch" ? "what if" : "hypothesis"}
           </button>
         ))}
       </div>
@@ -341,12 +349,17 @@ export default function Rail() {
           <button
             type="button"
             data-testid="branch"
-            disabled={busy || !graph}
+            disabled={busy || !graph || atNodeLimit(graph)}
             onClick={() => void submitBranch(branchText)}
             className="rounded border border-blue px-2 py-1 text-blue disabled:opacity-50"
           >
-            {busy ? "branching…" : "Branch"}
+            {busy ? "exploring…" : "Explore what if"}
           </button>
+          <p className="text-muted">
+            {atNodeLimit(graph)
+              ? `This world is full at ${MAX_GRAPH_NODES} nodes.`
+              : `Creates a new world. Room for ${nodeBudget(graph)} more nodes.`}
+          </p>
         </div>
       )}
 
@@ -380,22 +393,30 @@ export default function Rail() {
               {entry.text}
             </p>
             {entry.followUps?.length ? (
-              <div className="mt-1 flex flex-wrap gap-1">
-                {entry.followUps.map((f) => (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() => {
-                      setPane("branch");
-                      setBranchText(f);
-                      setTab("map");
-                    }}
-                    className="rounded-full border border-line px-2 py-0.5 text-left text-muted hover:border-blue hover:text-blue"
-                    title="Puts this in the what-if box. Edit it into an event before branching."
-                  >
-                    Follow-up: {f}
-                  </button>
-                ))}
+              <div className="mt-1 space-y-1">
+                {entry.followUps.map((f) =>
+                  looksLikeEvent(f) ? (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => {
+                        setPane("branch");
+                        setBranchText(f);
+                        setTab("map");
+                      }}
+                      className="block w-full rounded-full border border-line px-2 py-0.5 text-left text-muted hover:border-blue hover:text-blue"
+                      title="Explore this as a what-if"
+                    >
+                      What if: {f}
+                    </button>
+                  ) : (
+                    // Research actions are not counterfactuals; offering them as
+                    // one-click what-ifs would pin an instruction as an event.
+                    <p key={f} className="px-2 text-muted">
+                      Watch: {f}
+                    </p>
+                  ),
+                )}
               </div>
             ) : null}
             {entry.retry ? (

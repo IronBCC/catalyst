@@ -14,6 +14,13 @@ import { useStore } from "@/store";
 
 const TABS = ["map", "scenarios", "thesis"] as const;
 
+/** The ids are the selector contract; these are what a reader sees. */
+const TAB_LABEL: Record<(typeof TABS)[number], string> = {
+  map: "affected areas",
+  scenarios: "worlds",
+  thesis: "thesis",
+};
+
 export default function Home() {
   const tab = useStore((s) => s.tab);
   const setTab = useStore((s) => s.setTab);
@@ -65,7 +72,7 @@ export default function Home() {
                 tab === t ? "border-gold text-gold" : "border-line text-muted"
               }`}
             >
-              {t}
+              {TAB_LABEL[t]}
             </button>
           ))}
         </nav>

@@ -17,675 +17,956 @@
   "llm": {
     "nodes": [
       {
-        "id": "legacy-controls-expand",
+        "id": "root",
         "kind": "event",
-        "statement": "The United States extends semiconductor export controls to selected legacy-node equipment",
-        "resolution": "Commerce publishes a rule adding defined legacy-node equipment to licensing controls",
-        "base": 0.34,
+        "statement": "US extends semiconductor export controls to legacy nodes (e.g., 28nm and above) within 180 days",
+        "resolution": "BIS issues new rulemaking or amendment to EAR expanding Entity List or license requirements to legacy process technologies",
+        "base": 0.35,
         "lagDays": [
-          20,
-          90
+          0,
+          30
         ],
-        "rationale": "Policy pressure has shifted from frontier AI chips toward the equipment stack that supports military and industrial demand.",
+        "rationale": "Escalating US-China tech tensions and national security concerns over legacy chip supply chains increase likelihood of broader controls.",
         "analogs": [
-          "2022 and 2023 BIS semiconductor rules"
+          "2022 CHIPS Act",
+          "2023 AI chip restrictions",
+          "2018 ZTE sanctions"
         ],
         "assumptions": [
-          "The rule covers meaningful tool categories rather than a symbolic list"
+          "BIS prioritizes legacy nodes in next rulemaking cycle",
+          "Congressional support remains for expanded controls",
+          "No major diplomatic breakthrough with China"
         ],
         "confidence": "medium",
-        "marketQuery": "US legacy semiconductor export controls 2026",
+        "marketQuery": "SMH short semiconductor ETF",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "china-retaliation",
+        "id": "n1",
         "kind": "event",
-        "statement": "China responds with procurement guidance favoring domestic semiconductor suppliers",
-        "resolution": "A central or provincial procurement notice specifies domestic-sourcing preferences",
-        "base": 0.42,
+        "statement": "BIS initiates Advanced Notice of Proposed Rulemaking (ANPRM) on legacy node controls",
+        "resolution": "Federal Register publishes ANPRM seeking public comment on extending controls to 28nm+ chips",
+        "base": 0.45,
         "lagDays": [
           15,
-          75
+          45
         ],
-        "rationale": "Procurement restrictions are easier to implement than an immediate broad export ban.",
+        "rationale": "ANPRM is standard first step for major regulatory changes; aligns with typical 6-12 month implementation timeline.",
         "analogs": [
-          "China critical-minerals export controls"
+          "2021 ANPRM on AI chips",
+          "2020 ANPRM on emerging technologies"
         ],
         "assumptions": [
-          "Domestic suppliers can meet minimum qualification thresholds"
+          "BIS has completed internal policy review",
+          "Interagency process supports expansion",
+          "Public comment period is feasible"
         ],
         "confidence": "medium",
-        "marketQuery": "China domestic semiconductor procurement guidance",
+        "marketQuery": "SMH short semiconductor ETF",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "inventory-build",
+        "id": "n2",
         "kind": "event",
-        "statement": "Affected Chinese fabs pull forward equipment and spare-parts orders",
-        "resolution": "Supplier commentary reports order acceleration from affected Chinese customers",
-        "base": 0.31,
+        "statement": "Major semiconductor equipment suppliers announce supply chain decoupling from Chinese foundries",
+        "resolution": "ASML, Applied Materials, Lam Research publicly disclose cessation of shipments to SMIC, Hua Hong, and other Chinese foundries for legacy nodes",
+        "base": 0.55,
         "lagDays": [
-          5,
-          35
+          30,
+          60
         ],
-        "rationale": "Customers often build buffer inventory ahead of licensing uncertainty.",
+        "rationale": "Equipment suppliers typically comply preemptively with export control expansions to avoid penalties.",
         "analogs": [
-          "2020 Huawei supply-chain pull-forward"
+          "2022 ASML shipment restrictions to SMIC",
+          "2023 Applied Materials divestiture of Chinese JV"
         ],
         "assumptions": [
-          "Suppliers can ship before the effective date"
+          "Chinese foundries lack alternative equipment sources",
+          "US suppliers face compliance risks",
+          "Financial impact is acceptable"
         ],
         "confidence": "high",
-        "marketQuery": "China semiconductor equipment inventory pull forward",
+        "marketQuery": "ASML short equipment supplier",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "foundry-capex-slowdown",
+        "id": "n3",
         "kind": "event",
-        "statement": "Affected foundries defer part of 2027 capacity expansion",
-        "resolution": "Capex guidance is cut by at least 5 percent versus the prior plan",
-        "base": 0.38,
-        "lagDays": [
-          60,
-          180
-        ],
-        "rationale": "Restricted tools and uncertain end demand can delay marginal fab projects.",
-        "analogs": [
-          "2019 memory capex cuts"
-        ],
-        "assumptions": [
-          "Financing and local subsidies do not fully offset the restriction"
-        ],
-        "confidence": "medium",
-        "marketQuery": "China foundry capex reduction 2027",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "allied-exemption",
-        "kind": "event",
-        "statement": "Allied fabs receive a narrow licensing exemption for existing facilities",
-        "resolution": "A Commerce clarification grants case-by-case licenses for named allied facilities",
-        "base": 0.35,
-        "lagDays": [
-          20,
-          100
-        ],
-        "rationale": "An exemption can protect allied supply chains without removing leverage over Chinese expansion.",
-        "analogs": [
-          "Validated end-user licensing arrangements"
-        ],
-        "assumptions": [
-          "Allies accept reporting conditions"
-        ],
-        "confidence": "low",
-        "marketQuery": "semiconductor export control allied licensing exemption",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "tool-vendor-guidance-cut",
-        "kind": "event",
-        "statement": "Equipment vendors reduce China revenue guidance",
-        "resolution": "A major equipment vendor cuts China revenue guidance by more than 5 percent",
-        "base": 0.29,
+        "statement": "Chinese foundries report significant wafer capacity utilization decline",
+        "resolution": "SMIC, Hua Hong report >20% sequential drop in utilization rates for 28nm and above processes",
+        "base": 0.6,
         "lagDays": [
           45,
-          150
+          90
         ],
-        "rationale": "Licensing uncertainty hits service and spare-parts revenue before new tool orders are formally canceled.",
+        "rationale": "Legacy node foundries heavily dependent on US-origin equipment and materials; supply chain disruption leads to production delays.",
         "analogs": [
-          "2022 equipment-vendor China guidance revisions"
+          "2022-2023 SMIC utilization drops",
+          "2021 Huawei HiSilicon production halt"
         ],
         "assumptions": [
-          "China remains a material share of revenue"
+          "Chinese foundries cannot rapidly source non-US alternatives",
+          "Demand destruction exceeds inventory drawdown",
+          "Government support is insufficient"
         ],
         "confidence": "medium",
-        "marketQuery": "semiconductor equipment vendor China revenue guidance cut",
+        "marketQuery": "SMH short semiconductor ETF",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "semiconductor-etf",
-        "kind": "numeric",
-        "name": "VanEck Semiconductor ETF",
-        "unit": "USD/share",
-        "ticker": "SMH",
-        "current": 260,
-        "baselineMove": 0,
-        "sigma": 20,
-        "rationale": "The ETF captures equipment, logic, and memory exposure while diversifying company-specific effects.",
+        "id": "n4",
+        "kind": "event",
+        "statement": "Global legacy node wafer pricing declines by >15%",
+        "resolution": "Spot market prices for 28nm+ wafers fall below $4,500 per wafer from current ~$5,300",
+        "base": 0.5,
+        "lagDays": [
+          60,
+          120
+        ],
+        "rationale": "Oversupply from reduced Chinese demand and inventory correction drives price declines across legacy nodes.",
+        "analogs": [
+          "2019-2020 memory price crash",
+          "2022 automotive chip glut"
+        ],
         "assumptions": [
-          "AI demand remains a partial offset to China weakness"
+          "Chinese demand accounts for >25% of global legacy wafer consumption",
+          "Inventory levels are elevated",
+          "New capacity additions continue"
+        ],
+        "confidence": "medium",
+        "marketQuery": "TSM short wafer pricing",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n5",
+        "kind": "event",
+        "statement": "Semiconductor equipment stocks decline >10% on expanded export control fears",
+        "resolution": "SOXX index drops below 140 from current ~155 due to reduced addressable market",
+        "base": 0.4,
+        "lagDays": [
+          30,
+          90
+        ],
+        "rationale": "Equipment suppliers face revenue headwinds from restricted Chinese market access and order cancellations.",
+        "analogs": [
+          "2022 ASML stock drop on China restrictions",
+          "2023 equipment sector underperformance"
+        ],
+        "assumptions": [
+          "Chinese market represents >20% of equipment revenue",
+          "Order delays exceed 6 months",
+          "Margins compress significantly"
+        ],
+        "confidence": "high",
+        "marketQuery": "SOXX short semiconductor equipment",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n6",
+        "kind": "event",
+        "statement": "US semiconductor manufacturing stocks decline on reduced global demand outlook",
+        "resolution": "MU, AMD, INTC stocks drop >15% as legacy node oversupply impacts pricing and volumes",
+        "base": 0.35,
+        "lagDays": [
+          60,
+          120
+        ],
+        "rationale": "Memory and logic chipmakers face margin pressure from legacy node oversupply and pricing declines.",
+        "analogs": [
+          "2019-2020 semiconductor downturn",
+          "2022-2023 memory sector weakness"
+        ],
+        "assumptions": [
+          "Legacy node oversupply affects entire semiconductor ecosystem",
+          "Demand recovery is delayed",
+          "Inventory writedowns occur"
+        ],
+        "confidence": "medium",
+        "marketQuery": "MU short memory semiconductor",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "num1",
+        "kind": "numeric",
+        "name": "SMH ETF Price",
+        "unit": "USD",
+        "ticker": "SMH",
+        "current": 150,
+        "baselineMove": -15,
+        "sigma": 8,
+        "rationale": "Market prices in semiconductor export control expansion and its impact on legacy node demand.",
+        "assumptions": [
+          "SMH holds significant exposure to legacy node companies",
+          "Market reacts within 30 days of policy announcement",
+          "Volatility increases during policy uncertainty"
         ],
         "confidence": "high"
       },
       {
-        "id": "tsmc-adr",
+        "id": "num2",
         "kind": "numeric",
-        "name": "Taiwan Semiconductor ADR",
-        "unit": "USD/share",
-        "ticker": "TSM",
-        "current": 210,
-        "baselineMove": 0,
-        "sigma": 18,
-        "rationale": "TSMC is sensitive to both broader semiconductor risk appetite and demand from the China supply chain.",
+        "name": "Global 28nm Wafer Price",
+        "unit": "USD/wafer",
+        "ticker": null,
+        "current": 5300,
+        "baselineMove": -18,
+        "sigma": 5,
+        "rationale": "Legacy node wafer pricing directly impacted by Chinese foundry demand reduction and supply chain disruption.",
         "assumptions": [
-          "Leading-edge demand stays resilient"
+          "Chinese foundries account for 30% of 28nm demand",
+          "Alternative buyers cannot absorb excess supply",
+          "Pricing follows supply-demand fundamentals"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "num3",
+        "kind": "numeric",
+        "name": "SOXX Equipment Index",
+        "unit": "index",
+        "ticker": "SOXX",
+        "current": 155,
+        "baselineMove": -12,
+        "sigma": 10,
+        "rationale": "Equipment sector faces revenue headwinds from restricted Chinese market access.",
+        "assumptions": [
+          "US equipment suppliers derive 25% revenue from China",
+          "Order cancellations exceed 10% of backlog",
+          "Compliance costs increase"
         ],
         "confidence": "high"
+      },
+      {
+        "id": "num4",
+        "kind": "numeric",
+        "name": "SMIC Utilization Rate",
+        "unit": "%",
+        "ticker": null,
+        "current": 75,
+        "baselineMove": -25,
+        "sigma": 8,
+        "rationale": "Chinese foundry utilization directly impacted by equipment and material supply chain restrictions.",
+        "assumptions": [
+          "SMIC lacks alternative equipment suppliers",
+          "Inventory buffers last <3 months",
+          "Government support is limited"
+        ],
+        "confidence": "medium"
       }
     ],
     "edges": [
       {
-        "source": "legacy-controls-expand",
-        "target": "china-retaliation",
-        "mechanism": "New restrictions increase the incentive for procurement retaliation",
-        "assumptions": [],
+        "source": "root",
+        "target": "n1",
+        "mechanism": "Policy escalation triggers formal regulatory process",
+        "assumptions": [
+          "BIS follows standard rulemaking procedures",
+          "Interagency coordination supports expansion",
+          "Public notice requirements are met"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "root"
+        ],
         "polarity": "promote",
-        "strength": 0.52,
-        "impact": null,
-        "beta": null,
+        "strength": 0.7,
+        "impact": 60,
+        "beta": 0.8,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 2
       },
       {
-        "source": "legacy-controls-expand",
-        "target": "inventory-build",
-        "mechanism": "Fabs pull forward purchases before licensing uncertainty bites",
-        "assumptions": [],
+        "source": "n1",
+        "target": "n2",
+        "mechanism": "Regulatory clarity prompts supplier compliance actions",
+        "assumptions": [
+          "Suppliers interpret ANPRM as precursor to final rules",
+          "Legal teams advise conservative compliance",
+          "Reputational risk outweighs revenue loss"
+        ],
         "confidence": "high",
-        "sourceIds": [],
+        "sourceIds": [
+          "n1"
+        ],
         "polarity": "promote",
-        "strength": 0.68,
-        "impact": null,
-        "beta": null,
+        "strength": 0.8,
+        "impact": 70,
+        "beta": 0.9,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 3
       },
       {
-        "source": "legacy-controls-expand",
-        "target": "foundry-capex-slowdown",
-        "mechanism": "Tool uncertainty delays marginal capacity projects",
-        "assumptions": [],
+        "source": "n2",
+        "target": "n3",
+        "mechanism": "Equipment supply disruption causes production delays",
+        "assumptions": [
+          "Chinese foundries lack alternative equipment sources",
+          "Maintenance and spare parts become unavailable",
+          "Production lines cannot be rapidly requisitioned"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "n2"
+        ],
+        "polarity": "promote",
+        "strength": 0.85,
+        "impact": 75,
+        "beta": 1,
+        "threshold": null,
+        "direction": null,
+        "width": 3
+      },
+      {
+        "source": "n3",
+        "target": "n4",
+        "mechanism": "Reduced Chinese demand creates global oversupply",
+        "assumptions": [
+          "Chinese demand represents significant share of global legacy wafer consumption",
+          "Other regions cannot immediately increase demand",
+          "Inventory levels are already elevated"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "n3"
+        ],
+        "polarity": "promote",
+        "strength": 0.6,
+        "impact": 50,
+        "beta": 0.7,
+        "threshold": null,
+        "direction": null,
+        "width": 2
+      },
+      {
+        "source": "n4",
+        "target": "n5",
+        "mechanism": "Wafer price declines signal reduced equipment demand",
+        "assumptions": [
+          "Equipment spending correlates with wafer pricing",
+          "Foundries delay expansion plans",
+          "Capital expenditure guidance is revised downward"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "n4"
+        ],
+        "polarity": "promote",
+        "strength": 0.75,
+        "impact": 65,
+        "beta": 0.85,
+        "threshold": null,
+        "direction": null,
+        "width": 3
+      },
+      {
+        "source": "n5",
+        "target": "n6",
+        "mechanism": "Equipment sector weakness signals broader semiconductor downturn",
+        "assumptions": [
+          "Equipment stocks lead semiconductor sector performance",
+          "Investor sentiment deteriorates",
+          "Earnings guidance is revised downward"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "n5"
+        ],
         "polarity": "promote",
         "strength": 0.55,
-        "impact": null,
-        "beta": null,
+        "impact": 45,
+        "beta": 0.6,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 2
       },
       {
-        "source": "legacy-controls-expand",
-        "target": "allied-exemption",
-        "mechanism": "Supply-chain risk creates pressure for narrow allied licenses",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
+        "source": "num1",
+        "target": "n5",
+        "mechanism": "Market pricing reflects policy risk and sector impact",
+        "assumptions": [
+          "SMH accurately prices in export control expansion",
+          "Market volatility increases during policy uncertainty",
+          "Investor reaction is swift"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "num1"
+        ],
         "polarity": "promote",
-        "strength": 0.4,
-        "impact": null,
-        "beta": null,
+        "strength": 0.65,
+        "impact": 55,
+        "beta": 0.75,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 2
       },
       {
-        "source": "china-retaliation",
-        "target": "tool-vendor-guidance-cut",
-        "mechanism": "Domestic procurement preference reduces addressable demand",
-        "assumptions": [],
+        "source": "num2",
+        "target": "n4",
+        "mechanism": "Wafer price decline confirms oversupply dynamics",
+        "assumptions": [
+          "Wafer pricing follows supply-demand fundamentals",
+          "Chinese demand reduction is permanent",
+          "Alternative applications cannot absorb excess supply"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "num2"
+        ],
         "polarity": "promote",
-        "strength": 0.46,
-        "impact": null,
-        "beta": null,
+        "strength": 0.7,
+        "impact": 60,
+        "beta": 0.8,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 2
       },
       {
-        "source": "allied-exemption",
-        "target": "inventory-build",
-        "mechanism": "A clear exemption reduces the need for precautionary orders",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": "inhibit",
-        "strength": 0.45,
-        "impact": null,
-        "beta": null,
+        "source": "num3",
+        "target": "n5",
+        "mechanism": "Equipment index decline validates sector headwinds",
+        "assumptions": [
+          "SOXX accurately reflects equipment sector performance",
+          "Chinese market exposure is significant",
+          "Order book visibility is reduced"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "num3"
+        ],
+        "polarity": "promote",
+        "strength": 0.8,
+        "impact": 70,
+        "beta": 0.9,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 3
       },
       {
-        "source": "inventory-build",
-        "target": "semiconductor-etf",
-        "mechanism": "Near-term pull-forward temporarily supports equipment revenue",
-        "assumptions": [],
+        "source": "num4",
+        "target": "n3",
+        "mechanism": "Utilization rate decline confirms production impact",
+        "assumptions": [
+          "SMIC utilization is representative of Chinese foundry sector",
+          "Supply chain disruption is the primary cause",
+          "Government support is insufficient"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 3,
-        "beta": null,
+        "sourceIds": [
+          "num4"
+        ],
+        "polarity": "promote",
+        "strength": 0.75,
+        "impact": 65,
+        "beta": 0.85,
         "threshold": null,
         "direction": null,
-        "width": null
-      },
-      {
-        "source": "foundry-capex-slowdown",
-        "target": "semiconductor-etf",
-        "mechanism": "Deferred capacity lowers equipment and materials demand",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": -7,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "tool-vendor-guidance-cut",
-        "target": "semiconductor-etf",
-        "mechanism": "Lower China guidance reprices equipment earnings",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": -5,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "allied-exemption",
-        "target": "semiconductor-etf",
-        "mechanism": "A narrow carve-out limits the downside to global supply chains",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 2.5,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "semiconductor-etf",
-        "target": "tsmc-adr",
-        "mechanism": "Sector risk appetite transmits into the leading foundry valuation",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": null,
-        "beta": 0.78,
-        "threshold": null,
-        "direction": null,
-        "width": null
+        "width": 2
       }
     ],
     "summary": {
-      "headline": "Legacy-node controls create a short inventory pull-forward but a larger medium-term capex and vendor-guidance risk.",
-      "mainUncertainty": "How broadly the rule defines controlled equipment and whether allied licenses arrive quickly.",
+      "headline": "US export control expansion to legacy nodes could trigger 15-20% decline in SMH within 180 days via supply chain disruption and demand destruction",
+      "mainUncertainty": "Timing and scope of BIS rulemaking, and whether Chinese foundries can source non-US alternatives",
       "followUps": [
-        "BIS rule text",
-        "Equipment-vendor China bookings",
-        "Foundry capex guidance"
+        "Monitor Federal Register for ANPRM on legacy nodes",
+        "Track SMIC and Hua Hong utilization rates",
+        "Watch SOXX equipment index for sector repricing"
       ]
     }
   },
   "graph": {
-    "id": "a3140d30-5fb0-46f8-90ae-43a9363015c7",
+    "id": "2d280901-0c67-4820-8472-f9546413e705",
     "hypothesis": "The US extends semiconductor export controls to legacy nodes",
     "mode": "explore",
     "target": null,
     "horizonDays": 180,
     "nodes": [
       {
-        "id": "legacy-controls-expand",
+        "id": "root",
         "kind": "event",
-        "statement": "The United States extends semiconductor export controls to selected legacy-node equipment",
-        "resolution": "Commerce publishes a rule adding defined legacy-node equipment to licensing controls",
-        "base": 0.34,
+        "statement": "US extends semiconductor export controls to legacy nodes (e.g., 28nm and above) within 180 days",
+        "resolution": "BIS issues new rulemaking or amendment to EAR expanding Entity List or license requirements to legacy process technologies",
+        "base": 0.35,
         "lagDays": [
-          20,
-          90
+          0,
+          30
         ],
-        "rationale": "Policy pressure has shifted from frontier AI chips toward the equipment stack that supports military and industrial demand.",
+        "rationale": "Escalating US-China tech tensions and national security concerns over legacy chip supply chains increase likelihood of broader controls.",
         "analogs": [
-          "2022 and 2023 BIS semiconductor rules"
+          "2022 CHIPS Act",
+          "2023 AI chip restrictions",
+          "2018 ZTE sanctions"
         ],
         "assumptions": [
-          "The rule covers meaningful tool categories rather than a symbolic list"
+          "BIS prioritizes legacy nodes in next rulemaking cycle",
+          "Congressional support remains for expanded controls",
+          "No major diplomatic breakthrough with China"
         ],
         "confidence": "medium",
-        "marketQuery": "US legacy semiconductor export controls 2026",
+        "marketQuery": "SMH short semiconductor ETF",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "china-retaliation",
+        "id": "n1",
         "kind": "event",
-        "statement": "China responds with procurement guidance favoring domestic semiconductor suppliers",
-        "resolution": "A central or provincial procurement notice specifies domestic-sourcing preferences",
-        "base": 0.42,
+        "statement": "BIS initiates Advanced Notice of Proposed Rulemaking (ANPRM) on legacy node controls",
+        "resolution": "Federal Register publishes ANPRM seeking public comment on extending controls to 28nm+ chips",
+        "base": 0.45,
         "lagDays": [
           15,
-          75
+          45
         ],
-        "rationale": "Procurement restrictions are easier to implement than an immediate broad export ban.",
+        "rationale": "ANPRM is standard first step for major regulatory changes; aligns with typical 6-12 month implementation timeline.",
         "analogs": [
-          "China critical-minerals export controls"
+          "2021 ANPRM on AI chips",
+          "2020 ANPRM on emerging technologies"
         ],
         "assumptions": [
-          "Domestic suppliers can meet minimum qualification thresholds"
+          "BIS has completed internal policy review",
+          "Interagency process supports expansion",
+          "Public comment period is feasible"
         ],
         "confidence": "medium",
-        "marketQuery": "China domestic semiconductor procurement guidance",
+        "marketQuery": "SMH short semiconductor ETF",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "inventory-build",
+        "id": "n2",
         "kind": "event",
-        "statement": "Affected Chinese fabs pull forward equipment and spare-parts orders",
-        "resolution": "Supplier commentary reports order acceleration from affected Chinese customers",
-        "base": 0.31,
+        "statement": "Major semiconductor equipment suppliers announce supply chain decoupling from Chinese foundries",
+        "resolution": "ASML, Applied Materials, Lam Research publicly disclose cessation of shipments to SMIC, Hua Hong, and other Chinese foundries for legacy nodes",
+        "base": 0.55,
         "lagDays": [
-          5,
-          35
+          30,
+          60
         ],
-        "rationale": "Customers often build buffer inventory ahead of licensing uncertainty.",
+        "rationale": "Equipment suppliers typically comply preemptively with export control expansions to avoid penalties.",
         "analogs": [
-          "2020 Huawei supply-chain pull-forward"
+          "2022 ASML shipment restrictions to SMIC",
+          "2023 Applied Materials divestiture of Chinese JV"
         ],
         "assumptions": [
-          "Suppliers can ship before the effective date"
+          "Chinese foundries lack alternative equipment sources",
+          "US suppliers face compliance risks",
+          "Financial impact is acceptable"
         ],
         "confidence": "high",
-        "marketQuery": "China semiconductor equipment inventory pull forward",
+        "marketQuery": "ASML short equipment supplier",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "foundry-capex-slowdown",
+        "id": "n3",
         "kind": "event",
-        "statement": "Affected foundries defer part of 2027 capacity expansion",
-        "resolution": "Capex guidance is cut by at least 5 percent versus the prior plan",
-        "base": 0.38,
-        "lagDays": [
-          60,
-          180
-        ],
-        "rationale": "Restricted tools and uncertain end demand can delay marginal fab projects.",
-        "analogs": [
-          "2019 memory capex cuts"
-        ],
-        "assumptions": [
-          "Financing and local subsidies do not fully offset the restriction"
-        ],
-        "confidence": "medium",
-        "marketQuery": "China foundry capex reduction 2027",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "allied-exemption",
-        "kind": "event",
-        "statement": "Allied fabs receive a narrow licensing exemption for existing facilities",
-        "resolution": "A Commerce clarification grants case-by-case licenses for named allied facilities",
-        "base": 0.35,
-        "lagDays": [
-          20,
-          100
-        ],
-        "rationale": "An exemption can protect allied supply chains without removing leverage over Chinese expansion.",
-        "analogs": [
-          "Validated end-user licensing arrangements"
-        ],
-        "assumptions": [
-          "Allies accept reporting conditions"
-        ],
-        "confidence": "low",
-        "marketQuery": "semiconductor export control allied licensing exemption",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "tool-vendor-guidance-cut",
-        "kind": "event",
-        "statement": "Equipment vendors reduce China revenue guidance",
-        "resolution": "A major equipment vendor cuts China revenue guidance by more than 5 percent",
-        "base": 0.29,
+        "statement": "Chinese foundries report significant wafer capacity utilization decline",
+        "resolution": "SMIC, Hua Hong report >20% sequential drop in utilization rates for 28nm and above processes",
+        "base": 0.6,
         "lagDays": [
           45,
-          150
+          90
         ],
-        "rationale": "Licensing uncertainty hits service and spare-parts revenue before new tool orders are formally canceled.",
+        "rationale": "Legacy node foundries heavily dependent on US-origin equipment and materials; supply chain disruption leads to production delays.",
         "analogs": [
-          "2022 equipment-vendor China guidance revisions"
+          "2022-2023 SMIC utilization drops",
+          "2021 Huawei HiSilicon production halt"
         ],
         "assumptions": [
-          "China remains a material share of revenue"
+          "Chinese foundries cannot rapidly source non-US alternatives",
+          "Demand destruction exceeds inventory drawdown",
+          "Government support is insufficient"
         ],
         "confidence": "medium",
-        "marketQuery": "semiconductor equipment vendor China revenue guidance cut",
+        "marketQuery": "SMH short semiconductor ETF",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "semiconductor-etf",
-        "kind": "numeric",
-        "name": "VanEck Semiconductor ETF",
-        "unit": "USD/share",
-        "ticker": "SMH",
-        "current": 260,
-        "baselineMove": 0,
-        "sigma": 20,
-        "rationale": "The ETF captures equipment, logic, and memory exposure while diversifying company-specific effects.",
+        "id": "n4",
+        "kind": "event",
+        "statement": "Global legacy node wafer pricing declines by >15%",
+        "resolution": "Spot market prices for 28nm+ wafers fall below $4,500 per wafer from current ~$5,300",
+        "base": 0.5,
+        "lagDays": [
+          60,
+          120
+        ],
+        "rationale": "Oversupply from reduced Chinese demand and inventory correction drives price declines across legacy nodes.",
+        "analogs": [
+          "2019-2020 memory price crash",
+          "2022 automotive chip glut"
+        ],
         "assumptions": [
-          "AI demand remains a partial offset to China weakness"
+          "Chinese demand accounts for >25% of global legacy wafer consumption",
+          "Inventory levels are elevated",
+          "New capacity additions continue"
+        ],
+        "confidence": "medium",
+        "marketQuery": "TSM short wafer pricing",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n5",
+        "kind": "event",
+        "statement": "Semiconductor equipment stocks decline >10% on expanded export control fears",
+        "resolution": "SOXX index drops below 140 from current ~155 due to reduced addressable market",
+        "base": 0.4,
+        "lagDays": [
+          30,
+          90
+        ],
+        "rationale": "Equipment suppliers face revenue headwinds from restricted Chinese market access and order cancellations.",
+        "analogs": [
+          "2022 ASML stock drop on China restrictions",
+          "2023 equipment sector underperformance"
+        ],
+        "assumptions": [
+          "Chinese market represents >20% of equipment revenue",
+          "Order delays exceed 6 months",
+          "Margins compress significantly"
+        ],
+        "confidence": "high",
+        "marketQuery": "SOXX short semiconductor equipment",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n6",
+        "kind": "event",
+        "statement": "US semiconductor manufacturing stocks decline on reduced global demand outlook",
+        "resolution": "MU, AMD, INTC stocks drop >15% as legacy node oversupply impacts pricing and volumes",
+        "base": 0.35,
+        "lagDays": [
+          60,
+          120
+        ],
+        "rationale": "Memory and logic chipmakers face margin pressure from legacy node oversupply and pricing declines.",
+        "analogs": [
+          "2019-2020 semiconductor downturn",
+          "2022-2023 memory sector weakness"
+        ],
+        "assumptions": [
+          "Legacy node oversupply affects entire semiconductor ecosystem",
+          "Demand recovery is delayed",
+          "Inventory writedowns occur"
+        ],
+        "confidence": "medium",
+        "marketQuery": "MU short memory semiconductor",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "num1",
+        "kind": "numeric",
+        "name": "SMH ETF Price",
+        "unit": "USD",
+        "ticker": "SMH",
+        "current": 150,
+        "baselineMove": -15,
+        "sigma": 8,
+        "rationale": "Market prices in semiconductor export control expansion and its impact on legacy node demand.",
+        "assumptions": [
+          "SMH holds significant exposure to legacy node companies",
+          "Market reacts within 30 days of policy announcement",
+          "Volatility increases during policy uncertainty"
         ],
         "confidence": "high"
       },
       {
-        "id": "tsmc-adr",
+        "id": "num2",
         "kind": "numeric",
-        "name": "Taiwan Semiconductor ADR",
-        "unit": "USD/share",
-        "ticker": "TSM",
-        "current": 210,
-        "baselineMove": 0,
-        "sigma": 18,
-        "rationale": "TSMC is sensitive to both broader semiconductor risk appetite and demand from the China supply chain.",
+        "name": "Global 28nm Wafer Price",
+        "unit": "USD/wafer",
+        "ticker": null,
+        "current": 5300,
+        "baselineMove": -18,
+        "sigma": 5,
+        "rationale": "Legacy node wafer pricing directly impacted by Chinese foundry demand reduction and supply chain disruption.",
         "assumptions": [
-          "Leading-edge demand stays resilient"
+          "Chinese foundries account for 30% of 28nm demand",
+          "Alternative buyers cannot absorb excess supply",
+          "Pricing follows supply-demand fundamentals"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "num3",
+        "kind": "numeric",
+        "name": "SOXX Equipment Index",
+        "unit": "index",
+        "ticker": "SOXX",
+        "current": 155,
+        "baselineMove": -12,
+        "sigma": 10,
+        "rationale": "Equipment sector faces revenue headwinds from restricted Chinese market access.",
+        "assumptions": [
+          "US equipment suppliers derive 25% revenue from China",
+          "Order cancellations exceed 10% of backlog",
+          "Compliance costs increase"
         ],
         "confidence": "high"
+      },
+      {
+        "id": "num4",
+        "kind": "numeric",
+        "name": "SMIC Utilization Rate",
+        "unit": "%",
+        "ticker": null,
+        "current": 75,
+        "baselineMove": -25,
+        "sigma": 8,
+        "rationale": "Chinese foundry utilization directly impacted by equipment and material supply chain restrictions.",
+        "assumptions": [
+          "SMIC lacks alternative equipment suppliers",
+          "Inventory buffers last <3 months",
+          "Government support is limited"
+        ],
+        "confidence": "medium"
       }
     ],
     "edges": [
       {
-        "id": "legacy-controls-expand->china-retaliation",
-        "source": "legacy-controls-expand",
-        "target": "china-retaliation",
-        "mechanism": "New restrictions increase the incentive for procurement retaliation",
-        "assumptions": [],
+        "id": "root->n1",
+        "source": "root",
+        "target": "n1",
+        "mechanism": "Policy escalation triggers formal regulatory process",
+        "assumptions": [
+          "BIS follows standard rulemaking procedures",
+          "Interagency coordination supports expansion",
+          "Public notice requirements are met"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.52
+        "strength": 0.7
       },
       {
-        "id": "legacy-controls-expand->inventory-build",
-        "source": "legacy-controls-expand",
-        "target": "inventory-build",
-        "mechanism": "Fabs pull forward purchases before licensing uncertainty bites",
-        "assumptions": [],
+        "id": "n1->n2",
+        "source": "n1",
+        "target": "n2",
+        "mechanism": "Regulatory clarity prompts supplier compliance actions",
+        "assumptions": [
+          "Suppliers interpret ANPRM as precursor to final rules",
+          "Legal teams advise conservative compliance",
+          "Reputational risk outweighs revenue loss"
+        ],
         "confidence": "high",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.68
+        "strength": 0.8
       },
       {
-        "id": "legacy-controls-expand->foundry-capex-slowdown",
-        "source": "legacy-controls-expand",
-        "target": "foundry-capex-slowdown",
-        "mechanism": "Tool uncertainty delays marginal capacity projects",
-        "assumptions": [],
+        "id": "n2->n3",
+        "source": "n2",
+        "target": "n3",
+        "mechanism": "Equipment supply disruption causes production delays",
+        "assumptions": [
+          "Chinese foundries lack alternative equipment sources",
+          "Maintenance and spare parts become unavailable",
+          "Production lines cannot be rapidly requisitioned"
+        ],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.85
+      },
+      {
+        "id": "n3->n4",
+        "source": "n3",
+        "target": "n4",
+        "mechanism": "Reduced Chinese demand creates global oversupply",
+        "assumptions": [
+          "Chinese demand represents significant share of global legacy wafer consumption",
+          "Other regions cannot immediately increase demand",
+          "Inventory levels are already elevated"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.6
+      },
+      {
+        "id": "n4->n5",
+        "source": "n4",
+        "target": "n5",
+        "mechanism": "Wafer price declines signal reduced equipment demand",
+        "assumptions": [
+          "Equipment spending correlates with wafer pricing",
+          "Foundries delay expansion plans",
+          "Capital expenditure guidance is revised downward"
+        ],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.75
+      },
+      {
+        "id": "n5->n6",
+        "source": "n5",
+        "target": "n6",
+        "mechanism": "Equipment sector weakness signals broader semiconductor downturn",
+        "assumptions": [
+          "Equipment stocks lead semiconductor sector performance",
+          "Investor sentiment deteriorates",
+          "Earnings guidance is revised downward"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
         "strength": 0.55
-      },
-      {
-        "id": "legacy-controls-expand->allied-exemption",
-        "source": "legacy-controls-expand",
-        "target": "allied-exemption",
-        "mechanism": "Supply-chain risk creates pressure for narrow allied licenses",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.4
-      },
-      {
-        "id": "china-retaliation->tool-vendor-guidance-cut",
-        "source": "china-retaliation",
-        "target": "tool-vendor-guidance-cut",
-        "mechanism": "Domestic procurement preference reduces addressable demand",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.46
-      },
-      {
-        "id": "allied-exemption->inventory-build",
-        "source": "allied-exemption",
-        "target": "inventory-build",
-        "mechanism": "A clear exemption reduces the need for precautionary orders",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "inhibit",
-        "strength": 0.45
-      },
-      {
-        "id": "inventory-build->semiconductor-etf",
-        "source": "inventory-build",
-        "target": "semiconductor-etf",
-        "mechanism": "Near-term pull-forward temporarily supports equipment revenue",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "en",
-        "impact": 3
-      },
-      {
-        "id": "foundry-capex-slowdown->semiconductor-etf",
-        "source": "foundry-capex-slowdown",
-        "target": "semiconductor-etf",
-        "mechanism": "Deferred capacity lowers equipment and materials demand",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "en",
-        "impact": -7
-      },
-      {
-        "id": "tool-vendor-guidance-cut->semiconductor-etf",
-        "source": "tool-vendor-guidance-cut",
-        "target": "semiconductor-etf",
-        "mechanism": "Lower China guidance reprices equipment earnings",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "en",
-        "impact": -5
-      },
-      {
-        "id": "allied-exemption->semiconductor-etf",
-        "source": "allied-exemption",
-        "target": "semiconductor-etf",
-        "mechanism": "A narrow carve-out limits the downside to global supply chains",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "en",
-        "impact": 2.5
-      },
-      {
-        "id": "semiconductor-etf->tsmc-adr",
-        "source": "semiconductor-etf",
-        "target": "tsmc-adr",
-        "mechanism": "Sector risk appetite transmits into the leading foundry valuation",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "nn",
-        "beta": 0.78
       }
     ],
     "sources": [],
-    "model": "fixture-seed",
-    "generatedAt": "2026-09-01T21:26:57.931Z",
+    "model": "poolside/laguna-s-2.1",
+    "generatedAt": "2026-09-02T01:40:47.167Z",
     "summary": {
-      "headline": "Legacy-node controls create a short inventory pull-forward but a larger medium-term capex and vendor-guidance risk.",
-      "mainUncertainty": "How broadly the rule defines controlled equipment and whether allied licenses arrive quickly.",
+      "headline": "US export control expansion to legacy nodes could trigger 15-20% decline in SMH within 180 days via supply chain disruption and demand destruction",
+      "mainUncertainty": "Timing and scope of BIS rulemaking, and whether Chinese foundries can source non-US alternatives",
       "followUps": [
-        "BIS rule text",
-        "Equipment-vendor China bookings",
-        "Foundry capex guidance"
+        "Monitor Federal Register for ANPRM on legacy nodes",
+        "Track SMIC and Hua Hong utilization rates",
+        "Watch SOXX equipment index for sector repricing"
       ]
     }
   },
   "markets": {
-    "legacy-controls-expand": [],
-    "china-retaliation": [],
-    "inventory-build": [],
-    "foundry-capex-slowdown": [],
-    "allied-exemption": [],
-    "tool-vendor-guidance-cut": []
+    "root": [],
+    "n1": [],
+    "n2": [
+      {
+        "title": "Will Lyon Rugby win?",
+        "url": "https://polymarket.com/event/rutopft-lyo-asm-2026-09-05",
+        "yes": 0.43,
+        "volume": 86.374223,
+        "endDate": "2026-09-12T17:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the match end in a draw?",
+        "url": "https://polymarket.com/event/rutopft-lyo-asm-2026-09-05",
+        "yes": 0.355,
+        "volume": 86.374223,
+        "endDate": "2026-09-12T17:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will ASM Clermont Auvergne win?",
+        "url": "https://polymarket.com/event/rutopft-lyo-asm-2026-09-05",
+        "yes": 0.39,
+        "volume": 86.374223,
+        "endDate": "2026-09-12T17:00:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "n3": [],
+    "n4": [],
+    "n5": [
+      {
+        "title": "Will Brad Ausmus be the next Red Sox manager?",
+        "url": "https://polymarket.com/event/mlb-next-red-sox-manager",
+        "yes": 0.011,
+        "volume": 410638.68,
+        "endDate": "2027-02-01T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will A.J. Ellis be the next Red Sox manager?",
+        "url": "https://polymarket.com/event/mlb-next-red-sox-manager",
+        "yes": 0.0045,
+        "volume": 189272.7,
+        "endDate": "2027-02-01T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Chad Tracy be the next Red Sox manager?",
+        "url": "https://polymarket.com/event/mlb-next-red-sox-manager",
+        "yes": 0.775,
+        "volume": 6182.867956000001,
+        "endDate": "2027-02-01T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will David Ross be the next Red Sox manager?",
+        "url": "https://polymarket.com/event/mlb-next-red-sox-manager",
+        "yes": 0.031,
+        "volume": 1183.650766,
+        "endDate": "2027-02-01T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Omar López be the next Red Sox manager?",
+        "url": "https://polymarket.com/event/mlb-next-red-sox-manager",
+        "yes": 0.0305,
+        "volume": 693.71,
+        "endDate": "2027-02-01T00:00:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "n6": [
+      {
+        "title": "Will Micron Technology, Inc. (MU) hit (HIGH) $990 Week of August 31 2026?",
+        "url": "https://polymarket.com/event/will-mu-hit-week-of-august-31-2026",
+        "yes": 0.245,
+        "volume": 2635.329124,
+        "endDate": "2026-09-04T20:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Micron Technology, Inc. (MU) hit (LOW) $870 Week of August 31 2026?",
+        "url": "https://polymarket.com/event/will-mu-hit-week-of-august-31-2026",
+        "yes": 0.205,
+        "volume": 2506.4392040000002,
+        "endDate": "2026-09-04T20:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Micron Technology, Inc. (MU) hit (LOW) $900 Week of August 31 2026?",
+        "url": "https://polymarket.com/event/will-mu-hit-week-of-august-31-2026",
+        "yes": 0.33,
+        "volume": 1888.8122740000003,
+        "endDate": "2026-09-04T20:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Micron Technology, Inc. (MU) hit (LOW) $840 Week of August 31 2026?",
+        "url": "https://polymarket.com/event/will-mu-hit-week-of-august-31-2026",
+        "yes": 0.0675,
+        "volume": 1648.268805,
+        "endDate": "2026-09-04T20:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Micron Technology, Inc. (MU) hit (HIGH) $1,020 Week of August 31 2026?",
+        "url": "https://polymarket.com/event/will-mu-hit-week-of-august-31-2026",
+        "yes": 0.11,
+        "volume": 1197.104056,
+        "endDate": "2026-09-04T20:00:00Z",
+        "source": "polymarket"
+      }
+    ]
   },
   "quotes": {
     "SMH": {
@@ -695,12 +976,12 @@
       "currency": "USD",
       "time": "2026-09-01T20:00:00.000Z"
     },
-    "TSM": {
-      "symbol": "TSM",
-      "price": 414,
-      "changePct": -0.318,
+    "SOXX": {
+      "symbol": "SOXX",
+      "price": 500.31,
+      "changePct": -2.1,
       "currency": "USD",
-      "time": "2026-09-01T20:00:02.000Z"
+      "time": "2026-09-01T20:00:00.000Z"
     }
   }
 }

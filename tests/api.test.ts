@@ -160,12 +160,12 @@ describe("API handlers", () => {
     expect(response.status).toBe(502);
   });
 
-  it("returns 502 after two schema-invalid upstream branch responses", async () => {
+  it("returns 502 after three schema-invalid upstream branch responses", async () => {
     const fetchImpl = fakeFetch(() => chatResponse({ candidates: "x" }));
     const response = await handleBranch(branchRequest(branchInput), deps(fetchImpl), repairBranch);
 
     expect(response.status).toBe(502);
-    expect(fetchImpl.calls).toHaveLength(2);
+    expect(fetchImpl.calls).toHaveLength(3);
   });
 
   it("returns repaired branch candidates with typed edges", async () => {

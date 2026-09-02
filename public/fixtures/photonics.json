@@ -9,705 +9,1125 @@
   "llm": {
     "nodes": [
       {
-        "id": "photonics-accelerates",
+        "id": "root",
         "kind": "event",
-        "statement": "Photonic interconnects are adopted in datacenters faster than expected",
-        "resolution": "Two hyperscalers disclose production deployments of photonic interconnects",
-        "base": 0.25,
+        "statement": "Major cloud provider announces production deployment of photonic interconnects in datacenter fabric",
+        "resolution": "Public announcement by hyperscaler (AWS, GCP, Azure, or Meta) confirming live traffic on photonic interconnects within 365 days",
+        "base": 0.15,
         "lagDays": [
-          90,
-          365
+          0,
+          0
         ],
-        "rationale": "AI cluster power density makes electrical reach and SerDes power a binding design constraint.",
+        "rationale": "Photonic interconnects promise lower latency and higher bandwidth density than copper, but require co-design of chips, packaging, and datacenter infrastructure. A leading cloud provider has strong incentives to adopt first for competitive advantage.",
         "analogs": [
-          "400G and 800G optical transceiver adoption"
+          "2015-2017 100G Ethernet adoption in hyperscale",
+          "2018-2020 400G QSFP-DD rollout"
         ],
         "assumptions": [
-          "AI cluster build-outs remain capital intensive"
+          "Technology readiness level reaches 7+ within 18 months",
+          "Cost per bit improves below copper+optical I/O hybrid",
+          "Regulatory or supply chain pressures do not delay deployment"
         ],
         "confidence": "medium",
-        "marketQuery": "hyperscaler photonic interconnect production deployment",
+        "marketQuery": "Photonic interconnect adoption catalyst for Lumentum (LITE), Coherent (COHR), Acacia (acquired by Cisco), and Marvell (MRVL) within 365 days",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "co-packaged-optics-win",
+        "id": "n1",
         "kind": "event",
-        "statement": "A co-packaged optics design wins a production AI-network slot",
-        "resolution": "A supplier names a production co-packaged optics program with shipment timing",
+        "statement": "Silicon photonics foundry capacity expands with multi-patterning EUV lithography for 200mm wafers",
+        "resolution": "TSMC, Intel, or Samsung announces >3x increase in silicon photonics wafer capacity within 12 months",
         "base": 0.3,
         "lagDays": [
           90,
-          300
-        ],
-        "rationale": "A named production win turns optical interconnect demand from a lab roadmap into a bill-of-materials pull.",
-        "analogs": [
-          "Early 800G design-win disclosures"
-        ],
-        "assumptions": [
-          "The customer does not revert to pluggable optics at qualification"
-        ],
-        "confidence": "low",
-        "marketQuery": "co-packaged optics production design win",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "switch-asic-power-wall",
-        "kind": "event",
-        "statement": "Switch ASIC power consumption breaches rack thermal design targets",
-        "resolution": "A hyperscaler technical disclosure reports a power or thermal limit requiring optical redesign",
-        "base": 0.46,
-        "lagDays": [
-          30,
-          240
-        ],
-        "rationale": "Electrical I/O power rises rapidly at higher speeds and creates a direct incentive for optical links closer to the ASIC.",
-        "analogs": [
-          "51.2T switch thermal constraints"
-        ],
-        "assumptions": [
-          "Power is a higher priority than component-cost minimization"
-        ],
-        "confidence": "medium",
-        "marketQuery": "switch ASIC power thermal limit co packaged optics",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "hyperscaler-capex",
-        "kind": "event",
-        "statement": "Hyperscaler AI datacenter capex remains above guidance",
-        "resolution": "Two major hyperscalers raise annual AI infrastructure capex guidance",
-        "base": 0.58,
-        "lagDays": [
-          0,
           180
         ],
-        "rationale": "Higher cluster deployment volumes shorten the time needed to justify new interconnect architectures.",
+        "rationale": "Scaling photonic chip production requires dedicated fab capacity and process control. Foundry investment signals confidence in demand and reduces unit costs.",
         "analogs": [
-          "2023 to 2025 AI capex revisions"
+          "2019-2021 CMOS image sensor capacity expansion",
+          "2020-2022 RF-SOI scaling"
         ],
         "assumptions": [
-          "GPU supply remains available enough to deploy new clusters"
-        ],
-        "confidence": "high",
-        "marketQuery": "hyperscaler AI datacenter capex guidance",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "packaging-yield-delay",
-        "kind": "event",
-        "statement": "Advanced packaging yields delay photonic module qualification",
-        "resolution": "A supplier delays a planned volume-ramp date by at least one quarter for yield reasons",
-        "base": 0.36,
-        "lagDays": [
-          60,
-          270
-        ],
-        "rationale": "Thermal alignment and heterogeneous integration can convert a design win into a slower revenue ramp.",
-        "analogs": [
-          "Silicon photonics packaging yield ramps"
-        ],
-        "assumptions": [
-          "Alternative packaging houses cannot qualify quickly"
+          "EUV lithography throughput supports high-volume photonics",
+          "Design rules stabilize for automated yield",
+          "Capex allocation prioritizes photonics over legacy nodes"
         ],
         "confidence": "medium",
-        "marketQuery": "silicon photonics packaging yield delay",
+        "marketQuery": "TSMC (TSM) silicon photonics capex and Intel (INTC) IFS photonics foundry growth within 12 months",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "interoperability-standard",
+        "id": "n2",
         "kind": "event",
-        "statement": "An open optical-interconnect standard gains multi-vendor support",
-        "resolution": "Three major networking vendors announce compatible products or a formal standards profile",
-        "base": 0.4,
+        "statement": "First commercial 200G/lane silicon photonics transceiver achieves >10km reach without amplification",
+        "resolution": "Marvell, Broadcom, or Intel ships production 200G/lane PAM4/PAM6 transceiver with >10km reach by Q4 2024",
+        "base": 0.25,
         "lagDays": [
-          90,
+          120,
+          240
+        ],
+        "rationale": "Datacenter interconnects require long reach without costly amplification. Breakthrough in laser efficiency and modulation enables cost-effective deployment.",
+        "analogs": [
+          "2021 112G/lane 2km reach",
+          "2023 112G/lane 10km reach"
+        ],
+        "assumptions": [
+          "Laser linewidth and noise meet 10km threshold",
+          "Thermal tuning power stays under 2W per channel",
+          "Supply chain for InP gain chips scales"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Broadcom (AVGO) and Marvell (MRVL) 200G/lane transceiver revenue growth within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n3",
+        "kind": "event",
+        "statement": "Photonic switching ASIC demonstrates sub-nanosecond reconfiguration with <1dB insertion loss",
+        "resolution": "Startup or established vendor (Marvell, Cisco, Intel) demonstrates photonic switch ASIC meeting performance targets by Q2 2025",
+        "base": 0.2,
+        "lagDays": [
+          150,
           300
         ],
-        "rationale": "Interoperability lowers the procurement risk of adopting an interconnect architecture early.",
+        "rationale": "Fast optical switching eliminates electronic bottleneck in packet forwarding. Critical for dynamic traffic engineering in large datacenters.",
         "analogs": [
-          "OIF and Ethernet optical standards"
+          "2019 10ns MEMS switches",
+          "2022 5ns thermo-optic switches"
         ],
         "assumptions": [
-          "Standards work maps to purchasable modules rather than a long research process"
+          "Carrier injection or phase-change material enables fast tuning",
+          "Packaging maintains low loss across temperature range",
+          "Control plane integration with existing SDN works"
         ],
         "confidence": "low",
-        "marketQuery": "open optical interconnect standard multi vendor",
+        "marketQuery": "Cisco (CSCO) and Lumentum (LITE) photonic switching ASIC development within 12 months",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "coherent",
-        "kind": "numeric",
-        "name": "Coherent Corp",
-        "unit": "USD/share",
-        "ticker": "COHR",
-        "current": 95,
-        "baselineMove": 0,
-        "sigma": 28,
-        "rationale": "Coherent has exposure to optical components and datacenter interconnect demand.",
+        "id": "n4",
+        "kind": "event",
+        "statement": "Cloud provider datacenter CAPEX includes dedicated photonic interconnect budget line",
+        "resolution": "SEC filing or analyst day reveals explicit photonic interconnect spending allocation within 365 days",
+        "base": 0.35,
+        "lagDays": [
+          60,
+          180
+        ],
+        "rationale": "Budget allocation precedes actual deployment. Cloud providers typically plan 12-18 months ahead for infrastructure investments.",
+        "analogs": [
+          "2019-2021 SmartNIC CAPEX inclusion",
+          "2020-2022 DPU deployment planning"
+        ],
         "assumptions": [
-          "Datacenter optical mix matters more than legacy industrial demand"
+          "ROI model shows payback within 24 months",
+          "Supply chain can deliver volume in 2025",
+          "Competitive pressure justifies early investment"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Microsoft (MSFT), Amazon (AMZN), Google (GOOGL) datacenter CAPEX allocation to photonics within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n5",
+        "kind": "event",
+        "statement": "Open Compute Project releases photonic interconnect specification for datacenter interconnects",
+        "resolution": "OCP publishes v1.0 photonic interconnect standard adopted by 3+ cloud providers within 9 months",
+        "base": 0.4,
+        "lagDays": [
+          45,
+          120
+        ],
+        "rationale": "Standardization accelerates adoption by enabling interoperability and reducing vendor lock-in risk.",
+        "analogs": [
+          "2013 OCP networking spec",
+          "2019 OCP accelerator spec"
+        ],
+        "assumptions": [
+          "Key stakeholders align on interface and form factor",
+          "Backward compatibility with existing infrastructure",
+          "Compliance testing framework established"
+        ],
+        "confidence": "medium",
+        "marketQuery": "OCP membership growth and Intel (INTC), Broadcom (AVGO) participation in photonic standards within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n6",
+        "kind": "event",
+        "statement": "Photonic interconnect power consumption drops below 5W per 400Gbps lane",
+        "resolution": "Vendor demonstrates power measurement below 5W/400G-lane in lab validation by Q3 2024",
+        "base": 0.3,
+        "lagDays": [
+          100,
+          200
+        ],
+        "rationale": "Power efficiency is critical for datacenter TCO. Breakthrough in modulator efficiency or laser design enables competitive power profile.",
+        "analogs": [
+          "2020 10W/400G lane",
+          "2022 7W/400G lane"
+        ],
+        "assumptions": [
+          "New modulator material (e.g., BTO) achieves lower drive voltage",
+          "Laser threshold current reduced via better heat sinking",
+          "Measurement conditions reflect real-world thermal load"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Lumentum (LITE) and Coherent (COHR) power-efficient transceiver revenue within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n7",
+        "kind": "numeric",
+        "name": "Silicon photonics market size",
+        "unit": "USD billions",
+        "ticker": "MRVL",
+        "current": 3.2,
+        "baselineMove": 15,
+        "sigma": 40,
+        "rationale": "Market growing due to AI-driven bandwidth demand and photonic interconnect adoption. Marvell benefits as key silicon photonics supplier.",
+        "assumptions": [
+          "AI training clusters drive 2x bandwidth growth annually",
+          "Photonic interconnects capture 20%+ of new datacenter spend by 2025",
+          "No major economic downturn reduces IT spending"
         ],
         "confidence": "medium"
       },
       {
-        "id": "lumentum",
+        "id": "n8",
         "kind": "numeric",
-        "name": "Lumentum Holdings",
-        "unit": "USD/share",
-        "ticker": "LITE",
+        "name": "Hyperscaler datacenter CAPEX",
+        "unit": "USD billions",
+        "ticker": "AMZN",
         "current": 75,
-        "baselineMove": 0,
-        "sigma": 30,
-        "rationale": "Lumentum is a liquid optical-component proxy with leverage to higher-speed transceiver demand.",
+        "baselineMove": 10,
+        "sigma": 25,
+        "rationale": "Amazon's datacenter investment supports photonic interconnect deployment. CAPEX growth reflects infrastructure modernization.",
         "assumptions": [
-          "Inventory digestion does not dominate the optical demand cycle"
+          "AWS maintains 15%+ revenue growth",
+          "AI infrastructure demand sustains high CapEx intensity",
+          "Supply chain disruptions do not delay projects"
         ],
         "confidence": "medium"
+      },
+      {
+        "id": "n9",
+        "kind": "numeric",
+        "name": "Optical component revenue growth",
+        "unit": "Percent YoY",
+        "ticker": "LITE",
+        "current": 12,
+        "baselineMove": 25,
+        "sigma": 35,
+        "rationale": "Lumentum benefits from photonic interconnect adoption in datacenters. Growth driven by new product cycles.",
+        "assumptions": [
+          "Cloud provider demand materializes as forecast",
+          "New 200G/lane products launch on schedule",
+          "Inventory corrections do not delay orders"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "n10",
+        "kind": "event",
+        "statement": "Counter-force: Economic downturn reduces datacenter investment and delays photonic interconnect adoption",
+        "resolution": "Global GDP growth falls below 1% or cloud provider CAPEX declines YoY within 12 months",
+        "base": 0.2,
+        "lagDays": [
+          30,
+          90
+        ],
+        "rationale": "Photonic interconnects require significant upfront investment. Economic uncertainty may cause providers to defer spending.",
+        "analogs": [
+          "2022-2023 datacenter CAPEX pullback",
+          "2020 pandemic-driven infrastructure delays"
+        ],
+        "assumptions": [
+          "Recession leads to 10%+ reduction in IT spending",
+          "Cloud growth slows below 10% YoY",
+          "Alternative technologies (e.g., improved copper) remain viable"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Global economic indicators and reduced AMZN, MSFT, GOOGL datacenter spending within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n11",
+        "kind": "event",
+        "statement": "Inhibitor: Supply chain disruption for indium phosphide (InP) wafers delays photonic chip production",
+        "resolution": "Major InP supplier outage or export restriction causes >6 month delay in photonic chip shipments within 18 months",
+        "base": 0.15,
+        "lagDays": [
+          60,
+          150
+        ],
+        "rationale": "InP is critical for laser integration in silicon photonics. Concentrated supply chain creates vulnerability.",
+        "analogs": [
+          "2021-2022 semiconductor shortage",
+          "2020 gallium arsenide supply disruption"
+        ],
+        "assumptions": [
+          ">70% of InP supply comes from single region",
+          "No alternative laser integration method ready",
+          "Geopolitical tensions affect key suppliers"
+        ],
+        "confidence": "low",
+        "marketQuery": "Coherent (COHR) and II-VI (now Coherent) InP wafer supply chain risk within 18 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n12",
+        "kind": "event",
+        "statement": "Photonic interconnect achieves price parity with electrical interconnects at 400Gbps",
+        "resolution": "Total cost of ownership analysis shows photonic interconnects cost-equivalent to electrical at 400Gbps within 18 months",
+        "base": 0.28,
+        "lagDays": [
+          180,
+          365
+        ],
+        "rationale": "Price parity triggers mass adoption as datacenter operators switch to photonic for cost and performance benefits.",
+        "analogs": [
+          "2016 100G optical vs electrical price crossover",
+          "2020 400G DAC cost analysis"
+        ],
+        "assumptions": [
+          "Manufacturing scale reduces photonic component costs by 30%",
+          "Electrical interconnect costs rise due to signal integrity challenges",
+          "Installation and maintenance costs converge"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Cost comparison analysis for MRVL, AVGO, and LITE photonic vs electrical interconnects within 18 months",
+        "isRoot": false,
+        "isTarget": false
       }
     ],
     "edges": [
       {
-        "source": "switch-asic-power-wall",
-        "target": "photonics-accelerates",
-        "mechanism": "Power and thermal constraints increase the value of optical I/O",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": "promote",
-        "strength": 0.48,
-        "impact": null,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "hyperscaler-capex",
-        "target": "photonics-accelerates",
-        "mechanism": "More AI clusters justify earlier architecture transitions",
-        "assumptions": [],
+        "source": "root",
+        "target": "n4",
+        "mechanism": "Production deployment announcement follows budget allocation in prior planning cycle",
+        "assumptions": [
+          "Cloud providers plan 12-18 months ahead for infrastructure",
+          "Photonic interconnect budget is approved before deployment"
+        ],
         "confidence": "high",
-        "sourceIds": [],
+        "sourceIds": [
+          "root"
+        ],
         "polarity": "promote",
-        "strength": 0.44,
-        "impact": null,
-        "beta": null,
+        "strength": 0.8,
+        "impact": 80,
+        "beta": 2.5,
         "threshold": null,
-        "direction": null,
-        "width": null
+        "direction": "above",
+        "width": 3
       },
       {
-        "source": "interoperability-standard",
-        "target": "photonics-accelerates",
-        "mechanism": "Multi-vendor support reduces procurement and lock-in risk",
-        "assumptions": [],
+        "source": "n5",
+        "target": "root",
+        "mechanism": "Standardization enables interoperability and reduces vendor lock-in, accelerating adoption",
+        "assumptions": [
+          "OCP standard adopted by major cloud providers",
+          "Compliance testing ensures quality"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "n5"
+        ],
         "polarity": "promote",
-        "strength": 0.4,
-        "impact": null,
-        "beta": null,
+        "strength": 0.7,
+        "impact": 70,
+        "beta": 2,
         "threshold": null,
-        "direction": null,
-        "width": null
+        "direction": "above",
+        "width": 2
       },
       {
-        "source": "photonics-accelerates",
-        "target": "co-packaged-optics-win",
-        "mechanism": "Faster adoption makes a production design win more likely",
-        "assumptions": [],
+        "source": "n1",
+        "target": "n2",
+        "mechanism": "Expanded foundry capacity enables production of high-performance transceivers",
+        "assumptions": [
+          "Process yields improve with volume",
+          "Design wins follow capacity availability"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "n1"
+        ],
         "polarity": "promote",
-        "strength": 0.66,
-        "impact": null,
-        "beta": null,
+        "strength": 0.6,
+        "impact": 60,
+        "beta": 1.8,
         "threshold": null,
-        "direction": null,
-        "width": null
+        "direction": "above",
+        "width": 2
       },
       {
-        "source": "packaging-yield-delay",
-        "target": "co-packaged-optics-win",
-        "mechanism": "Yield delays postpone qualification and volume shipments",
-        "assumptions": [],
-        "confidence": "high",
-        "sourceIds": [],
+        "source": "n2",
+        "target": "root",
+        "mechanism": "High-performance transceivers are prerequisite for production deployment",
+        "assumptions": [
+          "Reach and power meet datacenter requirements",
+          "Volume production begins after lab validation"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "n2"
+        ],
+        "polarity": "promote",
+        "strength": 0.7,
+        "impact": 70,
+        "beta": 2.2,
+        "threshold": null,
+        "direction": "above",
+        "width": 2
+      },
+      {
+        "source": "n3",
+        "target": "root",
+        "mechanism": "Fast photonic switching enables dynamic traffic engineering required for production use",
+        "assumptions": [
+          "Switching latency meets application requirements",
+          "Integration with SDN control plane succeeds"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "n3"
+        ],
+        "polarity": "promote",
+        "strength": 0.5,
+        "impact": 50,
+        "beta": 1.5,
+        "threshold": null,
+        "direction": "above",
+        "width": 1
+      },
+      {
+        "source": "n6",
+        "target": "n2",
+        "mechanism": "Lower power consumption enables longer reach and higher density transceivers",
+        "assumptions": [
+          "Power reduction applies to laser and modulator",
+          "Thermal design supports high port density"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "n6"
+        ],
+        "polarity": "promote",
+        "strength": 0.6,
+        "impact": 60,
+        "beta": 1.7,
+        "threshold": null,
+        "direction": "above",
+        "width": 2
+      },
+      {
+        "source": "n12",
+        "target": "root",
+        "mechanism": "Price parity triggers mass adoption as operators switch for cost and performance",
+        "assumptions": [
+          "TCO analysis favors photonics at scale",
+          "Installation costs converge"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "n12"
+        ],
+        "polarity": "promote",
+        "strength": 0.7,
+        "impact": 70,
+        "beta": 2,
+        "threshold": null,
+        "direction": "above",
+        "width": 2
+      },
+      {
+        "source": "n10",
+        "target": "root",
+        "mechanism": "Economic downturn reduces investment appetite and delays technology adoption",
+        "assumptions": [
+          "Cloud providers defer non-critical infrastructure",
+          "Budget reallocation favors maintenance over innovation"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "n10"
+        ],
         "polarity": "inhibit",
-        "strength": 0.58,
-        "impact": null,
-        "beta": null,
+        "strength": 0.6,
+        "impact": -60,
+        "beta": -1.8,
         "threshold": null,
-        "direction": null,
-        "width": null
+        "direction": "below",
+        "width": 2
       },
       {
-        "source": "photonics-accelerates",
-        "target": "coherent",
-        "mechanism": "Faster optical deployment lifts datacenter component demand",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 18,
-        "beta": null,
+        "source": "n11",
+        "target": "n1",
+        "mechanism": "InP wafer shortage constrains photonic chip production capacity",
+        "assumptions": [
+          "No alternative laser integration ready",
+          "Inventory buffers insufficient"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "n11"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.5,
+        "impact": -50,
+        "beta": -1.5,
         "threshold": null,
-        "direction": null,
-        "width": null
+        "direction": "below",
+        "width": 1
       },
       {
-        "source": "co-packaged-optics-win",
-        "target": "coherent",
-        "mechanism": "A named program validates incremental component revenue",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 12,
-        "beta": null,
+        "source": "n11",
+        "target": "n2",
+        "mechanism": "InP supply disruption delays transceiver production ramp",
+        "assumptions": [
+          "Transceivers depend on InP-based lasers",
+          "Lead times extend beyond normal planning horizon"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "n11"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.4,
+        "impact": -40,
+        "beta": -1.2,
         "threshold": null,
-        "direction": null,
-        "width": null
+        "direction": "below",
+        "width": 1
       },
       {
-        "source": "packaging-yield-delay",
-        "target": "coherent",
-        "mechanism": "Delayed qualification defers the expected revenue ramp",
-        "assumptions": [],
+        "source": "n4",
+        "target": "n7",
+        "mechanism": "Dedicated photonic interconnect budget drives silicon photonics market growth",
+        "assumptions": [
+          "Budget converts to actual purchases",
+          "Marvell captures significant share"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": -8,
-        "beta": null,
+        "sourceIds": [
+          "n4"
+        ],
+        "polarity": "promote",
+        "strength": 0.6,
+        "impact": 60,
+        "beta": 1.8,
         "threshold": null,
-        "direction": null,
-        "width": null
+        "direction": "above",
+        "width": 2
       },
       {
-        "source": "photonics-accelerates",
-        "target": "lumentum",
-        "mechanism": "Higher-speed optical links increase demand for optical components",
-        "assumptions": [],
+        "source": "n4",
+        "target": "n8",
+        "mechanism": "Photonic interconnect investment contributes to overall datacenter CAPEX growth",
+        "assumptions": [
+          "AWS allocates incremental budget for photonics",
+          "CapEx intensity remains stable"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 14,
-        "beta": null,
+        "sourceIds": [
+          "n4"
+        ],
+        "polarity": "promote",
+        "strength": 0.5,
+        "impact": 50,
+        "beta": 1.5,
         "threshold": null,
-        "direction": null,
-        "width": null
+        "direction": "above",
+        "width": 1
       },
       {
-        "source": "coherent",
-        "target": "lumentum",
-        "mechanism": "Optical-component peers share part of the same demand cycle",
-        "assumptions": [],
+        "source": "root",
+        "target": "n9",
+        "mechanism": "Production deployment announcement drives optical component revenue growth",
+        "assumptions": [
+          "Lumentum secures design wins",
+          "Revenue recognized within fiscal year"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": null,
-        "beta": 0.55,
+        "sourceIds": [
+          "root"
+        ],
+        "polarity": "promote",
+        "strength": 0.7,
+        "impact": 70,
+        "beta": 2,
         "threshold": null,
-        "direction": null,
-        "width": null
+        "direction": "above",
+        "width": 2
       }
     ],
     "summary": {
-      "headline": "Power constraints and capex can pull photonics forward, but packaging yield remains the gate on a production ramp.",
-      "mainUncertainty": "Whether co-packaged optics clears qualification before pluggable optics improve enough to defer adoption.",
+      "headline": "Photonic interconnect adoption in datacenters could accelerate beyond expectations if silicon photonics capacity, transceiver performance, and price parity align within 365 days, but faces headwinds from economic uncertainty and InP supply chain risks.",
+      "mainUncertainty": "Timing of price parity and transceiver performance milestones relative to cloud provider budget cycles and macroeconomic conditions",
       "followUps": [
-        "Hyperscaler network architecture disclosures",
-        "Supplier production design wins",
-        "Advanced packaging yield commentary"
+        "Monitor TSMC/Intel photonics foundry announcements for capacity expansion signals",
+        "Track OCP working group progress on photonic interconnect specifications",
+        "Watch Lumentum and Coherent earnings calls for InP supply chain commentary",
+        "Follow hyperscaler analyst days for explicit photonic interconnect CAPEX disclosures"
       ]
     }
   },
   "graph": {
-    "id": "ef7eca79-a763-4b81-a59f-46d6c2faa639",
+    "id": "fadfbf8f-72c0-401b-8bc5-b07ec059f1f4",
     "hypothesis": "Photonic interconnects get adopted in datacenters faster than expected",
     "mode": "explore",
     "target": null,
     "horizonDays": 365,
     "nodes": [
       {
-        "id": "photonics-accelerates",
+        "id": "root",
         "kind": "event",
-        "statement": "Photonic interconnects are adopted in datacenters faster than expected",
-        "resolution": "Two hyperscalers disclose production deployments of photonic interconnects",
-        "base": 0.25,
+        "statement": "Major cloud provider announces production deployment of photonic interconnects in datacenter fabric",
+        "resolution": "Public announcement by hyperscaler (AWS, GCP, Azure, or Meta) confirming live traffic on photonic interconnects within 365 days",
+        "base": 0.15,
         "lagDays": [
-          90,
-          365
+          0,
+          0
         ],
-        "rationale": "AI cluster power density makes electrical reach and SerDes power a binding design constraint.",
+        "rationale": "Photonic interconnects promise lower latency and higher bandwidth density than copper, but require co-design of chips, packaging, and datacenter infrastructure. A leading cloud provider has strong incentives to adopt first for competitive advantage.",
         "analogs": [
-          "400G and 800G optical transceiver adoption"
+          "2015-2017 100G Ethernet adoption in hyperscale",
+          "2018-2020 400G QSFP-DD rollout"
         ],
         "assumptions": [
-          "AI cluster build-outs remain capital intensive"
+          "Technology readiness level reaches 7+ within 18 months",
+          "Cost per bit improves below copper+optical I/O hybrid",
+          "Regulatory or supply chain pressures do not delay deployment"
         ],
         "confidence": "medium",
-        "marketQuery": "hyperscaler photonic interconnect production deployment",
+        "marketQuery": "Photonic interconnect adoption catalyst for Lumentum (LITE), Coherent (COHR), Acacia (acquired by Cisco), and Marvell (MRVL) within 365 days",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "co-packaged-optics-win",
+        "id": "n1",
         "kind": "event",
-        "statement": "A co-packaged optics design wins a production AI-network slot",
-        "resolution": "A supplier names a production co-packaged optics program with shipment timing",
+        "statement": "Silicon photonics foundry capacity expands with multi-patterning EUV lithography for 200mm wafers",
+        "resolution": "TSMC, Intel, or Samsung announces >3x increase in silicon photonics wafer capacity within 12 months",
         "base": 0.3,
         "lagDays": [
           90,
-          300
-        ],
-        "rationale": "A named production win turns optical interconnect demand from a lab roadmap into a bill-of-materials pull.",
-        "analogs": [
-          "Early 800G design-win disclosures"
-        ],
-        "assumptions": [
-          "The customer does not revert to pluggable optics at qualification"
-        ],
-        "confidence": "low",
-        "marketQuery": "co-packaged optics production design win",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "switch-asic-power-wall",
-        "kind": "event",
-        "statement": "Switch ASIC power consumption breaches rack thermal design targets",
-        "resolution": "A hyperscaler technical disclosure reports a power or thermal limit requiring optical redesign",
-        "base": 0.46,
-        "lagDays": [
-          30,
-          240
-        ],
-        "rationale": "Electrical I/O power rises rapidly at higher speeds and creates a direct incentive for optical links closer to the ASIC.",
-        "analogs": [
-          "51.2T switch thermal constraints"
-        ],
-        "assumptions": [
-          "Power is a higher priority than component-cost minimization"
-        ],
-        "confidence": "medium",
-        "marketQuery": "switch ASIC power thermal limit co packaged optics",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "hyperscaler-capex",
-        "kind": "event",
-        "statement": "Hyperscaler AI datacenter capex remains above guidance",
-        "resolution": "Two major hyperscalers raise annual AI infrastructure capex guidance",
-        "base": 0.58,
-        "lagDays": [
-          0,
           180
         ],
-        "rationale": "Higher cluster deployment volumes shorten the time needed to justify new interconnect architectures.",
+        "rationale": "Scaling photonic chip production requires dedicated fab capacity and process control. Foundry investment signals confidence in demand and reduces unit costs.",
         "analogs": [
-          "2023 to 2025 AI capex revisions"
+          "2019-2021 CMOS image sensor capacity expansion",
+          "2020-2022 RF-SOI scaling"
         ],
         "assumptions": [
-          "GPU supply remains available enough to deploy new clusters"
-        ],
-        "confidence": "high",
-        "marketQuery": "hyperscaler AI datacenter capex guidance",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "packaging-yield-delay",
-        "kind": "event",
-        "statement": "Advanced packaging yields delay photonic module qualification",
-        "resolution": "A supplier delays a planned volume-ramp date by at least one quarter for yield reasons",
-        "base": 0.36,
-        "lagDays": [
-          60,
-          270
-        ],
-        "rationale": "Thermal alignment and heterogeneous integration can convert a design win into a slower revenue ramp.",
-        "analogs": [
-          "Silicon photonics packaging yield ramps"
-        ],
-        "assumptions": [
-          "Alternative packaging houses cannot qualify quickly"
+          "EUV lithography throughput supports high-volume photonics",
+          "Design rules stabilize for automated yield",
+          "Capex allocation prioritizes photonics over legacy nodes"
         ],
         "confidence": "medium",
-        "marketQuery": "silicon photonics packaging yield delay",
+        "marketQuery": "TSMC (TSM) silicon photonics capex and Intel (INTC) IFS photonics foundry growth within 12 months",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "interoperability-standard",
+        "id": "n2",
         "kind": "event",
-        "statement": "An open optical-interconnect standard gains multi-vendor support",
-        "resolution": "Three major networking vendors announce compatible products or a formal standards profile",
-        "base": 0.4,
+        "statement": "First commercial 200G/lane silicon photonics transceiver achieves >10km reach without amplification",
+        "resolution": "Marvell, Broadcom, or Intel ships production 200G/lane PAM4/PAM6 transceiver with >10km reach by Q4 2024",
+        "base": 0.25,
         "lagDays": [
-          90,
+          120,
+          240
+        ],
+        "rationale": "Datacenter interconnects require long reach without costly amplification. Breakthrough in laser efficiency and modulation enables cost-effective deployment.",
+        "analogs": [
+          "2021 112G/lane 2km reach",
+          "2023 112G/lane 10km reach"
+        ],
+        "assumptions": [
+          "Laser linewidth and noise meet 10km threshold",
+          "Thermal tuning power stays under 2W per channel",
+          "Supply chain for InP gain chips scales"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Broadcom (AVGO) and Marvell (MRVL) 200G/lane transceiver revenue growth within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n3",
+        "kind": "event",
+        "statement": "Photonic switching ASIC demonstrates sub-nanosecond reconfiguration with <1dB insertion loss",
+        "resolution": "Startup or established vendor (Marvell, Cisco, Intel) demonstrates photonic switch ASIC meeting performance targets by Q2 2025",
+        "base": 0.2,
+        "lagDays": [
+          150,
           300
         ],
-        "rationale": "Interoperability lowers the procurement risk of adopting an interconnect architecture early.",
+        "rationale": "Fast optical switching eliminates electronic bottleneck in packet forwarding. Critical for dynamic traffic engineering in large datacenters.",
         "analogs": [
-          "OIF and Ethernet optical standards"
+          "2019 10ns MEMS switches",
+          "2022 5ns thermo-optic switches"
         ],
         "assumptions": [
-          "Standards work maps to purchasable modules rather than a long research process"
+          "Carrier injection or phase-change material enables fast tuning",
+          "Packaging maintains low loss across temperature range",
+          "Control plane integration with existing SDN works"
         ],
         "confidence": "low",
-        "marketQuery": "open optical interconnect standard multi vendor",
+        "marketQuery": "Cisco (CSCO) and Lumentum (LITE) photonic switching ASIC development within 12 months",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "coherent",
-        "kind": "numeric",
-        "name": "Coherent Corp",
-        "unit": "USD/share",
-        "ticker": "COHR",
-        "current": 95,
-        "baselineMove": 0,
-        "sigma": 28,
-        "rationale": "Coherent has exposure to optical components and datacenter interconnect demand.",
+        "id": "n4",
+        "kind": "event",
+        "statement": "Cloud provider datacenter CAPEX includes dedicated photonic interconnect budget line",
+        "resolution": "SEC filing or analyst day reveals explicit photonic interconnect spending allocation within 365 days",
+        "base": 0.35,
+        "lagDays": [
+          60,
+          180
+        ],
+        "rationale": "Budget allocation precedes actual deployment. Cloud providers typically plan 12-18 months ahead for infrastructure investments.",
+        "analogs": [
+          "2019-2021 SmartNIC CAPEX inclusion",
+          "2020-2022 DPU deployment planning"
+        ],
         "assumptions": [
-          "Datacenter optical mix matters more than legacy industrial demand"
+          "ROI model shows payback within 24 months",
+          "Supply chain can deliver volume in 2025",
+          "Competitive pressure justifies early investment"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Microsoft (MSFT), Amazon (AMZN), Google (GOOGL) datacenter CAPEX allocation to photonics within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n5",
+        "kind": "event",
+        "statement": "Open Compute Project releases photonic interconnect specification for datacenter interconnects",
+        "resolution": "OCP publishes v1.0 photonic interconnect standard adopted by 3+ cloud providers within 9 months",
+        "base": 0.4,
+        "lagDays": [
+          45,
+          120
+        ],
+        "rationale": "Standardization accelerates adoption by enabling interoperability and reducing vendor lock-in risk.",
+        "analogs": [
+          "2013 OCP networking spec",
+          "2019 OCP accelerator spec"
+        ],
+        "assumptions": [
+          "Key stakeholders align on interface and form factor",
+          "Backward compatibility with existing infrastructure",
+          "Compliance testing framework established"
+        ],
+        "confidence": "medium",
+        "marketQuery": "OCP membership growth and Intel (INTC), Broadcom (AVGO) participation in photonic standards within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n6",
+        "kind": "event",
+        "statement": "Photonic interconnect power consumption drops below 5W per 400Gbps lane",
+        "resolution": "Vendor demonstrates power measurement below 5W/400G-lane in lab validation by Q3 2024",
+        "base": 0.3,
+        "lagDays": [
+          100,
+          200
+        ],
+        "rationale": "Power efficiency is critical for datacenter TCO. Breakthrough in modulator efficiency or laser design enables competitive power profile.",
+        "analogs": [
+          "2020 10W/400G lane",
+          "2022 7W/400G lane"
+        ],
+        "assumptions": [
+          "New modulator material (e.g., BTO) achieves lower drive voltage",
+          "Laser threshold current reduced via better heat sinking",
+          "Measurement conditions reflect real-world thermal load"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Lumentum (LITE) and Coherent (COHR) power-efficient transceiver revenue within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n7",
+        "kind": "numeric",
+        "name": "Silicon photonics market size",
+        "unit": "USD billions",
+        "ticker": "MRVL",
+        "current": 3.2,
+        "baselineMove": 15,
+        "sigma": 40,
+        "rationale": "Market growing due to AI-driven bandwidth demand and photonic interconnect adoption. Marvell benefits as key silicon photonics supplier.",
+        "assumptions": [
+          "AI training clusters drive 2x bandwidth growth annually",
+          "Photonic interconnects capture 20%+ of new datacenter spend by 2025",
+          "No major economic downturn reduces IT spending"
         ],
         "confidence": "medium"
       },
       {
-        "id": "lumentum",
+        "id": "n8",
         "kind": "numeric",
-        "name": "Lumentum Holdings",
-        "unit": "USD/share",
-        "ticker": "LITE",
+        "name": "Hyperscaler datacenter CAPEX",
+        "unit": "USD billions",
+        "ticker": "AMZN",
         "current": 75,
-        "baselineMove": 0,
-        "sigma": 30,
-        "rationale": "Lumentum is a liquid optical-component proxy with leverage to higher-speed transceiver demand.",
+        "baselineMove": 10,
+        "sigma": 25,
+        "rationale": "Amazon's datacenter investment supports photonic interconnect deployment. CAPEX growth reflects infrastructure modernization.",
         "assumptions": [
-          "Inventory digestion does not dominate the optical demand cycle"
+          "AWS maintains 15%+ revenue growth",
+          "AI infrastructure demand sustains high CapEx intensity",
+          "Supply chain disruptions do not delay projects"
         ],
         "confidence": "medium"
+      },
+      {
+        "id": "n9",
+        "kind": "numeric",
+        "name": "Optical component revenue growth",
+        "unit": "Percent YoY",
+        "ticker": "LITE",
+        "current": 12,
+        "baselineMove": 25,
+        "sigma": 35,
+        "rationale": "Lumentum benefits from photonic interconnect adoption in datacenters. Growth driven by new product cycles.",
+        "assumptions": [
+          "Cloud provider demand materializes as forecast",
+          "New 200G/lane products launch on schedule",
+          "Inventory corrections do not delay orders"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "n10",
+        "kind": "event",
+        "statement": "Counter-force: Economic downturn reduces datacenter investment and delays photonic interconnect adoption",
+        "resolution": "Global GDP growth falls below 1% or cloud provider CAPEX declines YoY within 12 months",
+        "base": 0.2,
+        "lagDays": [
+          30,
+          90
+        ],
+        "rationale": "Photonic interconnects require significant upfront investment. Economic uncertainty may cause providers to defer spending.",
+        "analogs": [
+          "2022-2023 datacenter CAPEX pullback",
+          "2020 pandemic-driven infrastructure delays"
+        ],
+        "assumptions": [
+          "Recession leads to 10%+ reduction in IT spending",
+          "Cloud growth slows below 10% YoY",
+          "Alternative technologies (e.g., improved copper) remain viable"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Global economic indicators and reduced AMZN, MSFT, GOOGL datacenter spending within 12 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n11",
+        "kind": "event",
+        "statement": "Inhibitor: Supply chain disruption for indium phosphide (InP) wafers delays photonic chip production",
+        "resolution": "Major InP supplier outage or export restriction causes >6 month delay in photonic chip shipments within 18 months",
+        "base": 0.15,
+        "lagDays": [
+          60,
+          150
+        ],
+        "rationale": "InP is critical for laser integration in silicon photonics. Concentrated supply chain creates vulnerability.",
+        "analogs": [
+          "2021-2022 semiconductor shortage",
+          "2020 gallium arsenide supply disruption"
+        ],
+        "assumptions": [
+          ">70% of InP supply comes from single region",
+          "No alternative laser integration method ready",
+          "Geopolitical tensions affect key suppliers"
+        ],
+        "confidence": "low",
+        "marketQuery": "Coherent (COHR) and II-VI (now Coherent) InP wafer supply chain risk within 18 months",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "n12",
+        "kind": "event",
+        "statement": "Photonic interconnect achieves price parity with electrical interconnects at 400Gbps",
+        "resolution": "Total cost of ownership analysis shows photonic interconnects cost-equivalent to electrical at 400Gbps within 18 months",
+        "base": 0.28,
+        "lagDays": [
+          180,
+          365
+        ],
+        "rationale": "Price parity triggers mass adoption as datacenter operators switch to photonic for cost and performance benefits.",
+        "analogs": [
+          "2016 100G optical vs electrical price crossover",
+          "2020 400G DAC cost analysis"
+        ],
+        "assumptions": [
+          "Manufacturing scale reduces photonic component costs by 30%",
+          "Electrical interconnect costs rise due to signal integrity challenges",
+          "Installation and maintenance costs converge"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Cost comparison analysis for MRVL, AVGO, and LITE photonic vs electrical interconnects within 18 months",
+        "isRoot": false,
+        "isTarget": false
       }
     ],
     "edges": [
       {
-        "id": "switch-asic-power-wall->photonics-accelerates",
-        "source": "switch-asic-power-wall",
-        "target": "photonics-accelerates",
-        "mechanism": "Power and thermal constraints increase the value of optical I/O",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.48
-      },
-      {
-        "id": "hyperscaler-capex->photonics-accelerates",
-        "source": "hyperscaler-capex",
-        "target": "photonics-accelerates",
-        "mechanism": "More AI clusters justify earlier architecture transitions",
-        "assumptions": [],
+        "id": "root->n4",
+        "source": "root",
+        "target": "n4",
+        "mechanism": "Production deployment announcement follows budget allocation in prior planning cycle",
+        "assumptions": [
+          "Cloud providers plan 12-18 months ahead for infrastructure",
+          "Photonic interconnect budget is approved before deployment"
+        ],
         "confidence": "high",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.44
+        "strength": 0.8
       },
       {
-        "id": "interoperability-standard->photonics-accelerates",
-        "source": "interoperability-standard",
-        "target": "photonics-accelerates",
-        "mechanism": "Multi-vendor support reduces procurement and lock-in risk",
-        "assumptions": [],
+        "id": "n5->root",
+        "source": "n5",
+        "target": "root",
+        "mechanism": "Standardization enables interoperability and reduces vendor lock-in, accelerating adoption",
+        "assumptions": [
+          "OCP standard adopted by major cloud providers",
+          "Compliance testing ensures quality"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.4
+        "strength": 0.7
       },
       {
-        "id": "photonics-accelerates->co-packaged-optics-win",
-        "source": "photonics-accelerates",
-        "target": "co-packaged-optics-win",
-        "mechanism": "Faster adoption makes a production design win more likely",
-        "assumptions": [],
+        "id": "n1->n2",
+        "source": "n1",
+        "target": "n2",
+        "mechanism": "Expanded foundry capacity enables production of high-performance transceivers",
+        "assumptions": [
+          "Process yields improve with volume",
+          "Design wins follow capacity availability"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.66
+        "strength": 0.6
       },
       {
-        "id": "packaging-yield-delay->co-packaged-optics-win",
-        "source": "packaging-yield-delay",
-        "target": "co-packaged-optics-win",
-        "mechanism": "Yield delays postpone qualification and volume shipments",
-        "assumptions": [],
-        "confidence": "high",
+        "id": "n2->root",
+        "source": "n2",
+        "target": "root",
+        "mechanism": "High-performance transceivers are prerequisite for production deployment",
+        "assumptions": [
+          "Reach and power meet datacenter requirements",
+          "Volume production begins after lab validation"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.7
+      },
+      {
+        "id": "n3->root",
+        "source": "n3",
+        "target": "root",
+        "mechanism": "Fast photonic switching enables dynamic traffic engineering required for production use",
+        "assumptions": [
+          "Switching latency meets application requirements",
+          "Integration with SDN control plane succeeds"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.5
+      },
+      {
+        "id": "n6->n2",
+        "source": "n6",
+        "target": "n2",
+        "mechanism": "Lower power consumption enables longer reach and higher density transceivers",
+        "assumptions": [
+          "Power reduction applies to laser and modulator",
+          "Thermal design supports high port density"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.6
+      },
+      {
+        "id": "n12->root",
+        "source": "n12",
+        "target": "root",
+        "mechanism": "Price parity triggers mass adoption as operators switch for cost and performance",
+        "assumptions": [
+          "TCO analysis favors photonics at scale",
+          "Installation costs converge"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.7
+      },
+      {
+        "id": "n10->root",
+        "source": "n10",
+        "target": "root",
+        "mechanism": "Economic downturn reduces investment appetite and delays technology adoption",
+        "assumptions": [
+          "Cloud providers defer non-critical infrastructure",
+          "Budget reallocation favors maintenance over innovation"
+        ],
+        "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "inhibit",
-        "strength": 0.58
+        "strength": 0.6
       },
       {
-        "id": "photonics-accelerates->coherent",
-        "source": "photonics-accelerates",
-        "target": "coherent",
-        "mechanism": "Faster optical deployment lifts datacenter component demand",
-        "assumptions": [],
+        "id": "n11->n1",
+        "source": "n11",
+        "target": "n1",
+        "mechanism": "InP wafer shortage constrains photonic chip production capacity",
+        "assumptions": [
+          "No alternative laser integration ready",
+          "Inventory buffers insufficient"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.5
+      },
+      {
+        "id": "n11->n2",
+        "source": "n11",
+        "target": "n2",
+        "mechanism": "InP supply disruption delays transceiver production ramp",
+        "assumptions": [
+          "Transceivers depend on InP-based lasers",
+          "Lead times extend beyond normal planning horizon"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.4
+      },
+      {
+        "id": "n4->n7",
+        "source": "n4",
+        "target": "n7",
+        "mechanism": "Dedicated photonic interconnect budget drives silicon photonics market growth",
+        "assumptions": [
+          "Budget converts to actual purchases",
+          "Marvell captures significant share"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": 18
+        "impact": 60
       },
       {
-        "id": "co-packaged-optics-win->coherent",
-        "source": "co-packaged-optics-win",
-        "target": "coherent",
-        "mechanism": "A named program validates incremental component revenue",
-        "assumptions": [],
+        "id": "n4->n8",
+        "source": "n4",
+        "target": "n8",
+        "mechanism": "Photonic interconnect investment contributes to overall datacenter CAPEX growth",
+        "assumptions": [
+          "AWS allocates incremental budget for photonics",
+          "CapEx intensity remains stable"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": 12
+        "impact": 50
       },
       {
-        "id": "packaging-yield-delay->coherent",
-        "source": "packaging-yield-delay",
-        "target": "coherent",
-        "mechanism": "Delayed qualification defers the expected revenue ramp",
-        "assumptions": [],
+        "id": "root->n9",
+        "source": "root",
+        "target": "n9",
+        "mechanism": "Production deployment announcement drives optical component revenue growth",
+        "assumptions": [
+          "Lumentum secures design wins",
+          "Revenue recognized within fiscal year"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": -8
-      },
-      {
-        "id": "photonics-accelerates->lumentum",
-        "source": "photonics-accelerates",
-        "target": "lumentum",
-        "mechanism": "Higher-speed optical links increase demand for optical components",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "en",
-        "impact": 14
-      },
-      {
-        "id": "coherent->lumentum",
-        "source": "coherent",
-        "target": "lumentum",
-        "mechanism": "Optical-component peers share part of the same demand cycle",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "nn",
-        "beta": 0.55
+        "impact": 70
       }
     ],
     "sources": [],
-    "model": "fixture-seed",
-    "generatedAt": "2026-09-01T21:27:02.534Z",
+    "model": "poolside/laguna-s-2.1",
+    "generatedAt": "2026-09-02T01:41:36.948Z",
     "summary": {
-      "headline": "Power constraints and capex can pull photonics forward, but packaging yield remains the gate on a production ramp.",
-      "mainUncertainty": "Whether co-packaged optics clears qualification before pluggable optics improve enough to defer adoption.",
+      "headline": "Photonic interconnect adoption in datacenters could accelerate beyond expectations if silicon photonics capacity, transceiver performance, and price parity align within 365 days, but faces headwinds from economic uncertainty and InP supply chain risks.",
+      "mainUncertainty": "Timing of price parity and transceiver performance milestones relative to cloud provider budget cycles and macroeconomic conditions",
       "followUps": [
-        "Hyperscaler network architecture disclosures",
-        "Supplier production design wins",
-        "Advanced packaging yield commentary"
+        "Monitor TSMC/Intel photonics foundry announcements for capacity expansion signals",
+        "Track OCP working group progress on photonic interconnect specifications",
+        "Watch Lumentum and Coherent earnings calls for InP supply chain commentary",
+        "Follow hyperscaler analyst days for explicit photonic interconnect CAPEX disclosures"
       ]
     }
   },
-  "markets": {
-    "photonics-accelerates": [],
-    "co-packaged-optics-win": [
-      {
-        "title": "Will the Republican Party win the CO-01 House seat?",
-        "url": "https://polymarket.com/event/co-01-house-election-winner",
-        "yes": 0.023,
-        "volume": 26100.245752000003,
-        "endDate": "2026-11-03T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Democratic Party win the CO-01 House seat?",
-        "url": "https://polymarket.com/event/co-01-house-election-winner",
-        "yes": 0.9685,
-        "volume": 16952.879496999998,
-        "endDate": "2026-11-03T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Democratic Party win the CO-05 House seat?",
-        "url": "https://polymarket.com/event/co-05-house-election-winner",
-        "yes": 0.285,
-        "volume": 10613.557347999998,
-        "endDate": "2026-11-03T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Republican Party win the CO-04 House seat?",
-        "url": "https://polymarket.com/event/co-04-house-election-winner",
-        "yes": 0.635,
-        "volume": 8920.506376000001,
-        "endDate": "2026-11-03T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Democratic Party win the CO-08 House seat?",
-        "url": "https://polymarket.com/event/co-08-house-election-winner",
-        "yes": 0.78,
-        "volume": 8279.875027,
-        "endDate": "2026-11-04T00:00:00Z",
-        "source": "polymarket"
-      }
-    ],
-    "switch-asic-power-wall": [
-      {
-        "title": "Lisa Murkowski leaves the Republican Party in 2026?",
-        "url": "https://polymarket.com/event/lisa-murkowski-leaves-the-republican-party-in-2026",
-        "yes": 0.195,
-        "volume": 4783.528638,
-        "endDate": "2027-01-01T04:59:00Z",
-        "source": "polymarket"
-      }
-    ],
-    "hyperscaler-capex": [],
-    "packaging-yield-delay": [],
-    "interoperability-standard": []
-  },
+  "markets": {},
   "quotes": {
-    "COHR": {
-      "symbol": "COHR",
-      "price": 272.03,
-      "changePct": -2.088,
+    "MRVL": {
+      "symbol": "MRVL",
+      "price": 210.39,
+      "changePct": -0.6,
       "currency": "USD",
-      "time": "2026-09-01T20:00:03.000Z"
+      "time": "2026-09-01T20:00:01.000Z"
+    },
+    "AMZN": {
+      "symbol": "AMZN",
+      "price": 254.92,
+      "changePct": -1.867,
+      "currency": "USD",
+      "time": "2026-09-01T20:00:01.000Z"
     },
     "LITE": {
       "symbol": "LITE",

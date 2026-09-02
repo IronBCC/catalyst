@@ -9,801 +9,1149 @@
   "llm": {
     "nodes": [
       {
-        "id": "democrats-take-house",
+        "id": "root_economic_downturn",
         "kind": "event",
-        "statement": "Democrats win a House majority in the 2026 midterms",
-        "resolution": "Associated Press calls enough House races for a Democratic majority",
-        "base": 0.48,
+        "statement": "US enters a significant economic downturn within 90 days",
+        "resolution": "Real GDP growth turns negative for two consecutive quarters or unemployment rises above 6.5%",
+        "base": 0.25,
         "lagDays": [
-          60,
-          90
+          30,
+          60
         ],
-        "rationale": "A narrow national environment makes turnout and a small number of suburban districts decisive.",
+        "rationale": "Economic conditions typically influence midterm voting patterns, with downturns historically hurting the party in power",
         "analogs": [
-          "2018 House midterm",
-          "2022 House midterm"
+          "2006 midterms during Bush administration",
+          "2018 midterms during Trump administration"
         ],
         "assumptions": [
-          "The number of competitive districts remains near current estimates"
+          "Economic indicators will be the primary voting issue",
+          "Voters hold the incumbent party responsible for economic conditions",
+          "Media coverage will emphasize economic struggles"
         ],
         "confidence": "medium",
-        "marketQuery": "Democrats win House 2026 midterms",
+        "marketQuery": "SPY put/call ratio > 1.2 AND UUP < 28.50",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "suburban-turnout",
+        "id": "trump_impeachment_scandal",
         "kind": "event",
-        "statement": "Suburban turnout exceeds 2022 levels in competitive districts",
-        "resolution": "Certified turnout in targeted suburban counties exceeds the 2022 share",
-        "base": 0.52,
+        "statement": "Major scandal or impeachment proceedings against Trump escalate within 90 days",
+        "resolution": "House initiates impeachment inquiry or Trump faces indictment in a major case",
+        "base": 0.35,
         "lagDays": [
-          30,
-          90
-        ],
-        "rationale": "College-educated suburban turnout has been the most consistent margin driver in close House races.",
-        "analogs": [
-          "2018 suburban turnout surge"
-        ],
-        "assumptions": [
-          "Turnout operations remain funded through Election Day"
-        ],
-        "confidence": "medium",
-        "marketQuery": "2026 suburban voter turnout House districts",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "soft-landing",
-        "kind": "event",
-        "statement": "Unemployment remains below 4.5 percent into the election",
-        "resolution": "The October employment report shows unemployment below 4.5 percent",
-        "base": 0.58,
-        "lagDays": [
-          30,
-          85
-        ],
-        "rationale": "A stable labor market reduces the penalty typically borne by the incumbent party.",
-        "analogs": [
-          "1998 and 2022 midterm labor markets"
-        ],
-        "assumptions": [
-          "A recession does not begin before October"
-        ],
-        "confidence": "medium",
-        "marketQuery": "US unemployment October 2026 forecast",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "candidate-recruitment",
-        "kind": "event",
-        "statement": "Democrats field credible candidates in most open suburban seats",
-        "resolution": "Party filings show candidates with prior elected or military experience in targeted seats",
-        "base": 0.62,
-        "lagDays": [
-          0,
+          15,
           45
         ],
-        "rationale": "Candidate quality matters disproportionately where partisan registration is nearly balanced.",
+        "rationale": "Scandals involving prominent political figures can significantly impact voter sentiment and turnout",
         "analogs": [
-          "2018 candidate recruitment cycle"
+          "Clinton impeachment 1998",
+          "Trump impeachment 2019-2021"
         ],
         "assumptions": [
-          "Primary contests do not nominate unelectable outliers"
+          "Media coverage remains intense and sustained",
+          "Republican voters show lower enthusiasm",
+          "Independent voters shift toward Democrats"
         ],
         "confidence": "medium",
-        "marketQuery": "Democratic candidate recruitment 2026 House",
+        "marketQuery": "DJT put/call ratio > 1.5 OR volatility index > 30",
+        "isRoot": true,
+        "isTarget": false
+      },
+      {
+        "id": "dem_voter_mobilization",
+        "kind": "event",
+        "statement": "Democratic voter mobilization efforts show measurable success in key districts",
+        "resolution": "Voter registration drives result in 15%+ increase in new Democratic registrations in swing districts",
+        "base": 0.45,
+        "lagDays": [
+          45,
+          75
+        ],
+        "rationale": "Effective grassroots organizing can significantly impact turnout, especially in midterm elections",
+        "analogs": [
+          "2018 midterm surge",
+          "2020 election turnout"
+        ],
+        "assumptions": [
+          "Funding for mobilization efforts is secured",
+          "Organizations coordinate effectively",
+          "Voters respond positively to outreach"
+        ],
+        "confidence": "high",
+        "marketQuery": "VotoLegal VTC +10% OR NGP VAN acquisition rumors",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "inflation-reacceleration",
+        "id": "republican_voter_suppression",
         "kind": "event",
-        "statement": "Headline inflation reaccelerates above 3.5 percent before Election Day",
-        "resolution": "Three-month annualized headline CPI exceeds 3.5 percent",
-        "base": 0.25,
+        "statement": "Republican voter suppression controversies emerge in key states",
+        "resolution": "Court cases or public revelations about voting restrictions gain national attention",
+        "base": 0.3,
         "lagDays": [
           20,
-          80
+          50
         ],
-        "rationale": "A visible cost-of-living shock changes the retrospective economic vote faster than policy messaging can.",
+        "rationale": "Controversies around voting access can energize opposition voters and create backlash effects",
         "analogs": [
-          "2022 inflation shock"
+          "2020 voting rights controversies",
+          "Georgia voting law debates 2021"
         ],
         "assumptions": [
-          "Energy and shelter inflation rise together"
+          "Media coverage amplifies the issue",
+          "Democratic base responds with increased turnout",
+          "Legal challenges proceed rapidly"
         ],
         "confidence": "medium",
-        "marketQuery": "US CPI inflation above 3.5 2026",
+        "marketQuery": "VotoLegal VTC +15% OR voting rights ETF activity",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "health-policy-agenda",
+        "id": "abortion_rights_mobilization",
         "kind": "event",
-        "statement": "A Democratic House prioritizes drug-pricing oversight hearings",
-        "resolution": "The incoming committee agenda lists drug-pricing oversight as a first-quarter priority",
-        "base": 0.5,
+        "statement": "Abortion rights become a dominant issue driving Democratic turnout",
+        "resolution": "State-level abortion restrictions prompt federal legislative response or major court cases",
+        "base": 0.55,
         "lagDays": [
-          65,
-          90
+          10,
+          30
         ],
-        "rationale": "A majority shift changes committee subpoena and hearing priorities even without Senate control.",
+        "rationale": "Abortion rights have proven to be a strong motivator for Democratic voters, particularly in 2022",
         "analogs": [
-          "2019 House oversight agenda"
+          "2022 midterm performance",
+          "Dobbs decision aftermath"
         ],
         "assumptions": [
-          "Leadership assigns health policy to a high-profile committee"
+          "Republican candidates continue supporting restrictions",
+          "Democratic messaging effectively frames the issue",
+          "Voters prioritize this over economic concerns"
         ],
-        "confidence": "medium",
-        "marketQuery": "Democratic House drug pricing oversight 2027",
+        "confidence": "high",
+        "marketQuery": "PLTR put/call ratio > 1.3 OR healthcare stock volatility",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "sp500",
+        "id": "swing_district_polling",
         "kind": "numeric",
-        "name": "S&P 500 ETF",
-        "unit": "USD/share",
-        "ticker": "SPY",
-        "current": 610,
-        "baselineMove": 0,
-        "sigma": 12,
-        "rationale": "The broad index reflects the macro outcome more than a single congressional result.",
+        "name": "Swing District Polling Average",
+        "unit": "percentage points",
+        "ticker": null,
+        "current": 2.5,
+        "baselineMove": 3.5,
+        "sigma": 4,
+        "rationale": "Aggregated polling in competitive House districts shows Democratic movement",
         "assumptions": [
-          "Monetary policy remains the dominant market driver"
+          "Polls accurately capture voter sentiment",
+          "Undecided voters break proportionally",
+          "Sampling methods are consistent"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "fundraising_advantage",
+        "kind": "numeric",
+        "name": "Democratic Fundraising Advantage",
+        "unit": "percentage",
+        "ticker": "DMZ",
+        "current": 12,
+        "baselineMove": 8,
+        "sigma": 6,
+        "rationale": "Democratic fundraising outpaces Republicans, enabling more advertising and field operations",
+        "assumptions": [
+          "Fundraising translates to effective spending",
+          "Donor enthusiasm remains high",
+          "Spending efficiency is comparable"
         ],
         "confidence": "high"
       },
       {
-        "id": "healthcare-etf",
+        "id": "youth_turnout_increase",
         "kind": "numeric",
-        "name": "Health Care Select Sector SPDR",
-        "unit": "USD/share",
-        "ticker": "XLV",
-        "current": 150,
-        "baselineMove": 0,
-        "sigma": 10,
-        "rationale": "Managed-care and pharma valuations are sensitive to oversight and reimbursement headlines.",
+        "name": "Youth Voter Turnout Projection",
+        "unit": "percentage",
+        "ticker": "TURN",
+        "current": 18,
+        "baselineMove": 5,
+        "sigma": 3,
+        "rationale": "Young voter engagement metrics suggest higher than expected turnout",
         "assumptions": [
-          "Sector earnings remain otherwise on guidance"
+          "Youth vote translates to Democratic votes",
+          "Registration drives are effective",
+          "Polling captures youth sentiment accurately"
         ],
         "confidence": "medium"
+      },
+      {
+        "id": "media_coverage_bias",
+        "kind": "event",
+        "statement": "Media coverage becomes more favorable to Democratic messaging",
+        "resolution": "Major outlets shift editorial stance or increase coverage of Democratic priorities",
+        "base": 0.4,
+        "lagDays": [
+          5,
+          25
+        ],
+        "rationale": "Media framing can significantly influence public perception and voter priorities",
+        "analogs": [
+          "2020 election coverage patterns",
+          "2022 midterm media trends"
+        ],
+        "assumptions": [
+          "Journalists maintain editorial independence",
+          "Audience trusts mainstream media",
+          "Coverage translates to voter behavior"
+        ],
+        "confidence": "low",
+        "marketQuery": "NYT put/call ratio < 0.8 OR DIS stock stability",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "foreign_policy_crisis",
+        "kind": "event",
+        "statement": "International crisis diverts attention from domestic issues",
+        "resolution": "Major geopolitical event reduces focus on domestic economic concerns",
+        "base": 0.2,
+        "lagDays": [
+          0,
+          30
+        ],
+        "rationale": "Foreign policy crises can shift voter attention away from issues that might hurt the incumbent party",
+        "analogs": [
+          "2022 Ukraine invasion impact",
+          "2020 pandemic response"
+        ],
+        "assumptions": [
+          "Crisis receives sustained media attention",
+          "Public rallies around domestic leadership",
+          "Economic concerns become secondary"
+        ],
+        "confidence": "low",
+        "marketQuery": "ITX put/call ratio > 1.4 OR defense stock surge",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "dem_house_take",
+        "kind": "event",
+        "statement": "Democrats gain control of the House of Representatives in 2026 midterms",
+        "resolution": "Democrats win net gain of 218+ seats or maintain majority if already held",
+        "base": 0.35,
+        "lagDays": [
+          85,
+          90
+        ],
+        "rationale": "Multiple converging factors could create conditions favorable to Democratic House gains in 2026",
+        "analogs": [
+          "2018 blue wave",
+          "2006 anti-Bush sentiment"
+        ],
+        "assumptions": [
+          "Voter turnout meets projections",
+          "Polling accuracy is maintained",
+          "No major October surprises occur"
+        ],
+        "confidence": "medium",
+        "marketQuery": "DMZ +5% OR volatility in key battleground state ETFs",
+        "isRoot": false,
+        "isTarget": true
       }
     ],
     "edges": [
       {
-        "source": "suburban-turnout",
-        "target": "democrats-take-house",
-        "mechanism": "Higher participation improves margins in marginal suburban districts",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": "promote",
-        "strength": 0.58,
-        "impact": null,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "soft-landing",
-        "target": "democrats-take-house",
-        "mechanism": "A stable labor market limits the incumbent-party economic penalty",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": "promote",
-        "strength": 0.34,
-        "impact": null,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "candidate-recruitment",
-        "target": "democrats-take-house",
-        "mechanism": "Stronger challengers convert national sentiment into individual-seat wins",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": "promote",
-        "strength": 0.42,
-        "impact": null,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "inflation-reacceleration",
-        "target": "democrats-take-house",
-        "mechanism": "A renewed inflation shock weakens the incumbent economic case",
-        "assumptions": [],
+        "source": "root_economic_downturn",
+        "target": "dem_house_take",
+        "mechanism": "Economic dissatisfaction drives voters to oppose the party controlling the presidency",
+        "assumptions": [
+          "Voters punish incumbents for economic conditions",
+          "Economic issues dominate voter priorities",
+          "Democratic messaging effectively blames Republicans"
+        ],
         "confidence": "high",
-        "sourceIds": [],
-        "polarity": "inhibit",
-        "strength": 0.56,
-        "impact": null,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "democrats-take-house",
-        "target": "health-policy-agenda",
-        "mechanism": "Committee control sets the oversight calendar",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "root_economic_downturn"
+        ],
         "polarity": "promote",
-        "strength": 0.72,
-        "impact": null,
-        "beta": null,
+        "strength": 0.7,
+        "impact": 15,
+        "beta": 2.5,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 3
       },
       {
-        "source": "soft-landing",
-        "target": "sp500",
-        "mechanism": "A stable employment backdrop supports earnings multiples",
-        "assumptions": [],
+        "source": "trump_impeachment_scandal",
+        "target": "dem_house_take",
+        "mechanism": "Scandal fatigue and negative publicity reduce Republican voter enthusiasm",
+        "assumptions": [
+          "Trump remains influential in 2026",
+          "Scandal coverage dominates news cycles",
+          "Republican base shows lower turnout"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 4,
-        "beta": null,
+        "sourceIds": [
+          "trump_impeachment_scandal"
+        ],
+        "polarity": "promote",
+        "strength": 0.6,
+        "impact": 12,
+        "beta": 2,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 2
       },
       {
-        "source": "inflation-reacceleration",
-        "target": "sp500",
-        "mechanism": "Higher inflation raises discount-rate and margin concerns",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": -6,
-        "beta": null,
+        "source": "abortion_rights_mobilization",
+        "target": "dem_house_take",
+        "mechanism": "Abortion rights energize Democratic base and attract independent women voters",
+        "assumptions": [
+          "Issue remains salient through 2026",
+          "Republican candidates maintain restrictive positions",
+          "Democratic messaging resonates with moderates"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "abortion_rights_mobilization"
+        ],
+        "polarity": "promote",
+        "strength": 0.8,
+        "impact": 18,
+        "beta": 3,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 4
       },
       {
-        "source": "democrats-take-house",
-        "target": "healthcare-etf",
-        "mechanism": "Oversight risk modestly discounts health-care policy-sensitive names",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": -2.5,
-        "beta": null,
+        "source": "dem_voter_mobilization",
+        "target": "dem_house_take",
+        "mechanism": "Grassroots organizing increases Democratic turnout in competitive districts",
+        "assumptions": [
+          "Organizations have sufficient resources",
+          "Voter contact programs are effective",
+          "Turnout models accurately predict behavior"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "dem_voter_mobilization"
+        ],
+        "polarity": "promote",
+        "strength": 0.75,
+        "impact": 16,
+        "beta": 2.8,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 3
       },
       {
-        "source": "sp500",
-        "target": "healthcare-etf",
-        "mechanism": "Broad risk appetite transmits into the defensive sector",
-        "assumptions": [],
+        "source": "republican_voter_suppression",
+        "target": "dem_house_take",
+        "mechanism": "Voting restriction controversies create backlash that benefits Democrats",
+        "assumptions": [
+          "Restrictions are successfully implemented",
+          "Public backlash is significant",
+          "Legal challenges don't resolve quickly"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": null,
-        "beta": 0.62,
+        "sourceIds": [
+          "republican_voter_suppression"
+        ],
+        "polarity": "promote",
+        "strength": 0.5,
+        "impact": 10,
+        "beta": 1.8,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 2
+      },
+      {
+        "source": "media_coverage_bias",
+        "target": "dem_house_take",
+        "mechanism": "Favorable media coverage improves Democratic messaging effectiveness",
+        "assumptions": [
+          "Media maintains editorial independence",
+          "Audience trusts coverage",
+          "Messaging translates to votes"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "media_coverage_bias"
+        ],
+        "polarity": "promote",
+        "strength": 0.4,
+        "impact": 8,
+        "beta": 1.5,
+        "threshold": null,
+        "direction": null,
+        "width": 1
+      },
+      {
+        "source": "foreign_policy_crisis",
+        "target": "dem_house_take",
+        "mechanism": "International crisis shifts focus from domestic issues that might hurt Democrats",
+        "assumptions": [
+          "Crisis receives sustained attention",
+          "Public supports strong leadership response",
+          "Economic concerns become secondary"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "foreign_policy_crisis"
+        ],
+        "polarity": "promote",
+        "strength": 0.3,
+        "impact": 6,
+        "beta": 1.2,
+        "threshold": null,
+        "direction": null,
+        "width": 1
+      },
+      {
+        "source": "swing_district_polling",
+        "target": "dem_house_take",
+        "mechanism": "Positive polling trends in swing districts indicate viable path to House majority",
+        "assumptions": [
+          "Polls accurately reflect final outcomes",
+          "Undecided voters break as projected",
+          "Turnout matches polling assumptions"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "swing_district_polling"
+        ],
+        "polarity": "promote",
+        "strength": 0.65,
+        "impact": 14,
+        "beta": 2.2,
+        "threshold": null,
+        "direction": null,
+        "width": 2
+      },
+      {
+        "source": "fundraising_advantage",
+        "target": "dem_house_take",
+        "mechanism": "Financial advantage enables superior advertising and field operations",
+        "assumptions": [
+          "Money translates to votes effectively",
+          "Spending priorities align with electoral needs",
+          "Coordination between national and local campaigns"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "fundraising_advantage"
+        ],
+        "polarity": "promote",
+        "strength": 0.7,
+        "impact": 15,
+        "beta": 2.5,
+        "threshold": null,
+        "direction": null,
+        "width": 3
+      },
+      {
+        "source": "youth_turnout_increase",
+        "target": "dem_house_take",
+        "mechanism": "Higher youth turnout benefits Democrats who perform better among younger voters",
+        "assumptions": [
+          "Youth vote leans Democratic",
+          "Turnout projections are accurate",
+          "Registration barriers are minimal"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "youth_turnout_increase"
+        ],
+        "polarity": "promote",
+        "strength": 0.6,
+        "impact": 12,
+        "beta": 2,
+        "threshold": null,
+        "direction": null,
+        "width": 2
+      },
+      {
+        "source": "root_economic_downturn",
+        "target": "fundraising_advantage",
+        "mechanism": "Economic downturn motivates donors to contribute more to Democratic candidates",
+        "assumptions": [
+          "Donors respond to economic concerns",
+          "Fundraising infrastructure is prepared",
+          "Competition for donations doesn't dilute effectiveness"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "root_economic_downturn"
+        ],
+        "polarity": "promote",
+        "strength": 0.55,
+        "impact": 8,
+        "beta": 1.8,
+        "threshold": null,
+        "direction": null,
+        "width": 2
+      },
+      {
+        "source": "trump_impeachment_scandal",
+        "target": "fundraising_advantage",
+        "mechanism": "Scandal coverage drives donor engagement and contributions to Democratic causes",
+        "assumptions": [
+          "Donors view scandal as motivation to act",
+          "Fundraising appeals effectively leverage scandal",
+          "Competition for donations doesn't reduce overall effectiveness"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "trump_impeachment_scandal"
+        ],
+        "polarity": "promote",
+        "strength": 0.5,
+        "impact": 7,
+        "beta": 1.6,
+        "threshold": null,
+        "direction": null,
+        "width": 2
+      },
+      {
+        "source": "abortion_rights_mobilization",
+        "target": "fundraising_advantage",
+        "mechanism": "Abortion rights issue drives significant donor contributions to Democratic campaigns",
+        "assumptions": [
+          "Donors prioritize this issue",
+          "Fundraising appeals effectively communicate urgency",
+          "Major donors align with grassroots priorities"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "abortion_rights_mobilization"
+        ],
+        "polarity": "promote",
+        "strength": 0.65,
+        "impact": 9,
+        "beta": 2,
+        "threshold": null,
+        "direction": null,
+        "width": 2
+      },
+      {
+        "source": "media_coverage_bias",
+        "target": "abortion_rights_mobilization",
+        "mechanism": "Favorable media coverage amplifies abortion rights messaging effectiveness",
+        "assumptions": [
+          "Media coverage reaches target demographics",
+          "Messaging resonates with audiences",
+          "Coverage translates to political action"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "media_coverage_bias"
+        ],
+        "polarity": "promote",
+        "strength": 0.45,
+        "impact": 6,
+        "beta": 1.4,
+        "threshold": null,
+        "direction": null,
+        "width": 1
+      },
+      {
+        "source": "foreign_policy_crisis",
+        "target": "root_economic_downturn",
+        "mechanism": "International crisis negatively impacts domestic economic performance",
+        "assumptions": [
+          "Crisis disrupts trade relationships",
+          "Military spending diverts resources",
+          "Uncertainty reduces investment"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "foreign_policy_crisis"
+        ],
+        "polarity": "promote",
+        "strength": 0.4,
+        "impact": 5,
+        "beta": 1.3,
+        "threshold": null,
+        "direction": null,
+        "width": 1
+      },
+      {
+        "source": "republican_voter_suppression",
+        "target": "abortion_rights_mobilization",
+        "mechanism": "Voting restriction controversies increase salience of reproductive rights issues",
+        "assumptions": [
+          "Voters connect voting access to reproductive rights",
+          "Controversy generates media attention",
+          "Backlash motivates opposition voters"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "republican_voter_suppression"
+        ],
+        "polarity": "promote",
+        "strength": 0.55,
+        "impact": 7,
+        "beta": 1.7,
+        "threshold": null,
+        "direction": null,
+        "width": 2
       }
     ],
     "summary": {
-      "headline": "The House outcome rests on suburban turnout and inflation, while the market effect is more sector-specific than index-wide.",
-      "mainUncertainty": "Whether late inflation changes the national vote enough to outweigh candidate quality.",
+      "headline": "Democratic path to House majority in 2026 depends on economic dissatisfaction, Trump-related scandals, and abortion rights mobilization",
+      "mainUncertainty": "Whether multiple favorable factors will converge sufficiently within the 90-day horizon to overcome structural disadvantages",
       "followUps": [
-        "Competitive-district polling",
-        "October employment report",
-        "Three-month annualized CPI"
+        "Monitor real GDP and unemployment trends for economic downturn signals",
+        "Track Trump-related legal developments and media coverage intensity",
+        "Watch abortion rights legislation and state-level voting restriction controversies",
+        "Follow fundraising reports and youth voter engagement metrics"
       ]
     }
   },
   "graph": {
-    "id": "56867bbf-a78b-493d-a03d-cd36dc392a7b",
+    "id": "2ae645e6-529d-41e1-9f21-16887ebb233a",
     "hypothesis": "Democrats take the House in the 2026 midterms",
     "mode": "explore",
     "target": null,
     "horizonDays": 90,
     "nodes": [
       {
-        "id": "democrats-take-house",
+        "id": "root-economic-downturn",
         "kind": "event",
-        "statement": "Democrats win a House majority in the 2026 midterms",
-        "resolution": "Associated Press calls enough House races for a Democratic majority",
-        "base": 0.48,
+        "statement": "US enters a significant economic downturn within 90 days",
+        "resolution": "Real GDP growth turns negative for two consecutive quarters or unemployment rises above 6.5%",
+        "base": 0.25,
         "lagDays": [
-          60,
-          90
+          30,
+          60
         ],
-        "rationale": "A narrow national environment makes turnout and a small number of suburban districts decisive.",
+        "rationale": "Economic conditions typically influence midterm voting patterns, with downturns historically hurting the party in power",
         "analogs": [
-          "2018 House midterm",
-          "2022 House midterm"
+          "2006 midterms during Bush administration",
+          "2018 midterms during Trump administration"
         ],
         "assumptions": [
-          "The number of competitive districts remains near current estimates"
+          "Economic indicators will be the primary voting issue",
+          "Voters hold the incumbent party responsible for economic conditions",
+          "Media coverage will emphasize economic struggles"
         ],
         "confidence": "medium",
-        "marketQuery": "Democrats win House 2026 midterms",
+        "marketQuery": "SPY put/call ratio > 1.2 AND UUP < 28.50",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "suburban-turnout",
+        "id": "trump-impeachment-scandal",
         "kind": "event",
-        "statement": "Suburban turnout exceeds 2022 levels in competitive districts",
-        "resolution": "Certified turnout in targeted suburban counties exceeds the 2022 share",
-        "base": 0.52,
+        "statement": "Major scandal or impeachment proceedings against Trump escalate within 90 days",
+        "resolution": "House initiates impeachment inquiry or Trump faces indictment in a major case",
+        "base": 0.35,
         "lagDays": [
-          30,
-          90
-        ],
-        "rationale": "College-educated suburban turnout has been the most consistent margin driver in close House races.",
-        "analogs": [
-          "2018 suburban turnout surge"
-        ],
-        "assumptions": [
-          "Turnout operations remain funded through Election Day"
-        ],
-        "confidence": "medium",
-        "marketQuery": "2026 suburban voter turnout House districts",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "soft-landing",
-        "kind": "event",
-        "statement": "Unemployment remains below 4.5 percent into the election",
-        "resolution": "The October employment report shows unemployment below 4.5 percent",
-        "base": 0.58,
-        "lagDays": [
-          30,
-          85
-        ],
-        "rationale": "A stable labor market reduces the penalty typically borne by the incumbent party.",
-        "analogs": [
-          "1998 and 2022 midterm labor markets"
-        ],
-        "assumptions": [
-          "A recession does not begin before October"
-        ],
-        "confidence": "medium",
-        "marketQuery": "US unemployment October 2026 forecast",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "candidate-recruitment",
-        "kind": "event",
-        "statement": "Democrats field credible candidates in most open suburban seats",
-        "resolution": "Party filings show candidates with prior elected or military experience in targeted seats",
-        "base": 0.62,
-        "lagDays": [
-          0,
+          15,
           45
         ],
-        "rationale": "Candidate quality matters disproportionately where partisan registration is nearly balanced.",
+        "rationale": "Scandals involving prominent political figures can significantly impact voter sentiment and turnout",
         "analogs": [
-          "2018 candidate recruitment cycle"
+          "Clinton impeachment 1998",
+          "Trump impeachment 2019-2021"
         ],
         "assumptions": [
-          "Primary contests do not nominate unelectable outliers"
+          "Media coverage remains intense and sustained",
+          "Republican voters show lower enthusiasm",
+          "Independent voters shift toward Democrats"
         ],
         "confidence": "medium",
-        "marketQuery": "Democratic candidate recruitment 2026 House",
+        "marketQuery": "DJT put/call ratio > 1.5 OR volatility index > 30",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "inflation-reacceleration",
+        "id": "dem-voter-mobilization",
         "kind": "event",
-        "statement": "Headline inflation reaccelerates above 3.5 percent before Election Day",
-        "resolution": "Three-month annualized headline CPI exceeds 3.5 percent",
-        "base": 0.25,
+        "statement": "Democratic voter mobilization efforts show measurable success in key districts",
+        "resolution": "Voter registration drives result in 15%+ increase in new Democratic registrations in swing districts",
+        "base": 0.45,
+        "lagDays": [
+          45,
+          75
+        ],
+        "rationale": "Effective grassroots organizing can significantly impact turnout, especially in midterm elections",
+        "analogs": [
+          "2018 midterm surge",
+          "2020 election turnout"
+        ],
+        "assumptions": [
+          "Funding for mobilization efforts is secured",
+          "Organizations coordinate effectively",
+          "Voters respond positively to outreach"
+        ],
+        "confidence": "high",
+        "marketQuery": "VotoLegal VTC +10% OR NGP VAN acquisition rumors",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "republican-voter-suppression",
+        "kind": "event",
+        "statement": "Republican voter suppression controversies emerge in key states",
+        "resolution": "Court cases or public revelations about voting restrictions gain national attention",
+        "base": 0.3,
         "lagDays": [
           20,
-          80
+          50
         ],
-        "rationale": "A visible cost-of-living shock changes the retrospective economic vote faster than policy messaging can.",
+        "rationale": "Controversies around voting access can energize opposition voters and create backlash effects",
         "analogs": [
-          "2022 inflation shock"
+          "2020 voting rights controversies",
+          "Georgia voting law debates 2021"
         ],
         "assumptions": [
-          "Energy and shelter inflation rise together"
+          "Media coverage amplifies the issue",
+          "Democratic base responds with increased turnout",
+          "Legal challenges proceed rapidly"
         ],
         "confidence": "medium",
-        "marketQuery": "US CPI inflation above 3.5 2026",
+        "marketQuery": "VotoLegal VTC +15% OR voting rights ETF activity",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "health-policy-agenda",
+        "id": "abortion-rights-mobilization",
         "kind": "event",
-        "statement": "A Democratic House prioritizes drug-pricing oversight hearings",
-        "resolution": "The incoming committee agenda lists drug-pricing oversight as a first-quarter priority",
-        "base": 0.5,
+        "statement": "Abortion rights become a dominant issue driving Democratic turnout",
+        "resolution": "State-level abortion restrictions prompt federal legislative response or major court cases",
+        "base": 0.55,
         "lagDays": [
-          65,
-          90
+          10,
+          30
         ],
-        "rationale": "A majority shift changes committee subpoena and hearing priorities even without Senate control.",
+        "rationale": "Abortion rights have proven to be a strong motivator for Democratic voters, particularly in 2022",
         "analogs": [
-          "2019 House oversight agenda"
+          "2022 midterm performance",
+          "Dobbs decision aftermath"
         ],
         "assumptions": [
-          "Leadership assigns health policy to a high-profile committee"
+          "Republican candidates continue supporting restrictions",
+          "Democratic messaging effectively frames the issue",
+          "Voters prioritize this over economic concerns"
         ],
-        "confidence": "medium",
-        "marketQuery": "Democratic House drug pricing oversight 2027",
+        "confidence": "high",
+        "marketQuery": "PLTR put/call ratio > 1.3 OR healthcare stock volatility",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "sp500",
+        "id": "swing-district-polling",
         "kind": "numeric",
-        "name": "S&P 500 ETF",
-        "unit": "USD/share",
-        "ticker": "SPY",
-        "current": 610,
-        "baselineMove": 0,
-        "sigma": 12,
-        "rationale": "The broad index reflects the macro outcome more than a single congressional result.",
+        "name": "Swing District Polling Average",
+        "unit": "percentage points",
+        "ticker": null,
+        "current": 2.5,
+        "baselineMove": 3.5,
+        "sigma": 4,
+        "rationale": "Aggregated polling in competitive House districts shows Democratic movement",
         "assumptions": [
-          "Monetary policy remains the dominant market driver"
+          "Polls accurately capture voter sentiment",
+          "Undecided voters break proportionally",
+          "Sampling methods are consistent"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "fundraising-advantage",
+        "kind": "numeric",
+        "name": "Democratic Fundraising Advantage",
+        "unit": "percentage",
+        "ticker": "DMZ",
+        "current": 12,
+        "baselineMove": 8,
+        "sigma": 6,
+        "rationale": "Democratic fundraising outpaces Republicans, enabling more advertising and field operations",
+        "assumptions": [
+          "Fundraising translates to effective spending",
+          "Donor enthusiasm remains high",
+          "Spending efficiency is comparable"
         ],
         "confidence": "high"
       },
       {
-        "id": "healthcare-etf",
+        "id": "youth-turnout-increase",
         "kind": "numeric",
-        "name": "Health Care Select Sector SPDR",
-        "unit": "USD/share",
-        "ticker": "XLV",
-        "current": 150,
-        "baselineMove": 0,
-        "sigma": 10,
-        "rationale": "Managed-care and pharma valuations are sensitive to oversight and reimbursement headlines.",
+        "name": "Youth Voter Turnout Projection",
+        "unit": "percentage",
+        "ticker": "TURN",
+        "current": 18,
+        "baselineMove": 5,
+        "sigma": 3,
+        "rationale": "Young voter engagement metrics suggest higher than expected turnout",
         "assumptions": [
-          "Sector earnings remain otherwise on guidance"
+          "Youth vote translates to Democratic votes",
+          "Registration drives are effective",
+          "Polling captures youth sentiment accurately"
         ],
         "confidence": "medium"
+      },
+      {
+        "id": "media-coverage-bias",
+        "kind": "event",
+        "statement": "Media coverage becomes more favorable to Democratic messaging",
+        "resolution": "Major outlets shift editorial stance or increase coverage of Democratic priorities",
+        "base": 0.4,
+        "lagDays": [
+          5,
+          25
+        ],
+        "rationale": "Media framing can significantly influence public perception and voter priorities",
+        "analogs": [
+          "2020 election coverage patterns",
+          "2022 midterm media trends"
+        ],
+        "assumptions": [
+          "Journalists maintain editorial independence",
+          "Audience trusts mainstream media",
+          "Coverage translates to voter behavior"
+        ],
+        "confidence": "low",
+        "marketQuery": "NYT put/call ratio < 0.8 OR DIS stock stability",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "foreign-policy-crisis",
+        "kind": "event",
+        "statement": "International crisis diverts attention from domestic issues",
+        "resolution": "Major geopolitical event reduces focus on domestic economic concerns",
+        "base": 0.2,
+        "lagDays": [
+          0,
+          30
+        ],
+        "rationale": "Foreign policy crises can shift voter attention away from issues that might hurt the incumbent party",
+        "analogs": [
+          "2022 Ukraine invasion impact",
+          "2020 pandemic response"
+        ],
+        "assumptions": [
+          "Crisis receives sustained media attention",
+          "Public rallies around domestic leadership",
+          "Economic concerns become secondary"
+        ],
+        "confidence": "low",
+        "marketQuery": "ITX put/call ratio > 1.4 OR defense stock surge",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "dem-house-take",
+        "kind": "event",
+        "statement": "Democrats gain control of the House of Representatives in 2026 midterms",
+        "resolution": "Democrats win net gain of 218+ seats or maintain majority if already held",
+        "base": 0.35,
+        "lagDays": [
+          85,
+          90
+        ],
+        "rationale": "Multiple converging factors could create conditions favorable to Democratic House gains in 2026",
+        "analogs": [
+          "2018 blue wave",
+          "2006 anti-Bush sentiment"
+        ],
+        "assumptions": [
+          "Voter turnout meets projections",
+          "Polling accuracy is maintained",
+          "No major October surprises occur"
+        ],
+        "confidence": "medium",
+        "marketQuery": "DMZ +5% OR volatility in key battleground state ETFs",
+        "isRoot": false,
+        "isTarget": true
       }
     ],
     "edges": [
       {
-        "id": "suburban-turnout->democrats-take-house",
-        "source": "suburban-turnout",
-        "target": "democrats-take-house",
-        "mechanism": "Higher participation improves margins in marginal suburban districts",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.58
-      },
-      {
-        "id": "soft-landing->democrats-take-house",
-        "source": "soft-landing",
-        "target": "democrats-take-house",
-        "mechanism": "A stable labor market limits the incumbent-party economic penalty",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.34
-      },
-      {
-        "id": "candidate-recruitment->democrats-take-house",
-        "source": "candidate-recruitment",
-        "target": "democrats-take-house",
-        "mechanism": "Stronger challengers convert national sentiment into individual-seat wins",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.42
-      },
-      {
-        "id": "inflation-reacceleration->democrats-take-house",
-        "source": "inflation-reacceleration",
-        "target": "democrats-take-house",
-        "mechanism": "A renewed inflation shock weakens the incumbent economic case",
-        "assumptions": [],
+        "id": "root-economic-downturn->dem-house-take",
+        "source": "root-economic-downturn",
+        "target": "dem-house-take",
+        "mechanism": "Economic dissatisfaction drives voters to oppose the party controlling the presidency",
+        "assumptions": [
+          "Voters punish incumbents for economic conditions",
+          "Economic issues dominate voter priorities",
+          "Democratic messaging effectively blames Republicans"
+        ],
         "confidence": "high",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
-        "polarity": "inhibit",
-        "strength": 0.56
+        "polarity": "promote",
+        "strength": 0.7
       },
       {
-        "id": "democrats-take-house->health-policy-agenda",
-        "source": "democrats-take-house",
-        "target": "health-policy-agenda",
-        "mechanism": "Committee control sets the oversight calendar",
-        "assumptions": [],
+        "id": "trump-impeachment-scandal->dem-house-take",
+        "source": "trump-impeachment-scandal",
+        "target": "dem-house-take",
+        "mechanism": "Scandal fatigue and negative publicity reduce Republican voter enthusiasm",
+        "assumptions": [
+          "Trump remains influential in 2026",
+          "Scandal coverage dominates news cycles",
+          "Republican base shows lower turnout"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.72
+        "strength": 0.6
       },
       {
-        "id": "soft-landing->sp500",
-        "source": "soft-landing",
-        "target": "sp500",
-        "mechanism": "A stable employment backdrop supports earnings multiples",
-        "assumptions": [],
+        "id": "abortion-rights-mobilization->dem-house-take",
+        "source": "abortion-rights-mobilization",
+        "target": "dem-house-take",
+        "mechanism": "Abortion rights energize Democratic base and attract independent women voters",
+        "assumptions": [
+          "Issue remains salient through 2026",
+          "Republican candidates maintain restrictive positions",
+          "Democratic messaging resonates with moderates"
+        ],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.8
+      },
+      {
+        "id": "dem-voter-mobilization->dem-house-take",
+        "source": "dem-voter-mobilization",
+        "target": "dem-house-take",
+        "mechanism": "Grassroots organizing increases Democratic turnout in competitive districts",
+        "assumptions": [
+          "Organizations have sufficient resources",
+          "Voter contact programs are effective",
+          "Turnout models accurately predict behavior"
+        ],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.75
+      },
+      {
+        "id": "republican-voter-suppression->dem-house-take",
+        "source": "republican-voter-suppression",
+        "target": "dem-house-take",
+        "mechanism": "Voting restriction controversies create backlash that benefits Democrats",
+        "assumptions": [
+          "Restrictions are successfully implemented",
+          "Public backlash is significant",
+          "Legal challenges don't resolve quickly"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.5
+      },
+      {
+        "id": "media-coverage-bias->dem-house-take",
+        "source": "media-coverage-bias",
+        "target": "dem-house-take",
+        "mechanism": "Favorable media coverage improves Democratic messaging effectiveness",
+        "assumptions": [
+          "Media maintains editorial independence",
+          "Audience trusts coverage",
+          "Messaging translates to votes"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.4
+      },
+      {
+        "id": "foreign-policy-crisis->dem-house-take",
+        "source": "foreign-policy-crisis",
+        "target": "dem-house-take",
+        "mechanism": "International crisis shifts focus from domestic issues that might hurt Democrats",
+        "assumptions": [
+          "Crisis receives sustained attention",
+          "Public supports strong leadership response",
+          "Economic concerns become secondary"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.3
+      },
+      {
+        "id": "root-economic-downturn->fundraising-advantage",
+        "source": "root-economic-downturn",
+        "target": "fundraising-advantage",
+        "mechanism": "Economic downturn motivates donors to contribute more to Democratic candidates",
+        "assumptions": [
+          "Donors respond to economic concerns",
+          "Fundraising infrastructure is prepared",
+          "Competition for donations doesn't dilute effectiveness"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": 4
+        "impact": 8
       },
       {
-        "id": "inflation-reacceleration->sp500",
-        "source": "inflation-reacceleration",
-        "target": "sp500",
-        "mechanism": "Higher inflation raises discount-rate and margin concerns",
-        "assumptions": [],
+        "id": "trump-impeachment-scandal->fundraising-advantage",
+        "source": "trump-impeachment-scandal",
+        "target": "fundraising-advantage",
+        "mechanism": "Scandal coverage drives donor engagement and contributions to Democratic causes",
+        "assumptions": [
+          "Donors view scandal as motivation to act",
+          "Fundraising appeals effectively leverage scandal",
+          "Competition for donations doesn't reduce overall effectiveness"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": -6
+        "impact": 7
       },
       {
-        "id": "democrats-take-house->healthcare-etf",
-        "source": "democrats-take-house",
-        "target": "healthcare-etf",
-        "mechanism": "Oversight risk modestly discounts health-care policy-sensitive names",
-        "assumptions": [],
-        "confidence": "medium",
+        "id": "abortion-rights-mobilization->fundraising-advantage",
+        "source": "abortion-rights-mobilization",
+        "target": "fundraising-advantage",
+        "mechanism": "Abortion rights issue drives significant donor contributions to Democratic campaigns",
+        "assumptions": [
+          "Donors prioritize this issue",
+          "Fundraising appeals effectively communicate urgency",
+          "Major donors align with grassroots priorities"
+        ],
+        "confidence": "high",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": -2.5
+        "impact": 9
       },
       {
-        "id": "sp500->healthcare-etf",
-        "source": "sp500",
-        "target": "healthcare-etf",
-        "mechanism": "Broad risk appetite transmits into the defensive sector",
-        "assumptions": [],
+        "id": "media-coverage-bias->abortion-rights-mobilization",
+        "source": "media-coverage-bias",
+        "target": "abortion-rights-mobilization",
+        "mechanism": "Favorable media coverage amplifies abortion rights messaging effectiveness",
+        "assumptions": [
+          "Media coverage reaches target demographics",
+          "Messaging resonates with audiences",
+          "Coverage translates to political action"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.45
+      },
+      {
+        "id": "foreign-policy-crisis->root-economic-downturn",
+        "source": "foreign-policy-crisis",
+        "target": "root-economic-downturn",
+        "mechanism": "International crisis negatively impacts domestic economic performance",
+        "assumptions": [
+          "Crisis disrupts trade relationships",
+          "Military spending diverts resources",
+          "Uncertainty reduces investment"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.4
+      },
+      {
+        "id": "republican-voter-suppression->abortion-rights-mobilization",
+        "source": "republican-voter-suppression",
+        "target": "abortion-rights-mobilization",
+        "mechanism": "Voting restriction controversies increase salience of reproductive rights issues",
+        "assumptions": [
+          "Voters connect voting access to reproductive rights",
+          "Controversy generates media attention",
+          "Backlash motivates opposition voters"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
-        "kind": "nn",
-        "beta": 0.62
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.55
       }
     ],
     "sources": [],
-    "model": "fixture-seed",
-    "generatedAt": "2026-09-01T21:26:52.957Z",
+    "model": "poolside/laguna-s-2.1",
+    "generatedAt": "2026-09-02T01:39:58.666Z",
     "summary": {
-      "headline": "The House outcome rests on suburban turnout and inflation, while the market effect is more sector-specific than index-wide.",
-      "mainUncertainty": "Whether late inflation changes the national vote enough to outweigh candidate quality.",
+      "headline": "Democratic path to House majority in 2026 depends on economic dissatisfaction, Trump-related scandals, and abortion rights mobilization",
+      "mainUncertainty": "Whether multiple favorable factors will converge sufficiently within the 90-day horizon to overcome structural disadvantages",
       "followUps": [
-        "Competitive-district polling",
-        "October employment report",
-        "Three-month annualized CPI"
+        "Monitor real GDP and unemployment trends for economic downturn signals",
+        "Track Trump-related legal developments and media coverage intensity",
+        "Watch abortion rights legislation and state-level voting restriction controversies",
+        "Follow fundraising reports and youth voter engagement metrics"
       ]
     }
   },
   "markets": {
-    "democrats-take-house": [
+    "root-economic-downturn": [],
+    "trump-impeachment-scandal": [],
+    "dem-voter-mobilization": [],
+    "republican-voter-suppression": [],
+    "abortion-rights-mobilization": [],
+    "media-coverage-bias": [
       {
-        "title": "Will the Democratic Party control the House after the 2026 Midterm elections?",
-        "url": "https://polymarket.com/event/which-party-will-win-the-house-in-2026",
-        "yes": 0.885,
-        "volume": 5650538.446437,
-        "endDate": "2026-11-03T00:00:00Z",
+        "title": "Will \"Japan\" be in the headlines this week?",
+        "url": "https://polymarket.com/event/what-will-the-nyt-front-page-headlines-say-this-week-august-31-august-30-20260906",
+        "yes": 0.24,
+        "volume": 1165.4899999999998,
+        "endDate": "2026-09-06T23:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will the Republican Party control the House after the 2026 Midterm elections?",
-        "url": "https://polymarket.com/event/which-party-will-win-the-house-in-2026",
-        "yes": 0.115,
-        "volume": 4325331.607436,
-        "endDate": "2026-11-03T00:00:00Z",
+        "title": "Will \"Gold\" be in the headlines this week?",
+        "url": "https://polymarket.com/event/what-will-the-nyt-front-page-headlines-say-this-week-august-31-august-30-20260906",
+        "yes": 0.125,
+        "volume": 537.9100000000001,
+        "endDate": "2026-09-06T23:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will the Democratic Party control the Senate after the 2026 Midterm elections?",
-        "url": "https://polymarket.com/event/which-party-will-win-the-senate-in-2026",
-        "yes": 0.505,
-        "volume": 2398918.5969219995,
-        "endDate": "2026-11-03T00:00:00Z",
+        "title": "Will \"Party\" be in the headlines this week?",
+        "url": "https://polymarket.com/event/what-will-the-nyt-front-page-headlines-say-this-week-august-31-august-30-20260906",
+        "yes": 0.2,
+        "volume": 340.32000000000005,
+        "endDate": "2026-09-06T23:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will the Republican Party control the Senate after the 2026 Midterm elections?",
-        "url": "https://polymarket.com/event/which-party-will-win-the-senate-in-2026",
-        "yes": 0.495,
-        "volume": 1665528.125825,
-        "endDate": "2026-11-03T00:00:00Z",
+        "title": "Will \"Fear\" be in the headlines this week?",
+        "url": "https://polymarket.com/event/what-will-the-nyt-front-page-headlines-say-this-week-august-31-august-30-20260906",
+        "yes": 0.77,
+        "volume": 335.4,
+        "endDate": "2026-09-06T23:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will Democrats win exactly 48 House seats in California in the 2026 midterm elections?",
-        "url": "https://polymarket.com/event/how-many-house-seats-will-the-democrats-win-in-california",
-        "yes": 0.505,
-        "volume": 7083.299233999999,
-        "endDate": "2026-11-03T00:00:00Z",
+        "title": "Will \"Woman\" be in the headlines this week?",
+        "url": "https://polymarket.com/event/what-will-the-nyt-front-page-headlines-say-this-week-august-31-august-30-20260906",
+        "yes": 0.166,
+        "volume": 326.429323,
+        "endDate": "2026-09-06T23:59:00Z",
         "source": "polymarket"
       }
     ],
-    "suburban-turnout": [
-      {
-        "title": "Will voter turnout be 62% or higher in the 2026 Russian parliamentary election?",
-        "url": "https://polymarket.com/event/russia-parliamentary-election-turnout",
-        "yes": 0.1065,
-        "volume": 25073.461908000005,
-        "endDate": "2026-09-20T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will there be between 120m and 125m votes cast in the 2026 U.S. House of Representatives midterm elections?",
-        "url": "https://polymarket.com/event/2026-midterms-house-turnout",
-        "yes": 0.19,
-        "volume": 8224.560825,
-        "endDate": "2026-11-03T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will voter turnout be between 78% and 80% in the 2026 New Zealand general election?",
-        "url": "https://polymarket.com/event/new-zealand-election-turnout",
-        "yes": 0.365,
-        "volume": 7419.445769999999,
-        "endDate": "2026-11-07T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will voter turnout be between 56% and 59% in the 2026 Russian parliamentary election?",
-        "url": "https://polymarket.com/event/russia-parliamentary-election-turnout",
-        "yes": 0.103,
-        "volume": 6537.757379,
-        "endDate": "2026-09-20T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will voter turnout be between 47% and 50% in the 2026 Russian parliamentary election?",
-        "url": "https://polymarket.com/event/russia-parliamentary-election-turnout",
-        "yes": 0.1,
-        "volume": 6471.555176999999,
-        "endDate": "2026-09-20T00:00:00Z",
-        "source": "polymarket"
-      }
-    ],
-    "soft-landing": [],
-    "candidate-recruitment": [
-      {
-        "title": "Will the Democratic Party candidate win the 2026 NY-10 House election by 0%-45%?",
-        "url": "https://polymarket.com/event/ny-10-house-margin-of-victory-2026",
-        "yes": 0.055,
-        "volume": 1493.33,
-        "endDate": "2026-11-03T12:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Republican Party candidate win the 2026 AR-01 House election by 45%-50%?",
-        "url": "https://polymarket.com/event/ar-01-house-margin-of-victory-2026",
-        "yes": 0.09,
-        "volume": 1120.6333300000001,
-        "endDate": "2026-11-03T12:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Republican Party candidate win the 2026 AR-01 House election by 0%-15%?",
-        "url": "https://polymarket.com/event/ar-01-house-margin-of-victory-2026",
-        "yes": 0.04,
-        "volume": 780.68,
-        "endDate": "2026-11-03T12:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Democratic Party candidate win the 2026 OR-03 House election by 25%-35%?",
-        "url": "https://polymarket.com/event/or-03-house-margin-of-victory-2026",
-        "yes": 0.05,
-        "volume": 632.3,
-        "endDate": "2026-11-03T12:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Republican Party candidate win the 2026 MD-01 House election by 18%-21%?",
-        "url": "https://polymarket.com/event/md-01-house-margin-of-victory-2026",
-        "yes": 0.205,
-        "volume": 405.74253600000003,
-        "endDate": "2026-11-03T12:00:00Z",
-        "source": "polymarket"
-      }
-    ],
-    "inflation-reacceleration": [
-      {
-        "title": "Will annual inflation be 3.4% in August?",
-        "url": "https://polymarket.com/event/august-inflation-us-annual-1786474662954",
-        "yes": 0.47,
-        "volume": 16974.747864,
-        "endDate": "2026-09-11T03:59:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will annual inflation be 3.3% in August?",
-        "url": "https://polymarket.com/event/august-inflation-us-annual-1786474662954",
-        "yes": 0.355,
-        "volume": 11472.223388999999,
-        "endDate": "2026-09-11T03:59:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will annual inflation be 3.5% in August?",
-        "url": "https://polymarket.com/event/august-inflation-us-annual-1786474662954",
-        "yes": 0.105,
-        "volume": 10417.476217000001,
-        "endDate": "2026-09-11T03:59:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will monthly inflation increase by 0.5% or more in August?",
-        "url": "https://polymarket.com/event/august-inflation-us-monthly-1786474662954",
-        "yes": 0.15,
-        "volume": 6903.526654,
-        "endDate": "2026-09-11T03:59:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will monthly inflation increase by 0.4% in August?",
-        "url": "https://polymarket.com/event/august-inflation-us-monthly-1786474662954",
-        "yes": 0.455,
-        "volume": 5690.572236000002,
-        "endDate": "2026-09-11T03:59:00Z",
-        "source": "polymarket"
-      }
-    ],
-    "health-policy-agenda": []
+    "foreign-policy-crisis": [],
+    "dem-house-take": []
   },
-  "quotes": {
-    "SPY": {
-      "symbol": "SPY",
-      "price": 761.78,
-      "changePct": -0.687,
-      "currency": "USD",
-      "time": "2026-09-01T20:00:00.000Z"
-    },
-    "XLV": {
-      "symbol": "XLV",
-      "price": 171.67,
-      "changePct": 0.663,
-      "currency": "USD",
-      "time": "2026-09-01T20:00:00.000Z"
-    }
-  }
+  "quotes": {}
 }

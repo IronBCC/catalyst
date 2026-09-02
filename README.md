@@ -39,6 +39,19 @@ npm install
 npm run dev                    # http://localhost:3000
 ```
 
+### Model settings
+
+| variable | default | what it is for |
+|---|---|---|
+| `OPENROUTER_MODEL` | `openai/gpt-5.6-luna` | the model behind every call |
+| `OPENROUTER_MAX_OUTPUT_TOKENS` | `32000` | a whole graph is a large payload; a verbose model needs more room |
+| `OPENROUTER_REASONING` | `low` | an effort level, a number (reasoning token budget), or `off` |
+| `OPENROUTER_PROVIDER_ORDER` | empty | comma-separated OpenRouter provider slugs, most preferred first |
+
+The last two exist because structured output is where models and their endpoints
+differ most, and the difference is rarely about the model being good or bad. See
+"Choosing a model" below.
+
 The four example chips work with **no key at all** — they load pre-built fixtures from
 `public/fixtures/`. Without a key the generate, branch and thesis routes answer `503`
 and the app says so in a banner instead of breaking.
@@ -58,11 +71,46 @@ One test is **not** in `npm run check` because it costs money and needs credenti
 OPENROUTER_API_KEY=... npm run test:live
 ```
 
-It skips itself unless both `RUN_LIVE_OPENROUTER=1` and a key are set. **The live
-OpenRouter path has not been exercised in this repository** — no key was available when
-it was built, so the fixtures were generated from seed graphs run through the real
-repair pass, and every other test mocks the provider. Run `npm run test:live` before
-trusting the live path.
+It skips itself unless both `RUN_LIVE_OPENROUTER=1` and a key are set. It passes
+against `poolside/laguna-s-2.1` (about 35 seconds for a full graph).
+
+## Choosing a model
+
+Structured output is a forced tool call, not `response_format: json_schema`. That
+choice is not stylistic: of the three models measured here, one does not support
+`response_format` at all, and asking for it produced prose that silently ignored the
+schema.
+
+Measured on 2026-09-01, four example prompts per configuration, one run each:
+
+| model | ok | median | nodes | numerics with a ticker | inhibitors |
+|---|---|---|---|---|---|
+| `poolside/laguna-s-2.1` | 4/4 | 63 s | 9.8 | 3.3 | 1.3 |
+| `poolside/laguna-s-2.1`, 120k output | 4/4 | 140 s | 12.8 | 3.5 | 0.8 |
+| `z-ai/glm-5.3-flash` via Fireworks | 4/4 | 42 s | 8.5 | 2.0 | 1.8 |
+| `qwen/qwen3.8-flash`, thinking off | 3/4 | 55 s | 10.3 | 2.0 | 1.3 |
+
+All three work. All three also scored 0/4 on the first attempt, each for a different
+reason that had nothing to do with how good the model is:
+
+- **poolside** advertises no `response_format`; a json_schema request 404s when
+  `provider.require_parameters` is set and is ignored without it. It needs the forced
+  tool call, and it needs `require_parameters` off, because that flag also refuses to
+  route a named `tool_choice` for this model.
+- **GLM** was being routed to the Together endpoint, which answers a forced tool call
+  with `{}` and zero completion tokens while still billing the prompt. Pinning
+  `OPENROUTER_PROVIDER_ORDER=fireworks` turns 0/4 into 4/4 with nothing else changed.
+- **qwen** rejects a named `tool_choice` while thinking mode is on
+  (`invalid_parameter_error`), so it needs `OPENROUTER_REASONING=off`. Its remaining
+  failure was an upstream rate limit, not a bad graph.
+
+The default is poolside because it produces the most numeric nodes with resolvable
+tickers, and ticker coverage is what the Polymarket and Yahoo grounding depends on —
+GLM once returned a graph with no tickers at all, which the app cannot price. GLM is
+faster and models counter-forces better, and is one environment variable away.
+
+Four examples with one run each separates "works" from "silently broken". It does not
+settle a one-node quality difference.
 
 ## How the numbers work
 

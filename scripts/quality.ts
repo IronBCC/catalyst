@@ -13,6 +13,7 @@ import { checkGraph, runsAreStable, type Check } from "@/lib/quality";
 import { structured, type Deps } from "@/lib/llm";
 import { GENERATE_SYSTEM, generatePrompt } from "@/lib/prompts";
 import { isNumeric, LlmGraph, type GenerateInput, type Graph } from "@/lib/schema";
+import { mkdirSync, writeFileSync } from "node:fs";
 
 const PROMPTS: { slug: string; input: GenerateInput }[] = [
   {
@@ -142,6 +143,15 @@ async function once(model: string, slug: string, input: GenerateInput): Promise<
   }
 }
 
+const OUT_DIR = "/tmp/catalyst-quality";
+
+/** Graphs are kept so the checks can be re-scored without paying for the calls again. */
+function save(model: string, slug: string, graph: Graph) {
+  mkdirSync(OUT_DIR, { recursive: true });
+  const name = `${model.replace(/[^a-z0-9]+/gi, "-")}__${slug}.json`;
+  writeFileSync(`${OUT_DIR}/${name}`, JSON.stringify(graph, null, 2));
+}
+
 async function main() {
   const models = process.argv.slice(2);
   if (models.length === 0) throw new Error("pass at least one model id");
@@ -151,6 +161,7 @@ async function main() {
     for (const prompt of PROMPTS) {
       const run = await once(model, prompt.slug, prompt.input);
       runs.push(run);
+      if (run.graph) save(model, prompt.slug, run.graph);
       const passed = run.checks.filter((c) => c.ok).length;
       console.log(
         `${model} ${prompt.slug.padEnd(16)} ${run.ok ? "OK  " : "FAIL"} ${(run.ms / 1000).toFixed(0)}s $${run.cost.toFixed(4)} checks ${passed}/${run.checks.length}` +

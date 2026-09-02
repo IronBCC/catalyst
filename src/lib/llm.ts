@@ -10,8 +10,13 @@ export type Deps = {
 
 export const defaultDeps = (): Deps => ({ fetchImpl: fetch, env: process.env });
 
-export const modelId = (env: Deps["env"]) =>
-  env.OPENROUTER_MODEL ?? "openai/gpt-5.6-luna";
+/**
+ * Measured 2026-09-01 across six prompts (see `npm run quality`):
+ * glm-5.3-flash produced 7/7 graphs at 90% on the quality checks with a 34 s
+ * median, against poolside/laguna-s-2.1 at 6/7, 80% and 142 s. It needs the
+ * provider pin below; on the default route it answers with an empty tool call.
+ */
+export const modelId = (env: Deps["env"]) => env.OPENROUTER_MODEL ?? "z-ai/glm-5.3-flash";
 
 export const hasKey = (deps: Deps) => Boolean(deps.env.OPENROUTER_API_KEY);
 

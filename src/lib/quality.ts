@@ -48,40 +48,75 @@ export function tickersResolve(graph: Graph, resolved: Record<string, unknown>):
 
 /* 2 ------------------------------------------------------------------ */
 
-/** A node the root cannot reach is not part of the causal story. */
+/**
+ * Two different faults, one check.
+ *
+ * A node with no path to the root at all — in either direction — is loose
+ * furniture. But requiring every node to sit *downstream* of the root was too
+ * strict: every model tested writes legitimate upstream precursors ("a
+ * triggering incident occurs before ..."), and those are part of the story.
+ *
+ * What must be downstream is every numeric node, because a market variable the
+ * hypothesis cannot reach can never respond to it, and the thesis card prices
+ * exactly those variables. That is the case worth failing on: a graph whose
+ * traded instrument is disconnected produces a P&L that ignores the hypothesis.
+ */
 export function rootReaches(graph: Graph): Check {
   const root = graph.nodes.find((n) => isEvent(n) && n.isRoot);
   if (!root) {
     return {
       id: "root-reaches",
-      title: "Every node is downstream of the root",
+      title: "Numerics are downstream, nothing is loose",
       ok: false,
       score: 0,
       detail: "no root node",
     };
   }
-  const out = new Map<string, string[]>(graph.nodes.map((n) => [n.id, []]));
-  for (const edge of graph.edges) out.get(edge.source)?.push(edge.target);
 
-  const seen = new Set([root.id]);
-  const queue = [root.id];
-  while (queue.length) {
-    for (const next of out.get(queue.shift()!) ?? []) {
-      if (!seen.has(next)) {
-        seen.add(next);
-        queue.push(next);
+  const walk = (adjacency: Map<string, string[]>) => {
+    const seen = new Set([root.id]);
+    const queue = [root.id];
+    while (queue.length) {
+      for (const next of adjacency.get(queue.shift()!) ?? []) {
+        if (!seen.has(next)) {
+          seen.add(next);
+          queue.push(next);
+        }
       }
     }
+    return seen;
+  };
+
+  const forward = new Map<string, string[]>(graph.nodes.map((n) => [n.id, []]));
+  const either = new Map<string, string[]>(graph.nodes.map((n) => [n.id, []]));
+  for (const edge of graph.edges) {
+    forward.get(edge.source)?.push(edge.target);
+    either.get(edge.source)?.push(edge.target);
+    either.get(edge.target)?.push(edge.source);
   }
-  const orphans = graph.nodes.filter((n) => !seen.has(n.id));
+
+  const downstream = walk(forward);
+  const connected = walk(either);
+
+  const loose = graph.nodes.filter((n) => !connected.has(n.id));
+  const strandedNumerics = graph.nodes.filter((n) => isNumeric(n) && !downstream.has(n.id));
+
+  const problems: string[] = [];
+  if (loose.length) problems.push(`disconnected: ${loose.map(label).join(" | ").slice(0, 120)}`);
+  if (strandedNumerics.length) {
+    problems.push(
+      `numerics the hypothesis cannot reach: ${strandedNumerics.map(label).join(" | ").slice(0, 120)}`,
+    );
+  }
+
   return {
     id: "root-reaches",
-    title: "Every node is downstream of the root",
-    ok: orphans.length === 0,
-    score: pct(graph.nodes.length - orphans.length, graph.nodes.length),
-    detail: orphans.length
-      ? `unreachable: ${orphans.map(label).join(" | ").slice(0, 160)}`
-      : `all ${graph.nodes.length} nodes reachable`,
+    title: "Numerics are downstream, nothing is loose",
+    ok: problems.length === 0,
+    score: pct(2 - problems.length, 2),
+    detail: problems.length
+      ? problems.join("; ")
+      : `${graph.nodes.length} nodes connected, every numeric downstream of the root`,
   };
 }
 

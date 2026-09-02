@@ -17,756 +17,935 @@
   "llm": {
     "nodes": [
       {
-        "id": "n1",
+        "id": "root_hormuz_closure",
         "kind": "event",
-        "statement": "Iran announces closure of the Strait of Hormuz to commercial tanker traffic",
-        "resolution": "Confirmed by Iranian military or government statement",
-        "base": 0.15,
+        "statement": "The Strait of Hormuz closes to commercial tanker traffic for at least 7 consecutive days within the next 30 days (by 2025-07-15).",
+        "resolution": "Closes if Lloyd's/UKMTO advisories suspend transit or insurers declare the strait uninsurable for tankers for 7+ days; verified via Reuters/UKMTO reports.",
+        "base": 0.03,
         "lagDays": [
-          0,
-          0
+          3,
+          14
         ],
-        "rationale": "Geopolitical escalation in Gulf often follows tit-for-tat actions; recent tensions raise closure probability.",
+        "rationale": "Reference class: 1980-88 Tanker War and 2019 tanker attacks never produced a full closure; partial disruption only. Iran's own crude exports transit Hormuz, making self-blockade costly. Base rate near 3% for a 30-day window absent a triggering kinetic event.",
         "analogs": [
-          "2011 Hormuz closure threat",
-          "2019 Gulf tanker incidents"
+          "1984-88 Tanker War (no full closure)",
+          "2019 tanker attacks (days-scale disruption)",
+          "2024 Iran-Israel exchanges (no closure)"
         ],
         "assumptions": [
-          "Iranian leadership decides closure serves strategic goals",
-          "No immediate diplomatic de-escalation occurs",
-          "Military readiness allows enforcement"
+          "Iran retains incentive to keep its own exports flowing",
+          "US 5th Fleet maintains escort capability",
+          "No full regional war within window"
         ],
         "confidence": "medium",
-        "marketQuery": "USO > 5% drop within 24h of announcement",
+        "marketQuery": "Strait of Hormuz tanker traffic closure 2025",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "n2",
+        "id": "kinetic_trigger",
         "kind": "event",
-        "statement": "International maritime authorities confirm halt of commercial transits through Strait of Hormuz",
-        "resolution": "Confirmed by IMO, UKMTO, or major shipping firms",
-        "base": 0.85,
+        "statement": "A kinetic strike on Iranian territory or Iranian nuclear/military sites occurs within the next 30 days.",
+        "resolution": "Confirmed if state-attributed strikes on Iranian soil are reported by Reuters/AP with Iranian government acknowledgment or credible attribution.",
+        "base": 0.25,
         "lagDays": [
-          1,
-          2
+          0,
+          7
         ],
-        "rationale": "Once closure declared, real-world confirmation follows quickly via satellite tracking and port delays.",
+        "rationale": "2024-25 reference class shows repeated Israeli/US strike episodes after nuclear program escalations. Negotiation breakdown raises probability; a deal suppresses it. 25% reflects ongoing elevated but episodic tempo.",
         "analogs": [
-          "2022 Black Sea grain deal monitoring",
-          "Suez Canal blockage verification"
+          "April 2024 Israeli strike",
+          "June 2025 US/Israel strikes on nuclear sites"
         ],
         "assumptions": [
-          "Commercial vessels comply with closure",
-          "AIS data reflects actual traffic",
-          "No covert transits occur"
+          "Nuclear talks remain stalled or collapse",
+          "Israel retains strike freedom",
+          "US does not impose ceasefire restraint"
         ],
-        "confidence": "high",
-        "marketQuery": "Shipping indices spike; crude freight rates surge",
+        "confidence": "medium",
+        "marketQuery": "Israel Iran military strike 2025",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "n3",
+        "id": "iran_retaliation",
         "kind": "event",
-        "statement": "Major oil prices spike above $90/barrel Brent within 48 hours",
-        "resolution": "Brent futures settle above $90/bbl",
+        "statement": "Iran launches direct missile/drone retaliation against Israel or US assets within 14 days of a kinetic strike.",
+        "resolution": "Confirmed by Iranian armed forces claim or widely reported launches intercepted over the region.",
         "base": 0.7,
         "lagDays": [
           1,
-          3
+          5
         ],
-        "rationale": "Supply disruption fears drive immediate repricing; historical precedent shows rapid pass-through.",
+        "rationale": "Conditional on a strike, Iran retaliated in April 2024 and October 2024 analogs; conditional rate ~70% given regime credibility stakes.",
         "analogs": [
-          "2019 Abqaiq attack price reaction",
-          "2022 Russia invasion price jump"
+          "April 2024 True Promise",
+          "October 2024 True Promise II"
         ],
         "assumptions": [
-          "Market perceives closure as sustained",
-          "OPEC+ cannot immediately compensate",
-          "Risk premium dominates demand concerns"
+          "Regime survival requires visible response",
+          "Proxy channels insufficient alone",
+          "Command structure intact"
         ],
         "confidence": "high",
-        "marketQuery": "BRNT > $90 within 48h",
+        "marketQuery": "Iran retaliation missile Israel 2025",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "n4",
-        "kind": "numeric",
-        "name": "USO Price",
-        "unit": "USD",
-        "ticker": "USO",
-        "current": 72.5,
-        "baselineMove": 15,
-        "sigma": 8,
-        "rationale": "Oil ETFs track spot prices closely; leverage amplifies moves during volatility spikes.",
-        "assumptions": [
-          "USO tracks near-month crude futures",
-          "Contango structure does not mute gains",
-          "No ETF-specific liquidity crunch"
-        ],
-        "confidence": "high"
-      },
-      {
-        "id": "n5",
+        "id": "tanker_attacks",
         "kind": "event",
-        "statement": "US and allies deploy naval assets to Persian Gulf for escort missions",
-        "resolution": "Confirmed by CENTCOM, UK MOD, or EU NAVFOR",
-        "base": 0.6,
+        "statement": "Two or more commercial tankers are attacked or seized near Hormuz within 30 days.",
+        "resolution": "UKMTO incident reports or insurer war-risk declarations citing attacks/seizures in the Strait/Gulf of Oman.",
+        "base": 0.15,
         "lagDays": [
-          3,
-          7
-        ],
-        "rationale": "Energy security doctrine drives rapid military response to supply chokepoint threats.",
-        "analogs": [
-          "2011 Hormuz tension naval buildup",
-          "2019 Gulf tanker escort operations"
-        ],
-        "assumptions": [
-          "Political will aligns for deployment",
-          "Assets are available for redeployment",
-          "Rules of engagement permit escort"
-        ],
-        "confidence": "medium",
-        "marketQuery": "Defense stocks rise; oil volatility index surges",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "n6",
-        "kind": "event",
-        "statement": "Iranian Revolutionary Guard Navy conducts aggressive maneuvers near tanker routes",
-        "resolution": "Confirmed by IRIN, US 5th Fleet, or satellite imagery",
-        "base": 0.5,
-        "lagDays": [
-          5,
+          2,
           10
         ],
-        "rationale": "Show of force typically accompanies closure enforcement to deter challengers.",
+        "rationale": "2019 analog: limpet-mine campaign produced multiple incidents without closure. Elevated IRGC naval posturing plus strike-risk environment supports 15% base.",
         "analogs": [
-          "2012 USS Standard scenario",
-          "2019 Gulf of Oman incidents"
+          "2019 Gulf tanker attacks",
+          "2024 MSC Aries seizure"
         ],
         "assumptions": [
-          "IRGCN maintains operational tempo",
-          "Confrontation escalates rather than de-escalates",
-          "No accidental engagement occurs"
+          "IRGC Navy retains operational freedom",
+          "Plausible deniability preferred over open closure",
+          "Insurance thresholds not yet breached"
         ],
         "confidence": "medium",
-        "marketQuery": "Oil volatility spikes; defense contractors gain",
+        "marketQuery": "tanker attack Strait of Hormuz UKMTO 2025",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "n7",
+        "id": "mining_attempt",
         "kind": "event",
-        "statement": "Saudi Arabia and UAE announce emergency oil stock releases",
-        "resolution": "Confirmed by energy ministries or IEA",
-        "base": 0.4,
+        "statement": "Iran mines or attempts to mine the Strait of Hormuz shipping lanes within 30 days.",
+        "resolution": "Confirmed by US Navy statement or detected mines/USV sweeps reported by CENTCOM or UKMTO.",
+        "base": 0.05,
         "lagDays": [
-          7,
-          14
+          5,
+          15
         ],
-        "rationale": "Gulf producers hold strategic reserves and coordinate releases during supply shocks.",
+        "rationale": "Mining is the classic closure mechanism (1980s) but crosses a US-stated red line triggering military response; historically Iran has threatened more than executed. 5% conditional on severe escalation.",
         "analogs": [
-          "2011 Libyan release coordination",
-          "2022 IEA emergency response"
+          "1980s Persian Gulf mining",
+          "2011 threat following sanctions"
         ],
         "assumptions": [
-          "Reserves are accessible and deliverable",
-          "Coordination succeeds among GCC states",
-          "Release volume is sufficient to offset disruption"
+          "Only occurs after existential escalation",
+          "US red-line deterrence holds partially",
+          "IRGC accepts high retaliation risk"
         ],
         "confidence": "low",
-        "marketQuery": "Brent dips below $85; USO stabilizes",
+        "marketQuery": "Iran mines Strait of Hormuz navy 2025",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "n8",
-        "kind": "event",
-        "statement": "Diplomatic negotiations between Iran and EU3/E3+3 resume in Vienna",
-        "resolution": "Confirmed by EU External Action Service or JCPOA Joint Commission",
-        "base": 0.3,
-        "lagDays": [
-          10,
-          20
-        ],
-        "rationale": "Historical pattern shows diplomatic tracks open under pressure; nuclear deal revival offers leverage.",
-        "analogs": [
-          "2015 JCPOA talks",
-          "2021–2022 Vienna negotiations"
-        ],
-        "assumptions": [
-          "All parties retain interest in deal",
-          "Sanctions relief is negotiable",
-          "Closure is reversible under agreement"
-        ],
-        "confidence": "low",
-        "marketQuery": "Oil prices retreat; risk assets stabilize",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "n9",
+        "id": "war_risk_premium",
         "kind": "numeric",
-        "name": "Brent Crude Futures",
-        "unit": "USD/bbl",
-        "ticker": "BRNT",
-        "current": 88.3,
-        "baselineMove": 12,
-        "sigma": 6,
-        "rationale": "Brent is global benchmark; supply disruptions transmit directly to front-month contracts.",
+        "name": "Gulf war-risk insurance premium",
+        "unit": "% of hull value",
+        "ticker": null,
+        "current": 0.5,
+        "baselineMove": 3,
+        "sigma": 2.5,
+        "rationale": "2019 analog saw premiums spike from ~0.125% to ~1%+; a strike campaign could push 3-5%. Drives tanker rates and rerouting decisions independent of physical closure.",
         "assumptions": [
-          "Physical delivery concerns affect pricing",
-          "Financial flows amplify moves",
-          "No immediate substitute routing emerges"
-        ],
-        "confidence": "high"
-      },
-      {
-        "id": "n10",
-        "kind": "numeric",
-        "name": "Defense Contractor Stock Index",
-        "unit": "Index",
-        "ticker": "ITA",
-        "current": 395.2,
-        "baselineMove": 8,
-        "sigma": 4,
-        "rationale": "Defense spending often rises during geopolitical crises; investor rotation into defense names.",
-        "assumptions": [
-          "Budget allocations increase",
-          "Earnings outlooks improve",
-          "No fiscal constraints limit procurement"
+          "Underwriters price per-incident risk",
+          "London market remains open",
+          "No total loss of Gulf coverage"
         ],
         "confidence": "medium"
+      },
+      {
+        "id": "brent_price",
+        "kind": "numeric",
+        "name": "Brent crude front-month",
+        "unit": "USD/bbl",
+        "ticker": "BZ=F",
+        "current": 78,
+        "baselineMove": 12,
+        "sigma": 10,
+        "rationale": "2019 attacks moved Brent ~+15% in days; 2024-25 escalations added $5-10. A credible closure threat implies $90-110; partial disruption +$8-15. Baseline +12 with fat right tail.",
+        "assumptions": [
+          "OPEC spare capacity ~3-4mbd cushions partial loss",
+          "SPR release possible but lagged",
+          "Demand growth soft caps upside"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "us_oil_etf",
+        "kind": "numeric",
+        "name": "USO (W&T Offshore proxy: US Oil Fund)",
+        "unit": "USD/share",
+        "ticker": "USO",
+        "current": 72,
+        "baselineMove": 10,
+        "sigma": 9,
+        "rationale": "USO tracks WTI futures; historically amplifies Brent spikes ~1:1 with roll-yield drag. +10% baseline on Hormuz scare, +25-40% in true closure scenario.",
+        "assumptions": [
+          "Contango drag limits upside vs spot",
+          "CTA positioning adds volatility",
+          "No CFTC position limits binding"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "us_naval_escort",
+        "kind": "event",
+        "statement": "US-led naval escort/convoy operations for Gulf tankers are announced within 14 days of an escalation incident.",
+        "resolution": "CENTCOM or Pentagon announcement of combined maritime security operations.",
+        "base": 0.55,
+        "lagDays": [
+          3,
+          10
+        ],
+        "rationale": "1987 Earnest Will and 2019 Operation Sentinel analogs: US responds to Gulf threats with escorts within days-to-weeks. Conditional on attacks, ~55% given existing 5th Fleet presence.",
+        "analogs": [
+          "1987 Earnest Will",
+          "2019 Operation Sentinel"
+        ],
+        "assumptions": [
+          "Flag-state requests for protection",
+          "Coalition partners participate",
+          "Carrier group available in theater"
+        ],
+        "confidence": "high",
+        "marketQuery": "US Navy escort tanker convoy Persian Gulf 2025",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "diplomatic_deal",
+        "kind": "event",
+        "statement": "A US-Iran interim nuclear/de-escalation agreement is announced within 30 days.",
+        "resolution": "Joint statement or verified framework signed by both governments reported by Reuters/AP.",
+        "base": 0.15,
+        "lagDays": [
+          7,
+          30
+        ],
+        "rationale": "Both sides have shown appetite for interim deals (2023 prisoner swap template); escalation paradoxically accelerates diplomacy. 15% base; acts as the key inhibitor on closure.",
+        "analogs": [
+          "2023 prisoner/asset deal",
+          "2015 JCPOA sprint diplomacy"
+        ],
+        "assumptions": [
+          "Back-channels active in Oman/Qatar",
+          "Sanctions relief tradeable",
+          "Israel does not veto via strike"
+        ],
+        "confidence": "medium",
+        "marketQuery": "US Iran nuclear deal negotiations 2025",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "tanker_rerouting",
+        "kind": "event",
+        "statement": "Major tanker operators suspend or reroute Hormuz transits for at least 72 hours within 30 days.",
+        "resolution": "Ship-tracking (Kpler/MarineTraffic) shows >50% drop in daily transits vs 30-day average for 3+ days.",
+        "base": 0.12,
+        "lagDays": [
+          2,
+          8
+        ],
+        "rationale": "Operators pause on war-risk spikes before states do; 2019 analog saw brief pauses. This is the practical precursor to 'closure' even without physical blockade.",
+        "analogs": [
+          "2019 operator wariness post-attacks",
+          "2024 Red Sea rerouting cascade"
+        ],
+        "assumptions": [
+          "Charterers honor force majeure clauses",
+          "War-risk coverage becomes conditional",
+          "Alternative pipelines cannot absorb volumes"
+        ],
+        "confidence": "medium",
+        "marketQuery": "tanker transits Strait of Hormuz suspended 2025",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "saudi_uae_pipelines",
+        "kind": "event",
+        "statement": "Saudi/UAE bypass pipelines run above 80% of nameplate capacity within 14 days of any transit disruption.",
+        "resolution": "JODI/Reuters flow data showing East-West and ADCO pipeline utilization surge.",
+        "base": 0.4,
+        "lagDays": [
+          3,
+          14
+        ],
+        "rationale": "Combined ~5.5mbd bypass capacity; 2019 attacks pushed utilization up. Partial offset to closure impact, capping price upside.",
+        "analogs": [
+          "2019 East-West pipeline surge",
+          "2019 Fujairah flows"
+        ],
+        "assumptions": [
+          "Pipeline capacity ~5.5mbd available",
+          "Terminal loading not attacked",
+          "Crude quality arbitrage acceptable"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Saudi East-West pipeline crude bypass capacity 2025",
+        "isRoot": false,
+        "isTarget": false
       }
     ],
     "edges": [
       {
-        "source": "n1",
-        "target": "n2",
-        "mechanism": "Physical enforcement blocks commercial transits",
+        "source": "kinetic_trigger",
+        "target": "iran_retaliation",
+        "mechanism": "Regime credibility demands direct response to strikes on sovereign territory",
         "assumptions": [
-          "Iranian navy controls key chokepoint zones",
-          "Commercial vessels avoid confrontation"
+          "Command structure intact",
+          "Proxy response deemed insufficient"
         ],
         "confidence": "high",
         "sourceIds": [
-          "n1"
-        ],
-        "polarity": "promote",
-        "strength": 0.9,
-        "impact": 90,
-        "beta": 2.5,
-        "threshold": 0.5,
-        "direction": "above",
-        "width": 3
-      },
-      {
-        "source": "n2",
-        "target": "n3",
-        "mechanism": "Supply disruption raises risk premium in oil markets",
-        "assumptions": [
-          "Global spare capacity is limited",
-          "Speculative positioning amplifies move"
-        ],
-        "confidence": "high",
-        "sourceIds": [
-          "n2"
-        ],
-        "polarity": "promote",
-        "strength": 0.85,
-        "impact": 85,
-        "beta": 2.2,
-        "threshold": 0.5,
-        "direction": "above",
-        "width": 3
-      },
-      {
-        "source": "n3",
-        "target": "n4",
-        "mechanism": "Rising oil prices lift energy ETF valuations",
-        "assumptions": [
-          "USO tracks near-month futures",
-          "No contango drag offsets gains"
-        ],
-        "confidence": "high",
-        "sourceIds": [
-          "n3"
-        ],
-        "polarity": "promote",
-        "strength": 0.8,
-        "impact": 80,
-        "beta": 1.8,
-        "threshold": 0.5,
-        "direction": "above",
-        "width": 2
-      },
-      {
-        "source": "n1",
-        "target": "n5",
-        "mechanism": "Closure triggers Western military response to protect shipping lanes",
-        "assumptions": [
-          "US prioritizes energy security",
-          "Allies join escort operations"
-        ],
-        "confidence": "medium",
-        "sourceIds": [
-          "n1"
+          "kinetic_trigger"
         ],
         "polarity": "promote",
         "strength": 0.7,
-        "impact": 70,
+        "impact": 40,
         "beta": 1.5,
-        "threshold": 0.5,
-        "direction": "above",
-        "width": 2
+        "threshold": null,
+        "direction": null,
+        "width": 5
       },
       {
-        "source": "n5",
-        "target": "n6",
-        "mechanism": "Naval presence invites Iranian show of force",
+        "source": "kinetic_trigger",
+        "target": "tanker_attacks",
+        "mechanism": "Escalation environment licenses IRGC deniable naval action",
         "assumptions": [
-          "IRGCN views presence as provocative",
-          "Escalation dynamics take hold"
+          "IRGC Navy autonomy",
+          "Deniability preserved"
         ],
         "confidence": "medium",
         "sourceIds": [
-          "n5"
-        ],
-        "polarity": "promote",
-        "strength": 0.6,
-        "impact": 60,
-        "beta": 1.3,
-        "threshold": 0.5,
-        "direction": "above",
-        "width": 2
-      },
-      {
-        "source": "n6",
-        "target": "n7",
-        "mechanism": "Escalation pressures Gulf states to release reserves",
-        "assumptions": [
-          "GCC coordinates response",
-          "Reserves are sufficient"
-        ],
-        "confidence": "low",
-        "sourceIds": [
-          "n6"
+          "kinetic_trigger"
         ],
         "polarity": "promote",
         "strength": 0.5,
-        "impact": 50,
+        "impact": 25,
         "beta": 1,
-        "threshold": 0.5,
-        "direction": "above",
-        "width": 1
+        "threshold": null,
+        "direction": null,
+        "width": 7
       },
       {
-        "source": "n7",
-        "target": "n3",
-        "mechanism": "Stock releases cap price gains",
+        "source": "iran_retaliation",
+        "target": "tanker_attacks",
+        "mechanism": "Retaliatory campaign extends to Gulf shipping as asymmetric pressure point",
         "assumptions": [
-          "Release volume offsets disruption",
-          "Market believes in adequacy"
-        ],
-        "confidence": "low",
-        "sourceIds": [
-          "n7"
-        ],
-        "polarity": "inhibit",
-        "strength": 0.4,
-        "impact": -40,
-        "beta": -0.8,
-        "threshold": 0.5,
-        "direction": "below",
-        "width": 1
-      },
-      {
-        "source": "n6",
-        "target": "n8",
-        "mechanism": "Military tension opens diplomatic channel",
-        "assumptions": [
-          "Both sides seek de-escalation",
-          "EU3/E3+6 format remains viable"
-        ],
-        "confidence": "low",
-        "sourceIds": [
-          "n6"
-        ],
-        "polarity": "promote",
-        "strength": 0.3,
-        "impact": 30,
-        "beta": 0.6,
-        "threshold": 0.5,
-        "direction": "above",
-        "width": 1
-      },
-      {
-        "source": "n8",
-        "target": "n2",
-        "mechanism": "Negotiations lead to partial reopening",
-        "assumptions": [
-          "Agreement includes safe passage guarantees",
-          "Iran complies with terms"
-        ],
-        "confidence": "low",
-        "sourceIds": [
-          "n8"
-        ],
-        "polarity": "inhibit",
-        "strength": 0.3,
-        "impact": -30,
-        "beta": -0.5,
-        "threshold": 0.5,
-        "direction": "below",
-        "width": 1
-      },
-      {
-        "source": "n3",
-        "target": "n9",
-        "mechanism": "Brent tracks same supply shock fundamentals",
-        "assumptions": [
-          "Benchmark reflects global risk",
-          "No regional divergence"
-        ],
-        "confidence": "high",
-        "sourceIds": [
-          "n3"
-        ],
-        "polarity": "promote",
-        "strength": 0.95,
-        "impact": 95,
-        "beta": 2,
-        "threshold": 0.5,
-        "direction": "above",
-        "width": 3
-      },
-      {
-        "source": "n5",
-        "target": "n10",
-        "mechanism": "Military buildup boosts defense sector outlook",
-        "assumptions": [
-          "Contracts awarded quickly",
-          "Earnings revisions upward"
+          "Shipping targeted as US-adjacent soft target"
         ],
         "confidence": "medium",
         "sourceIds": [
-          "n5"
+          "kinetic_trigger",
+          "iran_retaliation"
+        ],
+        "polarity": "promote",
+        "strength": 0.6,
+        "impact": 30,
+        "beta": 1.2,
+        "threshold": null,
+        "direction": null,
+        "width": 6
+      },
+      {
+        "source": "tanker_attacks",
+        "target": "mining_attempt",
+        "mechanism": "Escalation ladder: attacks fail to coerce, mining raises stakes",
+        "assumptions": [
+          "Coercion objective unmet",
+          "US response still deterred"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "tanker_attacks"
+        ],
+        "polarity": "promote",
+        "strength": 0.3,
+        "impact": 15,
+        "beta": 0.8,
+        "threshold": null,
+        "direction": null,
+        "width": 10
+      },
+      {
+        "source": "tanker_attacks",
+        "target": "tanker_rerouting",
+        "mechanism": "War-risk repricing and crew safety drive operator pauses",
+        "assumptions": [
+          "Insurers impose conditions",
+          "Charterers accept force majeure"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "tanker_attacks"
         ],
         "polarity": "promote",
         "strength": 0.65,
-        "impact": 65,
-        "beta": 1.2,
-        "threshold": 0.5,
+        "impact": 35,
+        "beta": 1.3,
+        "threshold": 2,
         "direction": "above",
+        "width": 4
+      },
+      {
+        "source": "mining_attempt",
+        "target": "root_hormuz_closure",
+        "mechanism": "Mined lanes force transit suspension pending minesweeping (weeks-scale)",
+        "assumptions": [
+          "Minesweeping takes 2-6 weeks",
+          "Insurers declare unseaworthy routes"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "mining_attempt"
+        ],
+        "polarity": "promote",
+        "strength": 0.6,
+        "impact": 50,
+        "beta": 2,
+        "threshold": null,
+        "direction": null,
+        "width": 5
+      },
+      {
+        "source": "tanker_rerouting",
+        "target": "root_hormuz_closure",
+        "mechanism": "Operator de facto suspension constitutes functional closure even without blockade",
+        "assumptions": [
+          "Resolution counts functional closure",
+          "Pause extends beyond 72h"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "tanker_rerouting"
+        ],
+        "polarity": "promote",
+        "strength": 0.5,
+        "impact": 40,
+        "beta": 1.5,
+        "threshold": null,
+        "direction": null,
+        "width": 6
+      },
+      {
+        "source": "us_naval_escort",
+        "target": "root_hormuz_closure",
+        "mechanism": "INHIBITOR: escorted convoys restore transit confidence and keep lanes open",
+        "assumptions": [
+          "Escort capacity sufficient for major operators",
+          "Operators trust US coverage",
+          "Escorts not drawn into wider war"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "tanker_attacks",
+          "us_naval_escort"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.55,
+        "impact": -35,
+        "beta": -1.2,
+        "threshold": null,
+        "direction": null,
+        "width": 5
+      },
+      {
+        "source": "diplomatic_deal",
+        "target": "root_hormuz_closure",
+        "mechanism": "INHIBITOR: de-escalation removes coercion motive for shipping disruption",
+        "assumptions": [
+          "Deal verifiable within window",
+          "IRGC halts operations accordingly"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "diplomatic_deal"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.6,
+        "impact": -30,
+        "beta": -1.5,
+        "threshold": null,
+        "direction": null,
+        "width": 8
+      },
+      {
+        "source": "diplomatic_deal",
+        "target": "kinetic_trigger",
+        "mechanism": "COUNTER-FORCE: diplomacy suppresses strike probability",
+        "assumptions": [
+          "Israel holds strikes during talks",
+          "Interim freeze holds"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "diplomatic_deal"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.5,
+        "impact": -25,
+        "beta": -1,
+        "threshold": null,
+        "direction": null,
+        "width": 10
+      },
+      {
+        "source": "kinetic_trigger",
+        "target": "diplomatic_deal",
+        "mechanism": "COUNTER-FORCE: escalation shock accelerates back-channel diplomacy",
+        "assumptions": [
+          "Both sides seek off-ramp",
+          "Mediators active"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "kinetic_trigger"
+        ],
+        "polarity": "promote",
+        "strength": 0.35,
+        "impact": 20,
+        "beta": 0.7,
+        "threshold": null,
+        "direction": null,
+        "width": 12
+      },
+      {
+        "source": "tanker_attacks",
+        "target": "war_risk_premium",
+        "mechanism": "Underwriters reprice Gulf hull/war risk per incident",
+        "assumptions": [
+          "London market liquid",
+          "Per-voyage quotes available"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "tanker_attacks"
+        ],
+        "polarity": "promote",
+        "strength": 0.8,
+        "impact": 45,
+        "beta": 2,
+        "threshold": null,
+        "direction": null,
+        "width": 3
+      },
+      {
+        "source": "war_risk_premium",
+        "target": "brent_price",
+        "mechanism": "Insurance and freight costs pass into delivered crude prices; supply-risk premium",
+        "assumptions": [
+          "Cost pass-through partial",
+          "Risk premium dominates"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "war_risk_premium"
+        ],
+        "polarity": "promote",
+        "strength": 0.7,
+        "impact": 35,
+        "beta": 1.5,
+        "threshold": null,
+        "direction": null,
+        "width": 4
+      },
+      {
+        "source": "root_hormuz_closure",
+        "target": "brent_price",
+        "mechanism": "~17-20mbd transit at risk; even threat of closure adds large risk premium",
+        "assumptions": [
+          "Spare capacity ~3-4mbd only",
+          "No immediate SPR coordination"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "root_hormuz_closure"
+        ],
+        "polarity": "promote",
+        "strength": 0.9,
+        "impact": 70,
+        "beta": 3,
+        "threshold": null,
+        "direction": null,
         "width": 2
+      },
+      {
+        "source": "brent_price",
+        "target": "us_oil_etf",
+        "mechanism": "USO tracks WTI futures ~1:1 with roll drag",
+        "assumptions": [
+          "WTI-Brent spread stable",
+          "No contango blowout"
+        ],
+        "confidence": "high",
+        "sourceIds": [
+          "brent_price"
+        ],
+        "polarity": "promote",
+        "strength": 0.9,
+        "impact": 60,
+        "beta": 1,
+        "threshold": null,
+        "direction": null,
+        "width": 2
+      },
+      {
+        "source": "saudi_uae_pipelines",
+        "target": "brent_price",
+        "mechanism": "INHIBITOR: bypass pipelines cap effective supply loss, muting price spike",
+        "assumptions": [
+          "5.5mbd bypass available",
+          "Terminals secure"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "tanker_rerouting",
+          "saudi_uae_pipelines"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.5,
+        "impact": -25,
+        "beta": -0.8,
+        "threshold": null,
+        "direction": null,
+        "width": 6
+      },
+      {
+        "source": "us_naval_escort",
+        "target": "tanker_rerouting",
+        "mechanism": "INHIBITOR: escorts reassure operators, reversing suspensions",
+        "assumptions": [
+          "Operators resume under escort",
+          "Insurance follows naval cover"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "us_naval_escort"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.5,
+        "impact": -25,
+        "beta": -1,
+        "threshold": null,
+        "direction": null,
+        "width": 6
       }
     ],
     "summary": {
-      "headline": "Strait of Hormuz closure triggers oil spike, military response, and volatile energy markets within 30-day horizon",
-      "mainUncertainty": "Whether Iran enforces closure long enough to materially disrupt global oil supply, and whether diplomatic or military responses de-escalate tensions",
+      "headline": "Full 30-day Hormuz closure remains a ~3% tail; the tradeable path runs through strike→retaliation→tanker attacks→war-risk spike→Brent/USO, with US escorts and a possible US-Iran deal as the dominant inhibitors.",
+      "mainUncertainty": "Whether escalation from a kinetic strike stays at the 2019-style deniable-attack level or crosses the mining/closure red line; operator behavior under war-risk repricing is the swing variable.",
       "followUps": [
-        "Monitor AIS data for actual tanker traffic reduction",
-        "Watch for IEA emergency coordination signals",
-        "Track IRGCN naval activity via satellite and radio intercepts"
+        "Track UKMTO incident reports and war-risk premium quotes weekly",
+        "Monitor US-Iran back-channel (Oman/Qatar) for interim-deal signals",
+        "Watch Saudi/UAE bypass pipeline utilization data as a price-cap indicator",
+        "Set USO stop discipline: closure tail justifies holding, but deal announcement implies sharp mean reversion"
       ]
     }
   },
   "graph": {
-    "id": "af20b699-2f26-49ac-af30-d73df2d6cc0f",
+    "id": "9446b3b2-924c-4386-90d5-fc47d6dea226",
     "hypothesis": "The Strait of Hormuz closes to commercial tanker traffic",
     "mode": "explore",
     "target": null,
     "horizonDays": 30,
     "nodes": [
       {
-        "id": "n1",
+        "id": "root-hormuz-closure",
         "kind": "event",
-        "statement": "Iran announces closure of the Strait of Hormuz to commercial tanker traffic",
-        "resolution": "Confirmed by Iranian military or government statement",
-        "base": 0.15,
+        "statement": "The Strait of Hormuz closes to commercial tanker traffic for at least 7 consecutive days within the next 30 days (by 2025-07-15).",
+        "resolution": "Closes if Lloyd's/UKMTO advisories suspend transit or insurers declare the strait uninsurable for tankers for 7+ days; verified via Reuters/UKMTO reports.",
+        "base": 0.03,
         "lagDays": [
-          0,
-          0
+          3,
+          14
         ],
-        "rationale": "Geopolitical escalation in Gulf often follows tit-for-tat actions; recent tensions raise closure probability.",
+        "rationale": "Reference class: 1980-88 Tanker War and 2019 tanker attacks never produced a full closure; partial disruption only. Iran's own crude exports transit Hormuz, making self-blockade costly. Base rate near 3% for a 30-day window absent a triggering kinetic event.",
         "analogs": [
-          "2011 Hormuz closure threat",
-          "2019 Gulf tanker incidents"
+          "1984-88 Tanker War (no full closure)",
+          "2019 tanker attacks (days-scale disruption)",
+          "2024 Iran-Israel exchanges (no closure)"
         ],
         "assumptions": [
-          "Iranian leadership decides closure serves strategic goals",
-          "No immediate diplomatic de-escalation occurs",
-          "Military readiness allows enforcement"
+          "Iran retains incentive to keep its own exports flowing",
+          "US 5th Fleet maintains escort capability",
+          "No full regional war within window"
         ],
         "confidence": "medium",
-        "marketQuery": "USO > 5% drop within 24h of announcement",
+        "marketQuery": "Strait of Hormuz tanker traffic closure 2025",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "n2",
+        "id": "kinetic-trigger",
         "kind": "event",
-        "statement": "International maritime authorities confirm halt of commercial transits through Strait of Hormuz",
-        "resolution": "Confirmed by IMO, UKMTO, or major shipping firms",
-        "base": 0.85,
+        "statement": "A kinetic strike on Iranian territory or Iranian nuclear/military sites occurs within the next 30 days.",
+        "resolution": "Confirmed if state-attributed strikes on Iranian soil are reported by Reuters/AP with Iranian government acknowledgment or credible attribution.",
+        "base": 0.25,
         "lagDays": [
-          1,
-          2
+          0,
+          7
         ],
-        "rationale": "Once closure declared, real-world confirmation follows quickly via satellite tracking and port delays.",
+        "rationale": "2024-25 reference class shows repeated Israeli/US strike episodes after nuclear program escalations. Negotiation breakdown raises probability; a deal suppresses it. 25% reflects ongoing elevated but episodic tempo.",
         "analogs": [
-          "2022 Black Sea grain deal monitoring",
-          "Suez Canal blockage verification"
+          "April 2024 Israeli strike",
+          "June 2025 US/Israel strikes on nuclear sites"
         ],
         "assumptions": [
-          "Commercial vessels comply with closure",
-          "AIS data reflects actual traffic",
-          "No covert transits occur"
+          "Nuclear talks remain stalled or collapse",
+          "Israel retains strike freedom",
+          "US does not impose ceasefire restraint"
         ],
-        "confidence": "high",
-        "marketQuery": "Shipping indices spike; crude freight rates surge",
+        "confidence": "medium",
+        "marketQuery": "Israel Iran military strike 2025",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "n3",
+        "id": "iran-retaliation",
         "kind": "event",
-        "statement": "Major oil prices spike above $90/barrel Brent within 48 hours",
-        "resolution": "Brent futures settle above $90/bbl",
+        "statement": "Iran launches direct missile/drone retaliation against Israel or US assets within 14 days of a kinetic strike.",
+        "resolution": "Confirmed by Iranian armed forces claim or widely reported launches intercepted over the region.",
         "base": 0.7,
         "lagDays": [
           1,
-          3
+          5
         ],
-        "rationale": "Supply disruption fears drive immediate repricing; historical precedent shows rapid pass-through.",
+        "rationale": "Conditional on a strike, Iran retaliated in April 2024 and October 2024 analogs; conditional rate ~70% given regime credibility stakes.",
         "analogs": [
-          "2019 Abqaiq attack price reaction",
-          "2022 Russia invasion price jump"
+          "April 2024 True Promise",
+          "October 2024 True Promise II"
         ],
         "assumptions": [
-          "Market perceives closure as sustained",
-          "OPEC+ cannot immediately compensate",
-          "Risk premium dominates demand concerns"
+          "Regime survival requires visible response",
+          "Proxy channels insufficient alone",
+          "Command structure intact"
         ],
         "confidence": "high",
-        "marketQuery": "BRNT > $90 within 48h",
+        "marketQuery": "Iran retaliation missile Israel 2025",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "n4",
-        "kind": "numeric",
-        "name": "USO Price",
-        "unit": "USD",
-        "ticker": "USO",
-        "current": 72.5,
-        "baselineMove": 15,
-        "sigma": 8,
-        "rationale": "Oil ETFs track spot prices closely; leverage amplifies moves during volatility spikes.",
-        "assumptions": [
-          "USO tracks near-month crude futures",
-          "Contango structure does not mute gains",
-          "No ETF-specific liquidity crunch"
-        ],
-        "confidence": "high"
-      },
-      {
-        "id": "n5",
+        "id": "tanker-attacks",
         "kind": "event",
-        "statement": "US and allies deploy naval assets to Persian Gulf for escort missions",
-        "resolution": "Confirmed by CENTCOM, UK MOD, or EU NAVFOR",
-        "base": 0.6,
+        "statement": "Two or more commercial tankers are attacked or seized near Hormuz within 30 days.",
+        "resolution": "UKMTO incident reports or insurer war-risk declarations citing attacks/seizures in the Strait/Gulf of Oman.",
+        "base": 0.15,
         "lagDays": [
-          3,
-          7
-        ],
-        "rationale": "Energy security doctrine drives rapid military response to supply chokepoint threats.",
-        "analogs": [
-          "2011 Hormuz tension naval buildup",
-          "2019 Gulf tanker escort operations"
-        ],
-        "assumptions": [
-          "Political will aligns for deployment",
-          "Assets are available for redeployment",
-          "Rules of engagement permit escort"
-        ],
-        "confidence": "medium",
-        "marketQuery": "Defense stocks rise; oil volatility index surges",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "n6",
-        "kind": "event",
-        "statement": "Iranian Revolutionary Guard Navy conducts aggressive maneuvers near tanker routes",
-        "resolution": "Confirmed by IRIN, US 5th Fleet, or satellite imagery",
-        "base": 0.5,
-        "lagDays": [
-          5,
+          2,
           10
         ],
-        "rationale": "Show of force typically accompanies closure enforcement to deter challengers.",
+        "rationale": "2019 analog: limpet-mine campaign produced multiple incidents without closure. Elevated IRGC naval posturing plus strike-risk environment supports 15% base.",
         "analogs": [
-          "2012 USS Standard scenario",
-          "2019 Gulf of Oman incidents"
+          "2019 Gulf tanker attacks",
+          "2024 MSC Aries seizure"
         ],
         "assumptions": [
-          "IRGCN maintains operational tempo",
-          "Confrontation escalates rather than de-escalates",
-          "No accidental engagement occurs"
+          "IRGC Navy retains operational freedom",
+          "Plausible deniability preferred over open closure",
+          "Insurance thresholds not yet breached"
         ],
         "confidence": "medium",
-        "marketQuery": "Oil volatility spikes; defense contractors gain",
+        "marketQuery": "tanker attack Strait of Hormuz UKMTO 2025",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "n7",
+        "id": "mining-attempt",
         "kind": "event",
-        "statement": "Saudi Arabia and UAE announce emergency oil stock releases",
-        "resolution": "Confirmed by energy ministries or IEA",
-        "base": 0.4,
+        "statement": "Iran mines or attempts to mine the Strait of Hormuz shipping lanes within 30 days.",
+        "resolution": "Confirmed by US Navy statement or detected mines/USV sweeps reported by CENTCOM or UKMTO.",
+        "base": 0.05,
         "lagDays": [
-          7,
-          14
+          5,
+          15
         ],
-        "rationale": "Gulf producers hold strategic reserves and coordinate releases during supply shocks.",
+        "rationale": "Mining is the classic closure mechanism (1980s) but crosses a US-stated red line triggering military response; historically Iran has threatened more than executed. 5% conditional on severe escalation.",
         "analogs": [
-          "2011 Libyan release coordination",
-          "2022 IEA emergency response"
+          "1980s Persian Gulf mining",
+          "2011 threat following sanctions"
         ],
         "assumptions": [
-          "Reserves are accessible and deliverable",
-          "Coordination succeeds among GCC states",
-          "Release volume is sufficient to offset disruption"
+          "Only occurs after existential escalation",
+          "US red-line deterrence holds partially",
+          "IRGC accepts high retaliation risk"
         ],
         "confidence": "low",
-        "marketQuery": "Brent dips below $85; USO stabilizes",
+        "marketQuery": "Iran mines Strait of Hormuz navy 2025",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "n8",
-        "kind": "event",
-        "statement": "Diplomatic negotiations between Iran and EU3/E3+3 resume in Vienna",
-        "resolution": "Confirmed by EU External Action Service or JCPOA Joint Commission",
-        "base": 0.3,
-        "lagDays": [
-          10,
-          20
-        ],
-        "rationale": "Historical pattern shows diplomatic tracks open under pressure; nuclear deal revival offers leverage.",
-        "analogs": [
-          "2015 JCPOA talks",
-          "2021–2022 Vienna negotiations"
-        ],
-        "assumptions": [
-          "All parties retain interest in deal",
-          "Sanctions relief is negotiable",
-          "Closure is reversible under agreement"
-        ],
-        "confidence": "low",
-        "marketQuery": "Oil prices retreat; risk assets stabilize",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "n9",
+        "id": "war-risk-premium",
         "kind": "numeric",
-        "name": "Brent Crude Futures",
-        "unit": "USD/bbl",
-        "ticker": "BRNT",
-        "current": 88.3,
-        "baselineMove": 12,
-        "sigma": 6,
-        "rationale": "Brent is global benchmark; supply disruptions transmit directly to front-month contracts.",
+        "name": "Gulf war-risk insurance premium",
+        "unit": "% of hull value",
+        "ticker": null,
+        "current": 0.5,
+        "baselineMove": 3,
+        "sigma": 2.5,
+        "rationale": "2019 analog saw premiums spike from ~0.125% to ~1%+; a strike campaign could push 3-5%. Drives tanker rates and rerouting decisions independent of physical closure.",
         "assumptions": [
-          "Physical delivery concerns affect pricing",
-          "Financial flows amplify moves",
-          "No immediate substitute routing emerges"
-        ],
-        "confidence": "high"
-      },
-      {
-        "id": "n10",
-        "kind": "numeric",
-        "name": "Defense Contractor Stock Index",
-        "unit": "Index",
-        "ticker": "ITA",
-        "current": 395.2,
-        "baselineMove": 8,
-        "sigma": 4,
-        "rationale": "Defense spending often rises during geopolitical crises; investor rotation into defense names.",
-        "assumptions": [
-          "Budget allocations increase",
-          "Earnings outlooks improve",
-          "No fiscal constraints limit procurement"
+          "Underwriters price per-incident risk",
+          "London market remains open",
+          "No total loss of Gulf coverage"
         ],
         "confidence": "medium"
+      },
+      {
+        "id": "brent-price",
+        "kind": "numeric",
+        "name": "Brent crude front-month",
+        "unit": "USD/bbl",
+        "ticker": "BZ=F",
+        "current": 78,
+        "baselineMove": 12,
+        "sigma": 10,
+        "rationale": "2019 attacks moved Brent ~+15% in days; 2024-25 escalations added $5-10. A credible closure threat implies $90-110; partial disruption +$8-15. Baseline +12 with fat right tail.",
+        "assumptions": [
+          "OPEC spare capacity ~3-4mbd cushions partial loss",
+          "SPR release possible but lagged",
+          "Demand growth soft caps upside"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "us-oil-etf",
+        "kind": "numeric",
+        "name": "USO (W&T Offshore proxy: US Oil Fund)",
+        "unit": "USD/share",
+        "ticker": "USO",
+        "current": 72,
+        "baselineMove": 10,
+        "sigma": 9,
+        "rationale": "USO tracks WTI futures; historically amplifies Brent spikes ~1:1 with roll-yield drag. +10% baseline on Hormuz scare, +25-40% in true closure scenario.",
+        "assumptions": [
+          "Contango drag limits upside vs spot",
+          "CTA positioning adds volatility",
+          "No CFTC position limits binding"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "us-naval-escort",
+        "kind": "event",
+        "statement": "US-led naval escort/convoy operations for Gulf tankers are announced within 14 days of an escalation incident.",
+        "resolution": "CENTCOM or Pentagon announcement of combined maritime security operations.",
+        "base": 0.55,
+        "lagDays": [
+          3,
+          10
+        ],
+        "rationale": "1987 Earnest Will and 2019 Operation Sentinel analogs: US responds to Gulf threats with escorts within days-to-weeks. Conditional on attacks, ~55% given existing 5th Fleet presence.",
+        "analogs": [
+          "1987 Earnest Will",
+          "2019 Operation Sentinel"
+        ],
+        "assumptions": [
+          "Flag-state requests for protection",
+          "Coalition partners participate",
+          "Carrier group available in theater"
+        ],
+        "confidence": "high",
+        "marketQuery": "US Navy escort tanker convoy Persian Gulf 2025",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "diplomatic-deal",
+        "kind": "event",
+        "statement": "A US-Iran interim nuclear/de-escalation agreement is announced within 30 days.",
+        "resolution": "Joint statement or verified framework signed by both governments reported by Reuters/AP.",
+        "base": 0.15,
+        "lagDays": [
+          7,
+          30
+        ],
+        "rationale": "Both sides have shown appetite for interim deals (2023 prisoner swap template); escalation paradoxically accelerates diplomacy. 15% base; acts as the key inhibitor on closure.",
+        "analogs": [
+          "2023 prisoner/asset deal",
+          "2015 JCPOA sprint diplomacy"
+        ],
+        "assumptions": [
+          "Back-channels active in Oman/Qatar",
+          "Sanctions relief tradeable",
+          "Israel does not veto via strike"
+        ],
+        "confidence": "medium",
+        "marketQuery": "US Iran nuclear deal negotiations 2025",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "tanker-rerouting",
+        "kind": "event",
+        "statement": "Major tanker operators suspend or reroute Hormuz transits for at least 72 hours within 30 days.",
+        "resolution": "Ship-tracking (Kpler/MarineTraffic) shows >50% drop in daily transits vs 30-day average for 3+ days.",
+        "base": 0.12,
+        "lagDays": [
+          2,
+          8
+        ],
+        "rationale": "Operators pause on war-risk spikes before states do; 2019 analog saw brief pauses. This is the practical precursor to 'closure' even without physical blockade.",
+        "analogs": [
+          "2019 operator wariness post-attacks",
+          "2024 Red Sea rerouting cascade"
+        ],
+        "assumptions": [
+          "Charterers honor force majeure clauses",
+          "War-risk coverage becomes conditional",
+          "Alternative pipelines cannot absorb volumes"
+        ],
+        "confidence": "medium",
+        "marketQuery": "tanker transits Strait of Hormuz suspended 2025",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "saudi-uae-pipelines",
+        "kind": "event",
+        "statement": "Saudi/UAE bypass pipelines run above 80% of nameplate capacity within 14 days of any transit disruption.",
+        "resolution": "JODI/Reuters flow data showing East-West and ADCO pipeline utilization surge.",
+        "base": 0.4,
+        "lagDays": [
+          3,
+          14
+        ],
+        "rationale": "Combined ~5.5mbd bypass capacity; 2019 attacks pushed utilization up. Partial offset to closure impact, capping price upside.",
+        "analogs": [
+          "2019 East-West pipeline surge",
+          "2019 Fujairah flows"
+        ],
+        "assumptions": [
+          "Pipeline capacity ~5.5mbd available",
+          "Terminal loading not attacked",
+          "Crude quality arbitrage acceptable"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Saudi East-West pipeline crude bypass capacity 2025",
+        "isRoot": false,
+        "isTarget": false
       }
     ],
     "edges": [
       {
-        "id": "n1->n2",
-        "source": "n1",
-        "target": "n2",
-        "mechanism": "Physical enforcement blocks commercial transits",
+        "id": "kinetic-trigger->iran-retaliation",
+        "source": "kinetic-trigger",
+        "target": "iran-retaliation",
+        "mechanism": "Regime credibility demands direct response to strikes on sovereign territory",
         "assumptions": [
-          "Iranian navy controls key chokepoint zones",
-          "Commercial vessels avoid confrontation"
+          "Command structure intact",
+          "Proxy response deemed insufficient"
         ],
         "confidence": "high",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.9
-      },
-      {
-        "id": "n2->n3",
-        "source": "n2",
-        "target": "n3",
-        "mechanism": "Supply disruption raises risk premium in oil markets",
-        "assumptions": [
-          "Global spare capacity is limited",
-          "Speculative positioning amplifies move"
-        ],
-        "confidence": "high",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.85
-      },
-      {
-        "id": "n3->n4",
-        "source": "n3",
-        "target": "n4",
-        "mechanism": "Rising oil prices lift energy ETF valuations",
-        "assumptions": [
-          "USO tracks near-month futures",
-          "No contango drag offsets gains"
-        ],
-        "confidence": "high",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "en",
-        "impact": 80
-      },
-      {
-        "id": "n1->n5",
-        "source": "n1",
-        "target": "n5",
-        "mechanism": "Closure triggers Western military response to protect shipping lanes",
-        "assumptions": [
-          "US prioritizes energy security",
-          "Allies join escort operations"
-        ],
-        "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
@@ -774,13 +953,28 @@
         "strength": 0.7
       },
       {
-        "id": "n5->n6",
-        "source": "n5",
-        "target": "n6",
-        "mechanism": "Naval presence invites Iranian show of force",
+        "id": "kinetic-trigger->tanker-attacks",
+        "source": "kinetic-trigger",
+        "target": "tanker-attacks",
+        "mechanism": "Escalation environment licenses IRGC deniable naval action",
         "assumptions": [
-          "IRGCN views presence as provocative",
-          "Escalation dynamics take hold"
+          "IRGC Navy autonomy",
+          "Deniability preserved"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.5
+      },
+      {
+        "id": "iran-retaliation->tanker-attacks",
+        "source": "iran-retaliation",
+        "target": "tanker-attacks",
+        "mechanism": "Retaliatory campaign extends to Gulf shipping as asymmetric pressure point",
+        "assumptions": [
+          "Shipping targeted as US-adjacent soft target"
         ],
         "confidence": "medium",
         "support": "model_assumption",
@@ -790,15 +984,63 @@
         "strength": 0.6
       },
       {
-        "id": "n6->n7",
-        "source": "n6",
-        "target": "n7",
-        "mechanism": "Escalation pressures Gulf states to release reserves",
+        "id": "tanker-attacks->mining-attempt",
+        "source": "tanker-attacks",
+        "target": "mining-attempt",
+        "mechanism": "Escalation ladder: attacks fail to coerce, mining raises stakes",
         "assumptions": [
-          "GCC coordinates response",
-          "Reserves are sufficient"
+          "Coercion objective unmet",
+          "US response still deterred"
         ],
         "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.3
+      },
+      {
+        "id": "tanker-attacks->tanker-rerouting",
+        "source": "tanker-attacks",
+        "target": "tanker-rerouting",
+        "mechanism": "War-risk repricing and crew safety drive operator pauses",
+        "assumptions": [
+          "Insurers impose conditions",
+          "Charterers accept force majeure"
+        ],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.65
+      },
+      {
+        "id": "mining-attempt->root-hormuz-closure",
+        "source": "mining-attempt",
+        "target": "root-hormuz-closure",
+        "mechanism": "Mined lanes force transit suspension pending minesweeping (weeks-scale)",
+        "assumptions": [
+          "Minesweeping takes 2-6 weeks",
+          "Insurers declare unseaworthy routes"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.6
+      },
+      {
+        "id": "tanker-rerouting->root-hormuz-closure",
+        "source": "tanker-rerouting",
+        "target": "root-hormuz-closure",
+        "mechanism": "Operator de facto suspension constitutes functional closure even without blockade",
+        "assumptions": [
+          "Resolution counts functional closure",
+          "Pause extends beyond 72h"
+        ],
+        "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
@@ -806,242 +1048,306 @@
         "strength": 0.5
       },
       {
-        "id": "n7->n3",
-        "source": "n7",
-        "target": "n3",
-        "mechanism": "Stock releases cap price gains",
+        "id": "us-naval-escort->root-hormuz-closure",
+        "source": "us-naval-escort",
+        "target": "root-hormuz-closure",
+        "mechanism": "INHIBITOR: escorted convoys restore transit confidence and keep lanes open",
         "assumptions": [
-          "Release volume offsets disruption",
-          "Market believes in adequacy"
+          "Escort capacity sufficient for major operators",
+          "Operators trust US coverage",
+          "Escorts not drawn into wider war"
         ],
-        "confidence": "low",
+        "confidence": "high",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "inhibit",
-        "strength": 0.4
+        "strength": 0.55
       },
       {
-        "id": "n6->n8",
-        "source": "n6",
-        "target": "n8",
-        "mechanism": "Military tension opens diplomatic channel",
+        "id": "diplomatic-deal->root-hormuz-closure",
+        "source": "diplomatic-deal",
+        "target": "root-hormuz-closure",
+        "mechanism": "INHIBITOR: de-escalation removes coercion motive for shipping disruption",
         "assumptions": [
-          "Both sides seek de-escalation",
-          "EU3/E3+6 format remains viable"
+          "Deal verifiable within window",
+          "IRGC halts operations accordingly"
         ],
-        "confidence": "low",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.3
-      },
-      {
-        "id": "n8->n2",
-        "source": "n8",
-        "target": "n2",
-        "mechanism": "Negotiations lead to partial reopening",
-        "assumptions": [
-          "Agreement includes safe passage guarantees",
-          "Iran complies with terms"
-        ],
-        "confidence": "low",
+        "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "inhibit",
-        "strength": 0.3
+        "strength": 0.6
       },
       {
-        "id": "n3->n9",
-        "source": "n3",
-        "target": "n9",
-        "mechanism": "Brent tracks same supply shock fundamentals",
+        "id": "diplomatic-deal->kinetic-trigger",
+        "source": "diplomatic-deal",
+        "target": "kinetic-trigger",
+        "mechanism": "COUNTER-FORCE: diplomacy suppresses strike probability",
         "assumptions": [
-          "Benchmark reflects global risk",
-          "No regional divergence"
+          "Israel holds strikes during talks",
+          "Interim freeze holds"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.5
+      },
+      {
+        "id": "tanker-attacks->war-risk-premium",
+        "source": "tanker-attacks",
+        "target": "war-risk-premium",
+        "mechanism": "Underwriters reprice Gulf hull/war risk per incident",
+        "assumptions": [
+          "London market liquid",
+          "Per-voyage quotes available"
         ],
         "confidence": "high",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": 95
+        "impact": 45
       },
       {
-        "id": "n5->n10",
-        "source": "n5",
-        "target": "n10",
-        "mechanism": "Military buildup boosts defense sector outlook",
+        "id": "war-risk-premium->brent-price",
+        "source": "war-risk-premium",
+        "target": "brent-price",
+        "mechanism": "Insurance and freight costs pass into delivered crude prices; supply-risk premium",
         "assumptions": [
-          "Contracts awarded quickly",
-          "Earnings revisions upward"
+          "Cost pass-through partial",
+          "Risk premium dominates"
+        ],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "nn",
+        "beta": 1.5
+      },
+      {
+        "id": "root-hormuz-closure->brent-price",
+        "source": "root-hormuz-closure",
+        "target": "brent-price",
+        "mechanism": "~17-20mbd transit at risk; even threat of closure adds large risk premium",
+        "assumptions": [
+          "Spare capacity ~3-4mbd only",
+          "No immediate SPR coordination"
+        ],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "en",
+        "impact": 70
+      },
+      {
+        "id": "brent-price->us-oil-etf",
+        "source": "brent-price",
+        "target": "us-oil-etf",
+        "mechanism": "USO tracks WTI futures ~1:1 with roll drag",
+        "assumptions": [
+          "WTI-Brent spread stable",
+          "No contango blowout"
+        ],
+        "confidence": "high",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "nn",
+        "beta": 1
+      },
+      {
+        "id": "saudi-uae-pipelines->brent-price",
+        "source": "saudi-uae-pipelines",
+        "target": "brent-price",
+        "mechanism": "INHIBITOR: bypass pipelines cap effective supply loss, muting price spike",
+        "assumptions": [
+          "5.5mbd bypass available",
+          "Terminals secure"
         ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": 65
+        "impact": -25
+      },
+      {
+        "id": "us-naval-escort->tanker-rerouting",
+        "source": "us-naval-escort",
+        "target": "tanker-rerouting",
+        "mechanism": "INHIBITOR: escorts reassure operators, reversing suspensions",
+        "assumptions": [
+          "Operators resume under escort",
+          "Insurance follows naval cover"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.5
       }
     ],
     "sources": [],
-    "model": "poolside/laguna-s-2.1",
-    "generatedAt": "2026-09-02T01:37:43.029Z",
+    "model": "z-ai/glm-5.3-flash",
+    "generatedAt": "2026-09-02T02:00:24.323Z",
     "summary": {
-      "headline": "Strait of Hormuz closure triggers oil spike, military response, and volatile energy markets within 30-day horizon",
-      "mainUncertainty": "Whether Iran enforces closure long enough to materially disrupt global oil supply, and whether diplomatic or military responses de-escalate tensions",
+      "headline": "Full 30-day Hormuz closure remains a ~3% tail; the tradeable path runs through strike→retaliation→tanker attacks→war-risk spike→Brent/USO, with US escorts and a possible US-Iran deal as the dominant inhibitors.",
+      "mainUncertainty": "Whether escalation from a kinetic strike stays at the 2019-style deniable-attack level or crosses the mining/closure red line; operator behavior under war-risk repricing is the swing variable.",
       "followUps": [
-        "Monitor AIS data for actual tanker traffic reduction",
-        "Watch for IEA emergency coordination signals",
-        "Track IRGCN naval activity via satellite and radio intercepts"
+        "Track UKMTO incident reports and war-risk premium quotes weekly",
+        "Monitor US-Iran back-channel (Oman/Qatar) for interim-deal signals",
+        "Watch Saudi/UAE bypass pipeline utilization data as a price-cap indicator",
+        "Set USO stop discipline: closure tail justifies holding, but deal announcement implies sharp mean reversion"
       ]
     }
   },
   "markets": {
-    "n1": [
+    "root-hormuz-closure": [],
+    "kinetic-trigger": [],
+    "iran-retaliation": [],
+    "tanker-attacks": [
       {
-        "title": "Will the Bank of Canada make no change to the target for the overnight rate at the September interest rate announcement?",
-        "url": "https://polymarket.com/event/bank-of-canada-decision-in-september-20260701223913897",
-        "yes": 0.998,
-        "volume": 50158.651015999996,
-        "endDate": "2026-09-02T00:00:00Z",
+        "title": "Will 200-219 ships transit the Bab el-Mandeb Strait between August 24-August 30?",
+        "url": "https://polymarket.com/event/how-many-ships-transit-bab-el-mandeb-strait-week-of-august-24",
+        "yes": 0.5,
+        "volume": 14636.514132999999,
+        "endDate": "2026-08-30T23:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will the Bank of Canada increase the target for the overnight rate by 25 bps at the September interest rate announcement?",
-        "url": "https://polymarket.com/event/bank-of-canada-decision-in-september-20260701223913897",
-        "yes": 0.001,
-        "volume": 12131.726744999996,
-        "endDate": "2026-09-02T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Bank of Canada decrease the target for the overnight rate by 25 bps at the September interest rate announcement?",
-        "url": "https://polymarket.com/event/bank-of-canada-decision-in-september-20260701223913897",
-        "yes": 0.001,
-        "volume": 7811.9216480000005,
-        "endDate": "2026-09-02T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Bank of Canada increase the target for the overnight rate by 50+ bps at the September interest rate announcement?",
-        "url": "https://polymarket.com/event/bank-of-canada-decision-in-september-20260701223913897",
-        "yes": 0.002,
-        "volume": 7116.8998,
-        "endDate": "2026-09-02T00:00:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will the Bank of Canada decrease the target for the overnight rate by 50+ bps at the September interest rate announcement?",
-        "url": "https://polymarket.com/event/bank-of-canada-decision-in-september-20260701223913897",
-        "yes": 0.0015,
-        "volume": 5188.3573,
-        "endDate": "2026-09-02T00:00:00Z",
-        "source": "polymarket"
-      }
-    ],
-    "n2": [],
-    "n3": [
-      {
-        "title": "Will Adam Zemek be the next Mayor of Brno?",
-        "url": "https://polymarket.com/event/next-mayor-of-brno-2026",
-        "yes": 0.0095,
-        "volume": 391.621365,
-        "endDate": "2027-06-30T23:59:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will Petr Vokřál be the next Mayor of Brno?",
-        "url": "https://polymarket.com/event/next-mayor-of-brno-2026",
-        "yes": 0.045,
-        "volume": 210.13,
-        "endDate": "2027-06-30T23:59:00Z",
-        "source": "polymarket"
-      },
-      {
-        "title": "Will Klára Liptáková be the next Mayor of Brno?",
-        "url": "https://polymarket.com/event/next-mayor-of-brno-2026",
+        "title": "Will 230 or more ships transit the Bab el-Mandeb Strait between August 31-September 6?",
+        "url": "https://polymarket.com/event/how-many-ships-transit-bab-el-mandeb-strait-week-of-august-31",
         "yes": 0.095,
-        "volume": 148.643074,
-        "endDate": "2027-06-30T23:59:00Z",
+        "volume": 13324.852210000001,
+        "endDate": "2026-09-06T23:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will Jakub Hruška be the next Mayor of Brno?",
-        "url": "https://polymarket.com/event/next-mayor-of-brno-2026",
-        "yes": 0.215,
-        "volume": 39.992073,
-        "endDate": "2027-06-30T23:59:00Z",
+        "title": "Will 20-39 ships transit the Strait of Hormuz between August 31-September 6?",
+        "url": "https://polymarket.com/event/how-many-ships-transit-the-strait-of-hormuz-week-of-august-31",
+        "yes": 0.785,
+        "volume": 12872.692880000002,
+        "endDate": "2026-09-06T23:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will Michal Sedláček be the next Mayor of Brno?",
-        "url": "https://polymarket.com/event/next-mayor-of-brno-2026",
+        "title": "Will fewer than 25 ships transit the Strait of Hormuz between August 24-August 30?",
+        "url": "https://polymarket.com/event/how-many-ships-transit-the-strait-of-hormuz-week-of-august-24",
+        "yes": 0.16,
+        "volume": 10207.225293000001,
+        "endDate": "2026-08-30T23:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will 210-229 ships transit the Bab el-Mandeb Strait between August 31-September 6?",
+        "url": "https://polymarket.com/event/how-many-ships-transit-bab-el-mandeb-strait-week-of-august-31",
         "yes": 0.145,
-        "volume": 39.992073,
-        "endDate": "2027-06-30T23:59:00Z",
+        "volume": 9096.114671000001,
+        "endDate": "2026-09-06T23:59:00Z",
         "source": "polymarket"
       }
     ],
-    "n5": [],
-    "n6": [
+    "mining-attempt": [
       {
-        "title": "Will Crude Oil reach a new all-time high by September 30?",
-        "url": "https://polymarket.com/event/crude-oil-all-time-high-by",
-        "yes": 0.0255,
-        "volume": 1361382.7052490003,
-        "endDate": "2026-10-01T03:59:00Z",
+        "title": "Will Christopher Haworth advance to the Round of 16 in Men's Singles at the 2026 Veolia Pickleball National Championships?",
+        "url": "https://polymarket.com/event/2026-veolia-pickleball-national-championships-to-reach-round-of-16-mens-singles",
+        "yes": 0.495,
+        "volume": 0,
+        "endDate": "2026-09-03T23:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will Crude Oil reach a new all-time high by December 31?",
-        "url": "https://polymarket.com/event/crude-oil-all-time-high-by",
-        "yes": 0.115,
-        "volume": 931834.141603,
+        "title": "Will Anouar Braham advance to the Round of 16 in Men's Singles at the 2026 Veolia Pickleball National Championships?",
+        "url": "https://polymarket.com/event/2026-veolia-pickleball-national-championships-to-reach-round-of-16-mens-singles",
+        "yes": 0.495,
+        "volume": 0,
+        "endDate": "2026-09-03T23:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Dylan Frazier advance to the Round of 16 in Men's Singles at the 2026 Veolia Pickleball National Championships?",
+        "url": "https://polymarket.com/event/2026-veolia-pickleball-national-championships-to-reach-round-of-16-mens-singles",
+        "yes": 0.495,
+        "volume": 0,
+        "endDate": "2026-09-03T23:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Marshall Brown advance to the Round of 16 in Men's Singles at the 2026 Veolia Pickleball National Championships?",
+        "url": "https://polymarket.com/event/2026-veolia-pickleball-national-championships-to-reach-round-of-16-mens-singles",
+        "yes": 0.495,
+        "volume": 0,
+        "endDate": "2026-09-03T23:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Jack Sock advance to the Round of 16 in Men's Singles at the 2026 Veolia Pickleball National Championships?",
+        "url": "https://polymarket.com/event/2026-veolia-pickleball-national-championships-to-reach-round-of-16-mens-singles",
+        "yes": 0.5,
+        "volume": 0,
+        "endDate": "2026-09-03T23:59:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "us-naval-escort": [],
+    "diplomatic-deal": [
+      {
+        "title": "Will Iran Reconstruction Funding be in a US-Iran deal in 2026?",
+        "url": "https://polymarket.com/event/what-will-be-in-a-us-iran-deal-in-2026-20260624150226501",
+        "yes": 0.11,
+        "volume": 220572.70010400002,
         "endDate": "2027-01-01T04:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will WTI Crude Oil (WTI) hit (HIGH) $100 in September?",
-        "url": "https://polymarket.com/event/what-price-will-wti-hit-in-september-2026",
-        "yes": 0.4,
-        "volume": 90861.11955499998,
-        "endDate": "2026-10-01T03:59:59.999Z",
+        "title": "Will any Uranium Enrichment % Cap (1+ Year) be in a US-Iran deal in 2026?",
+        "url": "https://polymarket.com/event/what-will-be-in-a-us-iran-deal-in-2026-20260624150226501",
+        "yes": 0.09,
+        "volume": 140785.49332100002,
+        "endDate": "2027-01-01T04:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will WTI Crude Oil (WTI) hit (HIGH) $110 in September?",
-        "url": "https://polymarket.com/event/what-price-will-wti-hit-in-september-2026",
-        "yes": 0.115,
-        "volume": 74233.123988,
-        "endDate": "2026-10-01T03:59:59.999Z",
+        "title": "Will a ≤5% Uranium Enrichment Cap (1+ Year) be in a US-Iran deal in 2026?",
+        "url": "https://polymarket.com/event/what-will-be-in-a-us-iran-deal-in-2026-20260624150226501",
+        "yes": 0.075,
+        "volume": 130463.807306,
+        "endDate": "2027-01-01T04:59:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will WTI Crude Oil (WTI) hit (HIGH) $95 in September?",
-        "url": "https://polymarket.com/event/what-price-will-wti-hit-in-september-2026",
-        "yes": 0.705,
-        "volume": 73853.04126600001,
-        "endDate": "2026-10-01T03:59:59.999Z",
+        "title": "Will Dilution of Iranian Uranium be in a US-Iran deal in 2026?",
+        "url": "https://polymarket.com/event/what-will-be-in-a-us-iran-deal-in-2026-20260624150226501",
+        "yes": 0.075,
+        "volume": 128467.70471899999,
+        "endDate": "2027-01-01T04:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will a 1+ Year Enrichment Moratorium be in a US-Iran deal in 2026?",
+        "url": "https://polymarket.com/event/what-will-be-in-a-us-iran-deal-in-2026-20260624150226501",
+        "yes": 0.095,
+        "volume": 117049.76133200001,
+        "endDate": "2027-01-01T04:59:00Z",
         "source": "polymarket"
       }
     ],
-    "n7": [],
-    "n8": []
+    "tanker-rerouting": [],
+    "saudi-uae-pipelines": []
   },
   "quotes": {
+    "BZ=F": {
+      "symbol": "BZ=F",
+      "price": 96.55,
+      "changePct": 2.007,
+      "currency": "USD",
+      "time": "2026-09-02T01:50:26.000Z"
+    },
     "USO": {
       "symbol": "USO",
       "price": 141,
       "changePct": 5.46,
-      "currency": "USD",
-      "time": "2026-09-01T20:00:00.000Z"
-    },
-    "BRNT": null,
-    "ITA": {
-      "symbol": "ITA",
-      "price": 225.46,
-      "changePct": -1.266,
       "currency": "USD",
       "time": "2026-09-01T20:00:00.000Z"
     }

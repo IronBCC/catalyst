@@ -146,14 +146,50 @@ describe("rootReaches", () => {
     expect(result.score).toBe(1);
   });
 
-  it("fails when a node is orphaned", () => {
+  it("fails when a node is disconnected from the root entirely", () => {
     const g = graph(
       [event("root", { isRoot: true }), event("child"), event("orphan")],
       [eeEdge("e1", "root", "child", "")],
     );
     const result = rootReaches(g);
     expect(result.ok).toBe(false);
-    expect(result.score).toBeCloseTo(2 / 3);
+    // One of the two parts fails: the graph has a loose node but no stranded numeric.
+    expect(result.score).toBe(0.5);
+    expect(result.detail).toContain("disconnected");
+  });
+
+  it("accepts an upstream precursor that feeds the root", () => {
+    const g = graph(
+      [event("precursor"), event("root", { isRoot: true })],
+      [eeEdge("e1", "precursor", "root", "")],
+    );
+    const result = rootReaches(g);
+    expect(result.ok).toBe(true);
+    expect(result.score).toBe(1);
+  });
+
+  it("fails when a numeric node is not downstream of the root", () => {
+    const g = graph(
+      [event("root", { isRoot: true }), numeric("brent")],
+      [eeEdge("e1", "root", "root", "")],
+    );
+    g.edges = [
+      {
+        id: "e1",
+        kind: "en",
+        source: "brent",
+        target: "root",
+        mechanism: "priced in",
+        assumptions: [],
+        confidence: "medium",
+        support: "model_assumption",
+        sourceIds: [],
+        impact: 5,
+      },
+    ];
+    const result = rootReaches(g);
+    expect(result.ok).toBe(false);
+    expect(result.detail).toContain("cannot reach");
   });
 
   it("fails with score 0 when there is no root", () => {

@@ -43,7 +43,7 @@ npm run dev                    # http://localhost:3000
 
 | variable | default | what it is for |
 |---|---|---|
-| `OPENROUTER_MODEL` | `openai/gpt-5.6-luna` | the model behind every call |
+| `OPENROUTER_MODEL` | `z-ai/glm-5.3-flash` | the model behind every call |
 | `OPENROUTER_MAX_OUTPUT_TOKENS` | `32000` | a whole graph is a large payload; a verbose model needs more room |
 | `OPENROUTER_REASONING` | `low` | an effort level, a number (reasoning token budget), or `off` |
 | `OPENROUTER_PROVIDER_ORDER` | empty | comma-separated OpenRouter provider slugs, most preferred first |
@@ -59,10 +59,11 @@ and the app says so in a banner instead of breaking.
 ## Checks
 
 ```bash
-npm test          # unit: schema, engine, http, handlers, market, store, thesis, fixtures
+npm test          # unit: schema, engine, quality checks, http, handlers, store, thesis
 npm run build     # production build, including the security headers
 npm run test:e2e  # Playwright, every route mocked, no network
 npm run check     # all three
+npm run quality -- <model>   # live: eight quality checks, cost and latency, per model
 ```
 
 One test is **not** in `npm run check` because it costs money and needs credentials:
@@ -81,36 +82,62 @@ choice is not stylistic: of the three models measured here, one does not support
 `response_format` at all, and asking for it produced prose that silently ignored the
 schema.
 
-Measured on 2026-09-01, four example prompts per configuration, one run each:
+`npm run quality -- <model>` runs six prompts (four explore, two chain) through the
+eight checks in `src/lib/quality.ts`, repeats one prompt to measure run-to-run
+stability, and records latency and the real dollar cost read off the wire.
 
-| model | ok | median | nodes | numerics with a ticker | inhibitors |
-|---|---|---|---|---|---|
-| `poolside/laguna-s-2.1` | 4/4 | 63 s | 9.8 | 3.3 | 1.3 |
-| `poolside/laguna-s-2.1`, 120k output | 4/4 | 140 s | 12.8 | 3.5 | 0.8 |
-| `z-ai/glm-5.3-flash` via Fireworks | 4/4 | 42 s | 8.5 | 2.0 | 1.8 |
-| `qwen/qwen3.8-flash`, thinking off | 3/4 | 55 s | 10.3 | 2.0 | 1.3 |
+Measured 2026-09-01, one run per prompt, all three on identical checks and schema:
 
-All three work. All three also scored 0/4 on the first attempt, each for a different
-reason that had nothing to do with how good the model is:
+| model | graphs | quality | median | $/graph | tickers resolve | chain sound |
+|---|---|---|---|---|---|---|
+| `z-ai/glm-5.3-flash` via Fireworks | 7/7 | 90% | 34 s | $0.0024 | 7/7 | 7/7 |
+| `poolside/laguna-s-2.1` | 6/7 | 80% | 142 s | $0.0010 | 3/6 | 6/6 |
+| `qwen/qwen3.8-flash` | 2/7 | 83% | 48 s | $0.0046 | 2/2 | 2/2 |
+
+GLM is the default: it is the only one that produced every graph including both
+chain prompts, the only one whose tickers all resolved against Yahoo, and it is
+four times faster than poolside for a quarter of a cent per graph.
+
+Poolside is cheapest and nothing else. Half its graphs carry tickers that do not
+price (`688981`, `NASDAQ:AMZN`, `BRN1!`, `SPX`), and at 142 s a generation is slow
+enough to be felt. Qwen never failed on quality — it failed to answer, returning
+upstream rate limits on three separate runs (4/7, 4/7, 2/7).
+
+All three scored 0/4 on the first attempt, each for a different reason, and none of
+them was the model:
 
 - **poolside** advertises no `response_format`; a json_schema request 404s when
-  `provider.require_parameters` is set and is ignored without it. It needs the forced
-  tool call, and it needs `require_parameters` off, because that flag also refuses to
-  route a named `tool_choice` for this model.
-- **GLM** was being routed to the Together endpoint, which answers a forced tool call
-  with `{}` and zero completion tokens while still billing the prompt. Pinning
-  `OPENROUTER_PROVIDER_ORDER=fireworks` turns 0/4 into 4/4 with nothing else changed.
-- **qwen** rejects a named `tool_choice` while thinking mode is on
-  (`invalid_parameter_error`), so it needs `OPENROUTER_REASONING=off`. Its remaining
-  failure was an upstream rate limit, not a bad graph.
+  `provider.require_parameters` is set and is silently ignored without it. It needs
+  the forced tool call, and `require_parameters` off, because that flag also refuses
+  to route a named `tool_choice` for this model.
+- **GLM** was routed to the Together endpoint, which answers a forced tool call with
+  `{}` and zero completion tokens while still billing the prompt. Pinning
+  `OPENROUTER_PROVIDER_ORDER=fireworks` turns 0/7 into 7/7. The pin sends
+  `allow_fallbacks: false`, because a fallback lands right back on the broken route.
+- **qwen** rejects a named `tool_choice` while thinking mode is on, so it needs
+  `OPENROUTER_REASONING=off`.
 
-The default is poolside because it produces the most numeric nodes with resolvable
-tickers, and ticker coverage is what the Polymarket and Yahoo grounding depends on —
-GLM once returned a graph with no tickers at all, which the app cannot price. GLM is
-faster and models counter-forces better, and is one environment variable away.
+Pinning also exposed a bug of our own: `z.tuple` serialises to the draft-7 list form
+of `items`, which Fireworks rejects outright (`'items' must be a schema object, got
+list`). `lagDays` is a fixed-length array now. It only ever worked because requests
+were falling through to laxer endpoints.
 
-Four examples with one run each separates "works" from "silently broken". It does not
-settle a one-node quality difference.
+### What the numbers do and do not support
+
+Six prompts with one run each separates 7/7 from 2/7 and 34 s from 142 s. It does not
+separate 90% from 83%: GLM's own `signs-match-mechanisms` moved 6/7 to 4/7 between two
+runs of the same configuration, and its stability check failed once and passed once.
+
+Two checks are keyword heuristics. `signs-match-mechanisms` and
+`resolutions-checkable` catch blatant contradictions and vagueness, not subtle ones,
+and unusual phrasing fools them. They are lint, not proof. And no check verifies that
+a base rate is *correct* — only that the set of them has spread, tails and distinct
+values. Verifying 0.03 against the world needs a source the app does not have.
+
+Known gap worth fixing next: models emit tickers in the wrong dialect
+(`NASDAQ:AMZN`, `SPX`, `BRN=F`, TradingView's `BRN1!`). `repairGraph` should normalise
+the common forms and drop what cannot resolve, rather than keeping a symbol that
+silently never prices.
 
 ## How the numbers work
 

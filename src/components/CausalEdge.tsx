@@ -5,7 +5,7 @@ import {
   BaseEdge,
   EdgeLabelRenderer,
   EdgeProps,
-  getBezierPath,
+  getSmoothStepPath,
   type Edge,
 } from "@xyflow/react";
 
@@ -45,15 +45,18 @@ export function CausalEdge({
   const [focused, setFocused] = useState(false);
   const [hovered, setHovered] = useState(false);
 
+  // Orthogonal routing rather than a bezier: in a layered graph a curve
+  // crossing four columns is unreadable, a stepped line is followable.
   const [pathD, labelX, labelY] = useMemo(
     () =>
-      getBezierPath({
+      getSmoothStepPath({
         sourceX,
         sourceY,
         targetX,
         targetY,
         sourcePosition,
         targetPosition,
+        borderRadius: 12,
       }),
     [sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition],
   );
@@ -67,20 +70,37 @@ export function CausalEdge({
   const stroke = edgeData?.weakest ? "var(--color-red)" : color;
   const dash = polarity === "inhibit" || edgeData?.weakest ? "6 4" : undefined;
   const strokeWidth = Math.max(1, 1 + 4 * weight);
+  const emphasised = Boolean(edgeData?.onPath || edgeData?.weakest || selected || hovered || focused);
+  const opacity = emphasised ? 1 : 0.45;
+  const markerId = `arrow-${polarity === "inhibit" ? "inhibit" : "promote"}${edgeData?.weakest ? "-weak" : edgeData?.onPath ? "-path" : ""}`;
   const label =
     `${mechanism}` +
     (polarity === "inhibit" ? " (inhibit)" : " (promote)");
 
   return (
     <>
+      <defs>
+        <marker
+          id={markerId}
+          markerWidth="10"
+          markerHeight="10"
+          refX="9"
+          refY="3"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path d="M0,0 L0,6 L9,3 z" fill={stroke} />
+        </marker>
+      </defs>
       <BaseEdge
         id={id}
         path={pathD}
-        markerEnd={markerEnd}
+        markerEnd={markerEnd ?? `url(#${markerId})`}
         style={{
           stroke,
           strokeWidth,
           strokeDasharray: dash,
+          opacity,
         }}
       >
         <path

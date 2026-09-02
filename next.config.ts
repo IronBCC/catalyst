@@ -20,6 +20,8 @@ const CSP = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  // The floating dev badge sits on top of the rail's footer buttons.
+  devIndicators: false,
   async headers() {
     return [
       {

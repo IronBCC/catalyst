@@ -8,7 +8,7 @@ import {
 } from "./helpers";
 import { T } from "./testids";
 
-test("world switcher changes worlds and exposes comparison", async ({ page }) => {
+test("world switcher moves between worlds and back", async ({ page }) => {
   await freshWorkspace(page);
   await mockApi(page);
   await page.route("**/fixtures/hormuz.json", async (route) => {
@@ -52,12 +52,14 @@ test("world switcher changes worlds and exposes comparison", async ({ page }) =>
     .click();
   await expect(probability).toHaveText(baselineProbability ?? "");
 
+  // Back again: switching is the whole feature, and it must land on the same
+  // numbers each way.
   await switcher.click();
-  const testWorld = page.getByTestId(/^world-option-/).filter({ hasText: "test world" });
-  await testWorld.getByRole("button", { name: "Compare test world" }).click();
-
-  const strip = page.getByTestId(T.compareStrip);
-  await expect(strip).toContainText("comparing: Baseline vs test world");
-  await page.getByTestId(T.clearCompare).click();
-  await expect(strip).toBeHidden();
+  await page
+    .getByTestId(/^world-option-/)
+    .filter({ hasText: "test world" })
+    .getByRole("button", { name: "Switch to test world" })
+    .click();
+  await expect(probability).not.toHaveText(baselineProbability ?? "");
+  await expect(switcher).toContainText("test world");
 });

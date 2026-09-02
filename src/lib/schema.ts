@@ -227,6 +227,9 @@ export const EditSchema = z.discriminatedUnion("type", [
     value: z.number(),
   }),
   z.strictObject({ type: z.literal("addNode"), node: NodeSchema, edges: z.array(EdgeSchema) }),
+  // A correction rewrites one node and every edge touching it. Edge params
+  // alone cannot fix a wrong sign that came from a wrong statement.
+  z.strictObject({ type: z.literal("reviseNode"), node: NodeSchema, edges: z.array(EdgeSchema) }),
   z.strictObject({
     type: z.literal("adoptMarket"),
     nodeId: Id,
@@ -252,7 +255,9 @@ export const WorkspaceSchema = z.strictObject({
   graph: GraphSchema.nullable(),
   worlds: z.array(WorldSchema),
   activeWorldId: z.string().nullable(),
-  compareWorldId: z.string().nullable(),
+  // Comparison was removed; the key is still tolerated so a workspace exported
+  // by an older build still imports.
+  compareWorldId: z.string().nullable().optional(),
   positions: z.array(PositionSchema),
   thesis: z.record(z.string(), LlmThesis),
 });
@@ -296,6 +301,14 @@ export const BranchInputSchema = z.strictObject({
   blackSwan: z.boolean(),
 });
 export type BranchInput = z.infer<typeof BranchInputSchema>;
+
+export const CorrectInputSchema = z.strictObject({
+  graph: GraphSchema,
+  compact: z.string().max(20000),
+  nodeId: Id,
+  text: z.string().min(3).max(500),
+});
+export type CorrectInput = z.infer<typeof CorrectInputSchema>;
 
 export const LegSchema = z.strictObject({
   ticker: z.string(),

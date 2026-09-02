@@ -61,21 +61,22 @@ export function CausalEdge({
     [sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition],
   );
 
-  const showLabel = selected || hovered || focused || edgeData?.onPath;
+  const showLabel = selected || hovered || focused;
   const color = edgeData?.onPath
-    ? "var(--color-gold)"
+    ? "var(--accent)"
     : polarity === "inhibit"
-      ? "var(--color-orange)"
-      : "var(--color-blue)";
-  const stroke = edgeData?.weakest ? "var(--color-red)" : color;
+      ? "var(--orange)"
+      : "var(--line-strong)";
+  const stroke = edgeData?.weakest ? "var(--red)" : selected || hovered || focused ? "var(--fg)" : color;
   const dash = polarity === "inhibit" || edgeData?.weakest ? "6 4" : undefined;
-  const strokeWidth = Math.max(1, 1 + 4 * weight);
+  const strokeWidth = Math.max(1.25, 1.25 + 3 * weight);
   const emphasised = Boolean(edgeData?.onPath || edgeData?.weakest || selected || hovered || focused);
-  const opacity = emphasised ? 1 : 0.45;
+  const opacity = emphasised ? 1 : 0.8;
   const markerId = `arrow-${polarity === "inhibit" ? "inhibit" : "promote"}${edgeData?.weakest ? "-weak" : edgeData?.onPath ? "-path" : ""}`;
   const label =
     `${mechanism}` +
     (polarity === "inhibit" ? " (inhibit)" : " (promote)");
+  const verb = polarity === "inhibit" ? "inhibits" : "promotes";
 
   return (
     <>
@@ -121,15 +122,15 @@ export function CausalEdge({
       {showLabel ? (
         <EdgeLabelRenderer>
           <div
-            className="pointer-events-none rounded border border-line bg-panel px-2 py-1 text-xs text-muted shadow-sm"
+            className="pointer-events-none max-w-[280px] rounded-md bg-fg px-2.5 py-1.5 text-[11px] leading-snug text-bg shadow-card"
             style={{
               position: "absolute",
-              transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY - 10}px)`,
-              whiteSpace: "nowrap",
+              transform: `translate(-50%, -100%) translate(${labelX}px, ${labelY - 8}px)`,
               zIndex: 5,
             }}
           >
-            <span className="font-semibold text-fg">{label}</span>
+            <span className={polarity === "inhibit" ? "text-orange" : "text-accent"}>{verb}</span>{" "}
+            {mechanism}
           </div>
         </EdgeLabelRenderer>
       ) : null}

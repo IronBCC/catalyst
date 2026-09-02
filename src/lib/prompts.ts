@@ -1,5 +1,6 @@
 import type {
   BranchInput,
+  CorrectInput,
   Edge,
   GenerateInput,
   Graph,
@@ -31,6 +32,17 @@ export const BRANCH_SYSTEM = [
   "Return only causal branch candidates that connect to existing ids.",
   "Each candidate has one event node and at most six edges to or from existing ids.",
   "Use a dated, resolvable event with falsifiable assumptions.",
+  // Generalising away the actor is what breaks the sign: an attribution-free
+  // event has no reason to favour either side of a political outcome.
+  "Keep the actor, the target and the direction the user named. Do not generalise them away.",
+].join("\n");
+
+export const CORRECT_SYSTEM = [
+  "The user is correcting one node of an existing causal graph. They know the domain; take the correction as fact.",
+  "Return that one node, revised, keeping its id and its kind, plus every edge that touches it.",
+  "Edges you omit are dropped, so restate the ones that survive. Connect only to ids already in the graph.",
+  "A correction about direction changes the sign of the affected edges: a cause that helps one side hurts the other.",
+  "Keep the statement resolvable and dated, and say in the rationale what the correction changed.",
 ].join("\n");
 
 export const THESIS_SYSTEM = [
@@ -116,6 +128,16 @@ export function branchPrompt(input: BranchInput): string {
       ".";
 
   return request + "\n\nExisting graph:\n" + input.compact;
+}
+
+export function correctPrompt(input: CorrectInput): string {
+  return [
+    "Correct node " + input.nodeId + ".",
+    "The user says: " + input.text,
+    "",
+    "Existing graph:",
+    input.compact,
+  ].join("\n");
 }
 
 export function thesisPrompt(input: ThesisInput): string {

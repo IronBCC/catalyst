@@ -27,7 +27,6 @@ test("worlds: root override creates a world and preserves baseline probability",
   const slider = page.getByTestId(T.paramSlider).locator('input[type="range"]');
   await expect(slider).toBeVisible();
 
-  const compare = page.getByTestId(T.compareSelect);
   const beforeDelta = rootNode.getByTestId(T.nodeDelta);
   await expect(beforeDelta).not.toBeVisible();
 
@@ -38,7 +37,7 @@ test("worlds: root override creates a world and preserves baseline probability",
   await expect(beforeDelta).toBeVisible();
   await expect(beforeDelta).toHaveText(/^[+-]\d+(\.\d+)?pp$/);
 
-  // The worlds table and the compare selector live on the scenarios tab.
+  // The worlds table lives on the scenarios tab.
   await page.getByTestId(T.tab("scenarios")).click();
 
   const baselineRow = page.getByTestId(T.worldRow("baseline"));
@@ -57,19 +56,8 @@ test("worlds: root override creates a world and preserves baseline probability",
 
   await expect(baselineRow.getByTestId(T.worldProbability)).toHaveText(baselineProb);
 
-  const compareOptionsCount = await compare.locator("option").count();
-  if (compareOptionsCount >= 2) {
-    const current = await compare.inputValue().catch(() => "");
-    if (current) {
-      const targetIndex = current === "baseline" ? 1 : 0;
-      if (targetIndex < compareOptionsCount) {
-        await compare.selectOption({ index: targetIndex });
-      }
-    } else {
-      await compare.selectOption({ index: 1 });
-    }
-    await page.getByTestId(T.tab("map")).click();
-    const deltaAfterCompare = rootNode.getByTestId(T.nodeDelta);
-    await expect(deltaAfterCompare).toBeVisible();
-  }
+  // The table is the other way to switch worlds.
+  await page.getByTestId(T.worldRow("baseline")).getByRole("button").first().click();
+  await page.getByTestId(T.tab("map")).click();
+  await expect(rootNode.getByTestId(T.nodeDelta)).toHaveCount(0);
 });

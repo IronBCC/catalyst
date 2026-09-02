@@ -17,39 +17,27 @@ export interface WorldsTableProps {
   }[];
   numericIds: { id: string; name: string }[];
   activeId: string;
-  compareId: string;
   onSelect(id: string): void;
-  onCompare(id: string): void;
 }
 
-const fmtPercent = (value: number): string => {
-  const pct = Math.round(value * 100);
-  return `${pct}%`;
-};
-
-const fmtMove = (value: number): string => {
-  const sign = value > 0 ? "+" : "";
-  return `${sign}${value.toFixed(1)}%`;
-};
+const fmtPercent = (value: number): string => `${Math.round(value * 100)}%`;
+const fmtMove = (value: number): string => `${value > 0 ? "+" : ""}${value.toFixed(1)}%`;
 
 export function WorldsTable(props: WorldsTableProps): React.ReactElement {
   return (
-    <div className="overflow-x-auto rounded border border-line bg-panel p-3 text-fg">
-      <table className="w-full border-collapse text-sm">
-        <caption className="mb-2 text-left text-sm font-semibold text-muted">
-          Worlds
-        </caption>
+    <div className="overflow-x-auto rounded-lg border border-line bg-panel">
+      <table className="w-full border-collapse text-xs">
+        <caption className="sr-only">Worlds</caption>
         <thead>
           <tr className="text-left text-muted">
-            <th className="pb-2 pr-3">World</th>
-            <th className="pb-2 pr-3">Root P</th>
-            <th className="pb-2 pr-3">Target P</th>
+            <th className="px-3 py-2 font-normal">World</th>
+            <th className="num px-3 py-2 text-right font-normal">Root</th>
+            <th className="num px-3 py-2 text-right font-normal">Target</th>
             {props.numericIds.map((numeric) => (
-              <th key={numeric.id} className="pb-2 pr-3">
+              <th key={numeric.id} className="num max-w-[9rem] truncate px-3 py-2 text-right font-normal" title={numeric.name}>
                 {numeric.name}
               </th>
             ))}
-            <th className="pb-2 pr-3">Compare</th>
           </tr>
         </thead>
         <tbody>
@@ -57,80 +45,49 @@ export function WorldsTable(props: WorldsTableProps): React.ReactElement {
             const rowId = row.world.id;
             const name = String(row.world.name ?? row.world.id);
             const isActive = rowId === props.activeId;
-            const isCompare = rowId === props.compareId;
 
             return (
               <tr
                 key={rowId}
                 data-testid={`world-row-${rowId}`}
-                className={`border-t border-line ${
-                  isActive ? "border-l-4 border-l-gold bg-bg" : ""
-                }`}
+                className={`border-t border-line ${isActive ? "bg-accent-soft/40" : "hover:bg-panel-2"}`}
               >
-                <td className="py-2 pr-3 align-top">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <button
-                      type="button"
-                      role="button"
-                      tabIndex={0}
-                      className={`rounded border border-line px-2 py-1 ${
-                        isActive
-                          ? "border-gold bg-panel text-gold"
-                          : "bg-bg hover:bg-line"
-                      }`}
-                      aria-label={`Select world ${name}`}
-                      onClick={() => props.onSelect(rowId)}
-                    >
-                      Select
-                    </button>
-                    <span className={isActive ? "text-gold" : "text-fg"}>
-                      {name}
-                    </span>
-                    {isActive ? (
-                      <span className="rounded border border-gold px-1 text-xs text-gold">
-                        active
-                      </span>
-                    ) : null}
-                  </div>
+                <td className="px-3 py-2 align-middle">
+                  <button
+                    type="button"
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Select world ${name}`}
+                    aria-current={isActive ? "true" : undefined}
+                    onClick={() => props.onSelect(rowId)}
+                    className="flex items-center gap-2 text-left text-fg hover:text-accent"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`inline-block h-2 w-2 rounded-full ${isActive ? "bg-accent" : "bg-line-strong"}`}
+                    />
+                    <span className={isActive ? "font-medium" : ""}>{name}</span>
+                    {isActive ? <span className="text-[11px] text-muted">active</span> : null}
+                  </button>
                 </td>
-                <td data-testid="world-probability" className="pr-3 align-top text-muted">
+                <td data-testid="world-probability" className="num px-3 py-2 text-right align-middle text-fg">
                   {fmtPercent(row.rootP)}
                 </td>
-                <td className="pr-3 align-top">
-                  {row.targetP === null ? (
-                    <span className="text-muted">—</span>
-                  ) : (
-                    <span className="text-fg">{fmtPercent(row.targetP)}</span>
-                  )}
+                <td className="num px-3 py-2 text-right align-middle">
+                  {row.targetP === null ? <span className="text-faint">–</span> : <span className="text-fg">{fmtPercent(row.targetP)}</span>}
                 </td>
                 {props.numericIds.map((numeric) => {
                   const move = row.moves[numeric.id];
                   const moveValue = typeof move === "number" ? move : 0;
-                  const isPositive = moveValue >= 0;
-
                   return (
                     <td
                       key={numeric.id}
-                      className={`pr-3 align-top ${
-                        isPositive ? "text-green" : "text-red"
-                      }`}
+                      className={`num px-3 py-2 text-right align-middle ${moveValue >= 0 ? "text-green" : "text-red"}`}
                     >
-                      {typeof move === "number" ? fmtMove(moveValue) : "—"}
+                      {typeof move === "number" ? fmtMove(moveValue) : "–"}
                     </td>
                   );
                 })}
-                <td className="align-top">
-                  <input
-                    type="radio"
-                    role="radio"
-                    tabIndex={0}
-                    aria-label={`Compare ${name}`}
-                    className="h-4 w-4 border border-line bg-bg"
-                    name="compare-world"
-                    checked={isCompare}
-                    onChange={() => props.onCompare(rowId)}
-                  />
-                </td>
               </tr>
             );
           })}

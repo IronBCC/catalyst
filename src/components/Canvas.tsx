@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Background,
   Controls,
   MiniMap,
   ReactFlow,
   ReactFlowProvider,
-  useNodesInitialized,
   useReactFlow,
   type Edge as FlowEdge,
   type Node as FlowNode,
@@ -25,14 +24,14 @@ const EDGE_TYPES = { causal: CausalEdge };
 
 // These must match the fixed card sizes in EventNode.tsx and NumericNode.tsx.
 // A card taller than the box the layout reserved for it overlaps its neighbour.
-const CARD = { event: { width: 260, height: 168 }, numeric: { width: 260, height: 140 } };
+const CARD = { event: { width: 260, height: 132 }, numeric: { width: 260, height: 132 } };
 
 /**
  * A long chain is wider than any screen, and fitting all of it makes the cards
  * unreadable. The initial fit stops here and the rest is panned to, with the
  * minimap for orientation.
  */
-const FIT_MIN_ZOOM = 0.5;
+const FIT_MIN_ZOOM = 0.6;
 
 /** How thick the edge is drawn: every parameter kind squashed into 0..1. */
 function weightOf(edge: { kind: string; strength?: number; impact?: number; beta?: number }) {
@@ -47,8 +46,9 @@ function Flow() {
   const select = useStore((s) => s.select);
   const worlds = useStore((s) => s.worlds);
   const activeWorldId = useStore((s) => s.activeWorldId);
-  const { fitView } = useReactFlow();
-  const nodesInitialized = useNodesInitialized();
+  const { setViewport, getViewport } = useReactFlow();
+  // setViewport is a no-op until React Flow has measured its container.
+  const [ready, setReady] = useState(false);
 
 
   // "adopted" means the world actually took the market's number, not merely
@@ -130,28 +130,80 @@ function Flow() {
     }));
   }, [graph, selection, verdict]);
 
-  // Fitting before React Flow has measured the cards produces a transform that
-  // pushes the graph outside its own container, so the fit waits for
-  // measurement and then re-runs whenever the layout actually moves.
+  // The viewport is computed from the layout rather than from React Flow's fit:
+  // card sizes are fixed and known, so nothing has to be measured first, and a
+  // graph wider than the screen starts at its root on the left, in causal order,
+  // instead of centred with the root cut off.
+  const container = useRef<HTMLDivElement>(null);
   const layoutSignature = nodes.map((n) => `${n.id}:${Math.round(n.position.x)}`).join();
   useEffect(() => {
-    if (!layoutSignature || !nodesInitialized) return;
+    const box = container.current?.getBoundingClientRect();
+    if (!ready || !layoutSignature || !box || box.width === 0) return;
+    const pad = 32;
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const n of nodes) {
+      minX = Math.min(minX, n.position.x);
+      minY = Math.min(minY, n.position.y);
+      maxX = Math.max(maxX, n.position.x + (n.width ?? 0));
+      maxY = Math.max(maxY, n.position.y + (n.height ?? 0));
+    }
+    const gw = maxX - minX || 1;
+    const gh = maxY - minY || 1;
+    const fit = Math.min((box.width - 2 * pad) / gw, (box.height - 2 * pad) / gh);
+    const zoom = Math.min(1.25, Math.max(FIT_MIN_ZOOM, fit));
+    const clamped = fit < FIT_MIN_ZOOM;
+    const x = clamped ? pad - minX * zoom : (box.width - gw * zoom) / 2 - minX * zoom;
+    const y = (box.height - gh * zoom) / 2 - minY * zoom;
+    void setViewport({ x, y, zoom });
+    // nodes is derived from layoutSignature's inputs; the signature is the cheap key.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, layoutSignature, setViewport]);
+
+  // Selecting a node opens the inspector, which can push that node under it.
+  // Pan just enough to keep the selected card fully visible.
+  useEffect(() => {
+    if (!ready || selection?.type !== "node") return;
     const frame = requestAnimationFrame(() => {
-      void fitView({ padding: 0.1, duration: 200, minZoom: FIT_MIN_ZOOM });
+      const box = container.current?.getBoundingClientRect();
+      const node = nodes.find((n) => n.id === selection.id);
+      if (!box || !node) return;
+      const { x, y, zoom } = getViewport();
+      const pad = 24;
+      const left = node.position.x * zoom + x;
+      const right = left + (node.width ?? 0) * zoom;
+      const top = node.position.y * zoom + y;
+      const bottom = top + (node.height ?? 0) * zoom;
+      let dx = 0;
+      let dy = 0;
+      if (right > box.width - pad) dx = box.width - pad - right;
+      else if (left < pad) dx = pad - left;
+      if (bottom > box.height - pad) dy = box.height - pad - bottom;
+      else if (top < pad) dy = pad - top;
+      if (dx || dy) void setViewport({ x: x + dx, y: y + dy, zoom }, { duration: 200 });
     });
     return () => cancelAnimationFrame(frame);
-  }, [layoutSignature, nodesInitialized, fitView]);
+    // nodes changes on every recompute; the selection is the trigger we want.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, selection, getViewport, setViewport]);
 
   if (!graph) {
     return (
-      <div data-testid="canvas" className="grid h-full place-items-center text-xs text-muted">
-        Pick an example or write a hypothesis to build a causal graph.
+      <div data-testid="canvas" className="grid h-full place-items-center px-6 text-center">
+        <div className="max-w-sm">
+          <p className="font-serif text-[22px] leading-tight text-fg">
+            Start with a hypothesis about the world.
+          </p>
+          <p className="mt-2 text-xs leading-relaxed text-muted">
+            Pick an example or write your own. Catalyst maps the events it sets off, the market
+            variables they move, and the mechanism behind every link.
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div data-testid="canvas" className="h-full w-full">
+    <div ref={container} data-testid="canvas" className="h-full w-full">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -165,17 +217,18 @@ function Flow() {
         onNodeClick={(_, n) => select({ type: "node", id: n.id })}
         onEdgeClick={(_, e) => select({ type: "edge", id: e.id })}
         onPaneClick={() => select(null)}
-        fitView
-        fitViewOptions={{ padding: 0.1, minZoom: FIT_MIN_ZOOM }}
+        onInit={() => setReady(true)}
       >
-        <Background color="#1f262e" gap={24} />
-        <Controls showInteractive={false} className="!bg-panel !text-fg" />
+        <Background color="var(--line-strong)" gap={28} size={1.2} />
+        <Controls showInteractive={false} position="bottom-left" />
         <MiniMap
           pannable
           zoomable
-          className="!bg-panel"
-          maskColor="rgba(11, 14, 17, 0.7)"
-          nodeColor={(node) => (node.type === "numeric" ? "#58a6ff" : "#e3b341")}
+          position="bottom-right"
+          style={{ width: 140, height: 90, background: "var(--panel)" }}
+          maskColor="color-mix(in srgb, var(--bg) 70%, transparent)"
+          nodeColor={(node) => (node.type === "numeric" ? "var(--blue)" : "var(--accent)")}
+          nodeStrokeWidth={0}
         />
       </ReactFlow>
     </div>

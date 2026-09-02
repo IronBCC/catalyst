@@ -49,10 +49,38 @@ export function applyEdits(graph: Graph, edits: Edit[]): { graph: Graph; fixed: 
       case "setEdgeParam":
         edges = edges.map((edge) => setEdgeParam(edge, edit));
         break;
+      case "reviseNode": {
+        if (!nodes.some((node) => node.id === edit.node.id)) break;
+        nodes = nodes.map((node) => (node.id === edit.node.id ? edit.node : node));
+        const known = new Set(nodes.map((node) => node.id));
+        // The revised edge set replaces the node's own links; the rest of the
+        // graph keeps its own.
+        edges = [
+          ...edges.filter(
+            (edge) => edge.source !== edit.node.id && edge.target !== edit.node.id,
+          ),
+          ...edit.edges.filter((edge) => known.has(edge.source) && known.has(edge.target)),
+        ];
+        edges = breakCycles(
+          nodes.map((node) => node.id),
+          edges,
+          edgeWeight,
+        ).edges;
+        break;
+      }
       case "addNode": {
         if (!nodes.some((node) => node.id === edit.node.id)) nodes = [...nodes, edit.node];
         const known = new Set(nodes.map((node) => node.id));
-        edges = [...edges, ...edit.edges.filter((edge) => known.has(edge.source) && known.has(edge.target))];
+        // Applying the same edit twice must be the same as applying it once:
+        // the node was already guarded, and a repeated edge would double the
+        // branch's effect on everything downstream.
+        const present = new Set(edges.map((edge) => edge.id));
+        edges = [
+          ...edges,
+          ...edit.edges.filter(
+            (edge) => !present.has(edge.id) && known.has(edge.source) && known.has(edge.target),
+          ),
+        ];
         edges = breakCycles(
           nodes.map((node) => node.id),
           edges,

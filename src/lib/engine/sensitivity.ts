@@ -42,10 +42,14 @@ export function evalTarget(graph: Graph, fixed: Fixed, target: Target, positions
 
 export function tornado(graph: Graph, fixed: Fixed, target: Target, positions: Position[]): TornadoRow[] {
   const targetId = target.type === "pnl" ? null : target.id;
+  // For a P&L target the traded instrument is not a driver of the P&L, it is
+  // the P&L. Flipping it by a sigma only restates the position's own size.
+  const held = new Set(target.type === "pnl" ? positions.map((position) => position.ticker) : []);
   const rows: TornadoRow[] = [];
 
   for (const node of graph.nodes) {
     if (node.id === targetId || fixed.pins.has(node.id) || fixed.overrides.has(node.id)) continue;
+    if (isNumeric(node) && node.ticker !== null && held.has(node.ticker)) continue;
     const lowFixed = copyFixed(fixed);
     const highFixed = copyFixed(fixed);
     if (isEvent(node)) {

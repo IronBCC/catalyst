@@ -15,6 +15,12 @@ export interface ParamSliderProps {
   onReset(): void;
   disabled?: boolean;
   applyNewOnly?: boolean;
+  /** What the two save buttons do, in the user's words. */
+  applyLabel?: string;
+  applyNewLabel?: string;
+  /** Shown while a change is previewed and not yet saved. */
+  previewing?: boolean;
+  hint?: string;
 }
 
 export function ParamSlider({
@@ -30,6 +36,10 @@ export function ParamSlider({
   onReset,
   disabled = false,
   applyNewOnly = false,
+  applyLabel = "Save",
+  applyNewLabel = "Save as new world…",
+  previewing = false,
+  hint,
 }: ParamSliderProps) {
   const clamped = Math.min(max, Math.max(min, value));
   const visibleValue = format(clamped);
@@ -40,10 +50,13 @@ export function ParamSlider({
   };
 
   return (
-    <section data-testid="param-slider" className="rounded border border-line bg-panel p-2 text-sm text-fg">
-      <div className="mb-2 flex items-center justify-between">
-        <span>{label}</span>
-        <span className="text-muted" aria-live="polite">
+    <section data-testid="param-slider" className="rounded-lg border border-line bg-bg p-3 text-xs text-fg">
+      <div className="mb-2 flex items-baseline justify-between">
+        <span className="text-muted">
+          {label}
+          {previewing ? <span className="ml-2 rounded-full bg-accent-soft px-1.5 py-px text-[10px] text-accent">previewing</span> : null}
+        </span>
+        <span className="num text-[15px] text-fg" aria-live="polite">
           {visibleValue}
         </span>
       </div>
@@ -60,9 +73,9 @@ export function ParamSlider({
         aria-label={label}
         aria-valuetext={visibleValue}
         aria-disabled={disabled}
-        className="w-full accent-blue"
+        className="w-full"
       />
-      <div className="mt-2 flex flex-wrap gap-2">
+      <div className="mt-3 flex flex-wrap items-center gap-1.5">
         {!applyNewOnly ? (
           <button
             type="button"
@@ -72,9 +85,9 @@ export function ParamSlider({
             role="button"
             data-testid="apply-to-world"
             aria-label={`Apply ${label} to world`}
-            className="rounded border border-line bg-bg px-2 py-1 text-xs text-fg disabled:opacity-50"
+            className="rounded-md bg-accent px-2.5 py-1 font-medium text-white hover:brightness-95 disabled:opacity-50"
           >
-            Apply to world
+            {applyLabel}
           </button>
         ) : null}
         <button
@@ -85,9 +98,13 @@ export function ParamSlider({
           role="button"
           data-testid="apply-here"
           aria-label={`Apply ${label} as new world`}
-          className="rounded border border-green bg-bg px-2 py-1 text-xs text-fg disabled:opacity-50"
+          className={`rounded-md px-2.5 py-1 disabled:opacity-50 ${
+            applyNewOnly
+              ? "bg-accent font-medium text-white hover:brightness-95"
+              : "border border-line-strong text-fg hover:bg-panel"
+          }`}
         >
-          Apply as new world
+          {applyNewLabel}
         </button>
         <button
           type="button"
@@ -96,11 +113,12 @@ export function ParamSlider({
           tabIndex={0}
           role="button"
           aria-label={`Reset ${label}`}
-          className="rounded border border-line bg-bg px-2 py-1 text-xs text-fg disabled:opacity-50"
+          className="ml-auto rounded-md px-2 py-1 text-muted hover:text-fg disabled:opacity-50"
         >
           Reset
         </button>
       </div>
+      {hint ? <p className="mt-2 text-[11px] leading-snug text-muted">{hint}</p> : null}
     </section>
   );
 }

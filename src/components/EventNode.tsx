@@ -52,6 +52,12 @@ export interface EventNodeComponentProps {
 const pct = (value: number) => `${Math.round(value * 100)}%`;
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 
+const CONFIDENCE_RULE: Record<Confidence, string> = {
+  high: "bg-green",
+  medium: "bg-blue",
+  low: "bg-orange",
+};
+
 function compareBadge(compareP: number | null, p: number): ReactNode | null {
   if (compareP == null) {
     return null;
@@ -60,21 +66,16 @@ function compareBadge(compareP: number | null, p: number): ReactNode | null {
   if (Math.abs(delta) < 1) {
     return null;
   }
-  const sign = delta >= 0 ? "+" : "";
+  const up = delta >= 0;
   return (
-    <span data-testid="node-delta" className="rounded-full bg-line px-2 py-0.5 text-xs text-fg">{`${sign}${delta.toFixed(0)}pp`}</span>
+    <span
+      data-testid="node-delta"
+      className={`num rounded-full px-1.5 py-px text-[11px] ${up ? "bg-green-soft text-green" : "bg-red-soft text-red"}`}
+    >{`${up ? "+" : ""}${delta.toFixed(0)}pp`}</span>
   );
 }
 
-function confidenceDot(confidence: Confidence): string {
-  if (confidence === "high") {
-    return "bg-green";
-  }
-  if (confidence === "low") {
-    return "bg-red";
-  }
-  return "bg-blue";
-}
+const pill = "rounded-full px-1.5 py-px text-[10px] leading-4";
 
 const EventNodeInner = ({
   node,
@@ -87,63 +88,70 @@ const EventNodeInner = ({
   onPath,
   selected,
 }: EventNodeComponentProps) => {
-  const isCompareUp = compareP === null || result.p >= compareP;
   const [lagMin, lagMax] = node.lagDays;
   const p = clamp(Number.isFinite(result.p) ? result.p : 0);
 
   return (
     <div
-      className={`flex h-[168px] w-[260px] flex-col overflow-hidden rounded-md border p-3 text-xs text-fg ${selected ? "ring-2 ring-blue" : "border-line"} bg-panel ${
-        node.isTarget ? "ring-2 ring-gold" : ""
-      }`}
+      className={`relative flex h-[132px] w-[260px] flex-col overflow-hidden rounded-lg pl-4 pr-3 py-3 text-xs text-fg ${
+        isNew ? "new-card bg-accent-soft/60 shadow-pop" : "bg-panel shadow-card"
+      } ${
+        selected ? "ring-2 ring-accent" : isNew || onPath ? "ring-2 ring-accent/60" : "ring-1 ring-line"
+      } ${node.isTarget ? "outline-dashed outline-1 outline-offset-2 outline-fg/40" : ""}`}
       tabIndex={0}
       role="button"
       aria-label={node.statement}
     >
-      <Handle type="target" position={Position.Left} className="!bg-line" />
+      <span
+        aria-hidden="true"
+        className={`absolute inset-y-0 left-0 w-[3px] ${CONFIDENCE_RULE[node.confidence]}`}
+      />
+      <Handle type="target" position={Position.Left} />
+      {isNew && (
+        <span
+          data-testid="node-new"
+          className="absolute right-0 top-0 rounded-bl-lg bg-accent px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white"
+        >
+          New
+        </span>
+      )}
       {/* The card is a map label, not the whole record: full text lives in the
           inspector, so everything here is clamped to keep the box a fixed size. */}
-      <div className="mb-2 min-h-0 flex-1 space-y-1 overflow-hidden">
+      <div className="min-h-0 flex-1 overflow-hidden">
         <h3
-          className={`line-clamp-2 font-semibold ${node.isRoot ? "text-gold" : "text-fg"}`}
+          className={`line-clamp-3 font-serif text-[15px] leading-[1.25] ${node.isRoot ? "text-accent" : "text-fg"}`}
           title={node.statement}
         >
           {node.statement}
         </h3>
-        <p className="line-clamp-2 text-muted" title={node.resolution}>
-          {node.resolution}
-        </p>
-        <p className="text-muted">
-          lag +{lagMin}–{lagMax}d
-        </p>
       </div>
-      <div className="mb-2 flex flex-wrap items-center gap-2">
-        <span data-testid="node-probability" className={`rounded-full px-2 py-0.5 ${isCompareUp ? "bg-green/20 text-green" : "bg-red/20 text-red"}`}>{pct(p)}</span>
-        {compareBadge(compareP, p)}
-        {result.fixed !== null && <span className="text-muted">pin</span>}
-        <span className="inline-flex items-center gap-1">
-          <span className={`inline-block h-2 w-2 rounded-full ${confidenceDot(node.confidence)}`} title={`confidence: ${node.confidence}`} />
-          {node.confidence}
+
+      <div className="mt-1 flex items-end justify-between gap-2">
+        <div className="flex items-baseline gap-1.5">
+          <span data-testid="node-probability" className="num text-[22px] leading-none tracking-tight text-fg">
+            {pct(p)}
+          </span>
+          {compareBadge(compareP, p)}
+        </div>
+        <span className="num text-[11px] text-muted" title={`confidence: ${node.confidence}`}>
+          +{lagMin}–{lagMax}d
         </span>
       </div>
-      <div className="mb-2 flex flex-wrap gap-2">
-        {pinned !== null && <span className="rounded-full bg-line px-2 py-0.5 text-muted">🔒 pinned</span>}
-        {adopted && (
-          <span data-testid="node-market" className="rounded-full bg-blue/20 px-2 py-0.5 text-blue">
-            {adoptedPct === null || adoptedPct === undefined
-              ? "market"
-              : `Polymarket ${Math.round(adoptedPct * 1000) / 10}%`}
-          </span>
-        )}
-        {isNew && (
-          <span data-testid="node-new" className="rounded-full bg-gold/20 px-2 py-0.5 text-gold">
-            new
-          </span>
-        )}
-        {onPath && <span className="rounded-full bg-gold/20 px-2 py-0.5 text-gold">path</span>}
-      </div>
-      {pinned === true && <p className="text-muted text-[11px]">intervention: pinned</p>}
-      <Handle type="source" position={Position.Right} className="!bg-line" />
+
+      {pinned !== null || adopted || result.fixed === "override" ? (
+        <div className="mt-1.5 flex flex-wrap gap-1">
+          {pinned !== null && <span className={`${pill} bg-panel-2 text-muted`}>pinned</span>}
+          {result.fixed === "override" && <span className={`${pill} bg-panel-2 text-muted`}>set by hand</span>}
+          {adopted && (
+            <span data-testid="node-market" className={`${pill} bg-blue-soft text-blue`}>
+              {adoptedPct === null || adoptedPct === undefined
+                ? "market"
+                : `Polymarket ${Math.round(adoptedPct * 1000) / 10}%`}
+            </span>
+          )}
+        </div>
+      ) : null}
+      <Handle type="source" position={Position.Right} />
     </div>
   );
 };
@@ -153,17 +161,17 @@ export default memo(function EventNodeCard(props: NodeProps) {
   // The testid lives on a wrapper because React Flow owns the outer element.
   return (
     <div data-testid={`node-${props.id}`}>
-    <EventNodeInner
-      node={data.node}
-      result={data.result}
-      compareP={data.compareP}
-      pinned={data.pinned}
-      adopted={data.adopted}
-      adoptedPct={data.adoptedPct}
-      isNew={data.isNew}
-      onPath={data.onPath}
-      selected={selected || data.selected}
-    />
+      <EventNodeInner
+        node={data.node}
+        result={data.result}
+        compareP={data.compareP}
+        pinned={data.pinned}
+        adopted={data.adopted}
+        adoptedPct={data.adoptedPct}
+        isNew={data.isNew}
+        onPath={data.onPath}
+        selected={selected || data.selected}
+      />
     </div>
   );
 });

@@ -69,38 +69,48 @@ export default function StressPanel() {
   if (!graph) return null;
 
   return (
-    <section className="flex flex-col gap-2 border-t border-line p-3 text-xs">
-      <button
-        type="button"
-        data-testid="stress"
-        onClick={() => void stress()}
-        disabled={busy}
-        className="self-start rounded border border-orange px-2 py-0.5 text-orange disabled:opacity-50"
-      >
-        {busy ? "stress testing…" : "Stress test"}
-      </button>
+    <section className="flex flex-col gap-3 border-t border-line pt-4 text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h3 className="font-serif text-[17px] leading-tight text-fg">Stress test</h3>
+          <p className="mt-0.5 text-muted">Ask the model for three black swans this map does not yet contain.</p>
+        </div>
+        <button
+          type="button"
+          data-testid="stress"
+          onClick={() => void stress()}
+          disabled={busy}
+          className="rounded-md border border-orange/50 bg-orange-soft px-3 py-1.5 text-orange hover:border-orange disabled:opacity-50"
+        >
+          {busy ? "Looking…" : "Find black swans"}
+        </button>
+      </div>
 
-      {candidates.map((c) => {
-        const label = c.node.kind === "event" ? c.node.statement : c.node.name;
-        return (
-          <div
-            key={c.node.id}
-            data-testid="stress-candidate"
-            className="rounded border border-line p-2"
-          >
-            <p className="text-fg">{label}</p>
-            <p className="text-muted">{c.edges.map((e) => e.mechanism).join(" · ")}</p>
-            <button
-              type="button"
-              data-testid="inject-candidate"
-              onClick={() => inject(c)}
-              className="mt-1 rounded border border-orange px-2 py-0.5 text-orange"
-            >
-              Inject
-            </button>
-          </div>
-        );
-      })}
+      {candidates.length ? (
+        <ul className="grid gap-2 sm:grid-cols-3">
+          {candidates.map((c) => {
+            const label = c.node.kind === "event" ? c.node.statement : c.node.name;
+            return (
+              <li
+                key={c.node.id}
+                data-testid="stress-candidate"
+                className="flex flex-col rounded-lg border border-line bg-panel p-3"
+              >
+                <p className="font-serif text-[15px] leading-snug text-fg">{label}</p>
+                <p className="mt-1.5 flex-1 leading-relaxed text-muted">{c.edges.map((e) => e.mechanism).join(". ")}</p>
+                <button
+                  type="button"
+                  data-testid="inject-candidate"
+                  onClick={() => inject(c)}
+                  className="mt-3 self-start rounded-md border border-line-strong px-2.5 py-1 text-fg hover:border-orange hover:text-orange"
+                >
+                  Add to this world
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
     </section>
   );
 }

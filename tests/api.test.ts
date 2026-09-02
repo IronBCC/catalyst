@@ -2,9 +2,10 @@ import { describe, expect, it } from "vitest";
 import type { Deps } from "@/lib/llm";
 import type { Graph } from "@/lib/schema";
 import { handleBranch } from "@/lib/api/branch";
+import { handleCorrect } from "@/lib/api/correct";
 import { handleGenerate } from "@/lib/api/generate";
 import { chatResponse, fakeFetch } from "./helpers/fakeFetch";
-import { repairBranch } from "@/lib/engine/repair";
+import { repairBranch, repairCorrection } from "@/lib/engine/repair";
 
 const graph: Graph = {
   id: "hormuz",
@@ -116,6 +117,88 @@ const branchInput = {
 const deps = (fetchImpl: typeof fetch, key = "test-key"): Deps => ({
   fetchImpl,
   env: { OPENROUTER_API_KEY: key },
+});
+
+const correctRequest = (body: unknown) =>
+  new Request("http://test/api/correct", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
+const correctInput = {
+  graph,
+  compact: "closure | event | The Strait of Hormuz closes | p=0.20",
+  nodeId: "closure",
+  text: "A closure lifts Brent much harder than this",
+};
+
+const revision = {
+  node: { ...candidate.node, id: "closure", statement: "The Strait of Hormuz closes to tankers" },
+  edges: [{ ...candidate.edges[0], source: "closure", target: "brent", impact: 60 }],
+};
+
+describe("correction handler", () => {
+  it("rewrites the named node and its edges", async () => {
+    const response = await handleCorrect(
+      correctRequest(correctInput),
+      deps(fakeFetch(() => chatResponse(revision))),
+      repairCorrection,
+    );
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.node.id).toBe("closure");
+    expect(body.node.statement).toBe("The Strait of Hormuz closes to tankers");
+    expect(body.edges).toHaveLength(1);
+    expect(body.edges[0].impact).toBe(60);
+  });
+
+  it("returns 422 when the node is not in the graph", async () => {
+    const response = await handleCorrect(
+      correctRequest({ ...correctInput, nodeId: "missing" }),
+      deps(fakeFetch(() => chatResponse(revision))),
+      repairCorrection,
+    );
+
+    expect(response.status).toBe(422);
+  });
+
+  it("returns 503 without a key", async () => {
+    const response = await handleCorrect(
+      correctRequest(correctInput),
+      deps(fakeFetch(() => chatResponse(revision)), ""),
+      repairCorrection,
+    );
+
+    expect(response.status).toBe(503);
+  });
+
+  it("refuses a revision that changes the node kind", async () => {
+    const numericRevision = {
+      node: {
+        id: "closure",
+        kind: "numeric" as const,
+        name: "Brent",
+        unit: "USD/bbl",
+        ticker: "BZ=F",
+        current: 72,
+        baselineMove: 0,
+        sigma: 10,
+        rationale: "",
+        assumptions: [],
+        confidence: "low" as const,
+      },
+      edges: [],
+    };
+    const response = await handleCorrect(
+      correctRequest(correctInput),
+      deps(fakeFetch(() => chatResponse(numericRevision))),
+      repairCorrection,
+    );
+
+    expect(response.status).toBe(502);
+  });
 });
 
 describe("API handlers", () => {

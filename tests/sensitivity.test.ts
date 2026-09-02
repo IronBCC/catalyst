@@ -58,6 +58,22 @@ const baseEdge = {
 };
 
 describe("tornado", () => {
+  it("leaves the traded instrument out of its own P&L drivers", () => {
+    const vix = numeric("vix", { ticker: "^VIX", sigma: 10 });
+    const spike = event("spike", 0.3);
+    const g = graph(
+      [spike, vix],
+      [{ ...baseEdge, id: "spike-vix", source: "spike", target: "vix", kind: "en", impact: 20 }],
+    );
+    const positions: Position[] = [
+      { ticker: "^VIX", side: "long", size: 1, stopPct: null, targetPct: null },
+    ];
+
+    const rows = tornado(g, emptyFixed(), { type: "pnl" }, positions);
+
+    expect(rows.map((row) => row.nodeId)).toEqual(["spike"]);
+  });
+
   it("ranks the root first in an event-to-numeric three-node chain", () => {
     const result = tornado(
       graph(

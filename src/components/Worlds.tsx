@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { applyEdits } from "@/lib/engine/worlds";
 import { propagate } from "@/lib/engine/propagate";
 import { useStore } from "@/store";
@@ -13,12 +13,25 @@ export default function Worlds() {
   const graph = useStore((state) => state.graph);
   const worlds = useStore((state) => state.worlds);
   const activeWorldId = useStore((state) => state.activeWorldId);
-  const compareWorldId = useStore((state) => state.compareWorldId);
   const setActiveWorld = useStore((state) => state.setActiveWorld);
-  const setCompareWorld = useStore((state) => state.setCompareWorld);
 
   const active = worlds.find((world) => world.id === activeWorldId) ?? null;
   const expanded = open && worlds.length > 0;
+  const root = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!expanded) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onDown = (e: MouseEvent) => {
+      if (!root.current?.contains(e.target as Node)) setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("mousedown", onDown);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("mousedown", onDown);
+    };
+  }, [expanded]);
   const probabilities = useMemo(() => {
     const rootId = graph?.nodes.find((node) => node.kind === "event" && node.isRoot)?.id;
     if (!graph || !rootId) return new Map<string, number>();
@@ -33,13 +46,12 @@ export default function Worlds() {
   }, [graph, worlds]);
 
   const selectWorld = (id: string) => {
-    if (compareWorldId === id) setCompareWorld(null);
     setActiveWorld(id);
     setOpen(false);
   };
 
   return (
-    <div className="relative shrink-0">
+    <div ref={root} className="relative shrink-0">
       <button
         type="button"
         data-testid="world-switcher"
@@ -48,11 +60,20 @@ export default function Worlds() {
         aria-label={active ? `Current world: ${active.name}` : "No worlds"}
         disabled={!active}
         onClick={() => setOpen((value) => !value)}
-        className="flex max-w-64 items-center rounded border border-line px-2 py-0.5 text-fg disabled:text-muted"
+        className="flex max-w-64 items-center gap-1.5 rounded-md border border-line-strong bg-panel px-2.5 py-1 text-xs text-fg hover:border-fg/40 disabled:border-line disabled:text-faint"
       >
+        <span
+          aria-hidden="true"
+          className={`inline-block h-2 w-2 rounded-full ${active ? "bg-accent" : "bg-line-strong"}`}
+        />
         <span className="truncate">{active?.name ?? "No worlds"}</span>
         {worlds.length > 1 ? (
-          <span className="shrink-0"> ({worlds.length} worlds)</span>
+          <span className="shrink-0 text-muted"> ({worlds.length} worlds)</span>
+        ) : null}
+        {active ? (
+          <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" className="text-muted">
+            <path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" strokeWidth="1.4" />
+          </svg>
         ) : null}
       </button>
 
@@ -60,16 +81,15 @@ export default function Worlds() {
         <ul
           id="world-list"
           aria-label="Worlds"
-          className="absolute left-0 top-full z-30 mt-1 w-80 rounded border border-line bg-panel p-1"
+          className="absolute left-0 top-full z-30 mt-1.5 w-80 rounded-lg border border-line bg-panel p-1 shadow-card"
         >
           {worlds.map((world) => {
             const isActive = world.id === activeWorldId;
-            const isCompare = world.id === compareWorldId;
             return (
               <li
                 key={world.id}
                 data-testid={`world-option-${world.id}`}
-                className="flex items-center gap-2 border-b border-line p-2 last:border-b-0"
+                className={`flex items-center gap-2 rounded-md p-2 ${isActive ? "bg-accent-soft/60" : "hover:bg-panel-2"}`}
               >
                 <button
                   type="button"
@@ -78,66 +98,24 @@ export default function Worlds() {
                   onClick={() => selectWorld(world.id)}
                   className="min-w-0 flex-1 text-left"
                 >
-                  <span className={isActive ? "text-gold" : "text-fg"}>{world.name}</span>
-                  {isActive ? <span className="ml-2 text-gold">active</span> : null}
+                  <span className="block truncate text-xs text-fg">{world.name}</span>
                   <span className="mt-0.5 block text-[11px] text-muted">
-                    {createdAt(world.createdAt)} · {world.edits.length} edit
-                    {world.edits.length === 1 ? "" : "s"} · root {Math.round((probabilities.get(world.id) ?? 0) * 100)}%
+                    {world.parentId
+                      ? `from ${worlds.find((w) => w.id === world.parentId)?.name ?? "a removed world"} · `
+                      : "the untouched model · "}
+                    {world.edits.length} change{world.edits.length === 1 ? "" : "s"} · root{" "}
+                    <span className="num">{Math.round((probabilities.get(world.id) ?? 0) * 100)}%</span>
+                    <span className="sr-only"> · {createdAt(world.createdAt)}</span>
                   </span>
                 </button>
-                <button
-                  type="button"
-                  aria-pressed={isCompare}
-                  aria-label={
-                    isActive
-                      ? `${world.name} is active and cannot be compared with itself`
-                      : `${isCompare ? "Stop comparing" : "Compare"} ${world.name}`
-                  }
-                  disabled={isActive}
-                  onClick={() => setCompareWorld(isCompare ? null : world.id)}
-                  className={`rounded border px-2 py-0.5 disabled:border-line disabled:text-muted ${
-                    isCompare ? "border-blue text-blue" : "border-line text-muted"
-                  }`}
-                >
-                  {isCompare ? "compared" : "compare"}
-                </button>
+                {isActive ? (
+                  <span className="shrink-0 text-[11px] text-accent">active</span>
+                ) : null}
               </li>
             );
           })}
         </ul>
       ) : null}
-    </div>
-  );
-}
-
-export function CompareStrip() {
-  const worlds = useStore((state) => state.worlds);
-  const activeWorldId = useStore((state) => state.activeWorldId);
-  const compareWorldId = useStore((state) => state.compareWorldId);
-  const setCompareWorld = useStore((state) => state.setCompareWorld);
-  const active = worlds.find((world) => world.id === activeWorldId);
-  const compare = worlds.find((world) => world.id === compareWorldId);
-
-  if (!active || !compare || active.id === compare.id) return null;
-
-  return (
-    <div
-      data-testid="compare-strip"
-      role="status"
-      className="flex items-center justify-center gap-2 border-b border-blue bg-blue/10 px-3 py-1 text-xs text-fg"
-    >
-      <span>
-        comparing: {active.name} vs {compare.name}
-      </span>
-      <button
-        type="button"
-        data-testid="clear-compare"
-        aria-label="Clear comparison"
-        onClick={() => setCompareWorld(null)}
-        className="rounded border border-blue px-2 py-0.5 text-blue"
-      >
-        clear
-      </button>
     </div>
   );
 }

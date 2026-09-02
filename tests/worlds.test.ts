@@ -146,3 +146,50 @@ describe("world helpers", () => {
     expect(diff.removedEdgeIds).toEqual(new Set(["a->b"]));
   });
 });
+
+describe("addNode", () => {
+  it("is idempotent: re-applying it does not duplicate the edge", () => {
+    const base = graph([event("a")], []);
+    const edit: Edit = {
+      type: "addNode",
+      node: event("b"),
+      edges: [edge("b-a", "b", "a")],
+    };
+
+    const once = applyEdits(base, [edit]).graph;
+    const twice = applyEdits(once, [edit]).graph;
+
+    expect(once.edges).toHaveLength(1);
+    expect(twice.edges).toHaveLength(1);
+    expect(twice.nodes).toHaveLength(2);
+  });
+});
+
+describe("reviseNode", () => {
+  const base = graph([event("a"), event("b"), event("c")], [
+    edge("a-b", "a", "b"),
+    edge("b-c", "b", "c"),
+  ]);
+
+  it("swaps the node and replaces only its own edges", () => {
+    const revised = { ...event("b"), statement: "b, corrected" };
+    const edit: Edit = {
+      type: "reviseNode",
+      node: revised,
+      edges: [edge("b-c-2", "b", "c", 0.9)],
+    };
+
+    const result = applyEdits(base, [edit]);
+
+    expect(result.graph.nodes.find((n) => n.id === "b")).toMatchObject({
+      statement: "b, corrected",
+    });
+    // a->b touched b, so it went with the revision; b->c came back restated.
+    expect(result.graph.edges.map((e) => e.id)).toEqual(["b-c-2"]);
+  });
+
+  it("ignores a revision of a node the world does not have", () => {
+    const edit: Edit = { type: "reviseNode", node: event("zzz"), edges: [] };
+    expect(applyEdits(base, [edit]).graph).toEqual(base);
+  });
+});

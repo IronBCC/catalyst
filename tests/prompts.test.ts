@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { Graph } from "@/lib/schema";
 import {
   branchPrompt,
+  correctPrompt,
   compactGraph,
   generatePrompt,
 } from "@/lib/prompts";
@@ -103,5 +104,18 @@ describe("prompts", () => {
     });
 
     expect(prompt).toContain("0.05");
+  });
+
+  it("carries the node id and the user's own words into the correction", () => {
+    const prompt = correctPrompt({
+      graph,
+      compact: "compact graph",
+      nodeId: "violence",
+      text: "Antifa is aligned with the Democrats",
+    });
+
+    expect(prompt).toContain("Correct node violence.");
+    expect(prompt).toContain("Antifa is aligned with the Democrats");
+    expect(prompt).toContain("compact graph");
   });
 });

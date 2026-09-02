@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import React from "react";
 import type { ReactElement } from "react";
 
 type AuditTerm = {
@@ -13,6 +12,8 @@ interface AuditBlockProps {
   terms: AuditTerm[];
   final: string;
   fixed: "pin" | "override" | null;
+  /** Node id to display name, so a term reads as a sentence rather than two ids. */
+  names?: Record<string, string>;
 }
 
 function formatValue(value: number): string {
@@ -24,37 +25,34 @@ function formatValue(value: number): string {
   return `${sign}${(value * 100).toFixed(2)}%`;
 }
 
-export function AuditBlock({ terms, final, fixed }: AuditBlockProps): ReactElement {
+export function AuditBlock({ terms, final, fixed, names = {} }: AuditBlockProps): ReactElement {
+  const pretty = (label: string) =>
+    label
+      .split(/->|→/)
+      .map((part) => names[part.trim()] ?? part.trim())
+      .join(" → ");
   return (
-    <section data-testid="audit-block" className="w-full rounded-md border border-line bg-bg p-3">
-      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">
-        Audit
-      </div>
-      <div className="overflow-x-auto">
-        <div className="grid grid-cols-[1fr_1.8fr_auto] gap-2 border-b border-line py-1 text-xs text-muted">
-          <span className="font-semibold">Label</span>
-          <span className="font-semibold">Formula</span>
-          <span className="font-semibold text-right">Value</span>
-        </div>
-        {terms.map((term) => (
+    <section data-testid="audit-block" className="text-xs">
+      <div className="overflow-hidden rounded-lg border border-line">
+        {terms.map((term, i) => (
           <div
-            className="grid grid-cols-[1fr_1.8fr_auto] gap-2 border-b border-line py-1 text-xs text-fg"
-            key={`${term.label}-${term.formula}-${term.value}`}
+            className={`grid grid-cols-[1fr_auto] gap-x-3 px-3 py-1.5 ${i > 0 ? "border-t border-line" : ""}`}
+            key={`${term.label}-${term.formula}-${i}`}
           >
-            <span>{term.label}</span>
-            <span className="text-muted">{term.formula}</span>
-            <span className="text-right font-mono">{formatValue(term.value)}</span>
+            <span className="min-w-0 break-words text-fg">{pretty(term.label)}</span>
+            <span className="num text-right text-fg">{formatValue(term.value)}</span>
+            <span className="num col-span-2 text-[11px] text-muted">{term.formula}</span>
           </div>
         ))}
-      </div>
-      {fixed && (
-        <div className="mt-2 rounded border border-line bg-panel px-2 py-1 text-xs text-gold">
-          intervention: parents ignored
+        {fixed && (
+          <div className="border-t border-line bg-accent-soft/50 px-3 py-1.5 text-accent">
+            Intervention: parents ignored.
+          </div>
+        )}
+        <div className="flex items-baseline justify-between border-t border-line bg-panel-2 px-3 py-1.5">
+          <span className="text-muted">final</span>
+          <span className="num text-[15px] text-fg">{final}</span>
         </div>
-      )}
-      <div className="mt-2 grid grid-cols-[1fr_auto] gap-2 border border-line bg-panel p-2 text-xs">
-        <span className="font-semibold text-muted">final</span>
-        <span className="text-right font-mono text-fg">{final}</span>
       </div>
     </section>
   );

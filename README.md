@@ -24,7 +24,7 @@ assumed changes to that map.
 - **Interventions, not correlations.** Pinning a node or dragging its slider is a
   do-operator: it fixes that node and lets only its descendants move. Parents stay put.
 - **Worlds.** Baseline is read-only. Any edit forks a new world, so the original model
-  is always one click away and two worlds can be compared column by column. Every
+  is always one click away and every world is one click from every other. Every
   what-if forks its own world from wherever you are, named after the question, so
   branching twice gives two worlds to switch between rather than one that quietly
   accumulates every assumption. A world is capped at 40 nodes.

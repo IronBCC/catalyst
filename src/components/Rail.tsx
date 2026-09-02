@@ -68,8 +68,24 @@ export default function Rail() {
     start(next);
   }, [graph, input, start]);
 
+  // The graph carries the request that produced it, so regenerating never
+  // depends on whatever is left in the form — it re-asks the same question,
+  // which is the point when the answer came back wrong.
+  const regenerate = useCallback(() => {
+    if (!graph || isLoading) return;
+    if (!window.confirm("Regenerate this hypothesis? The current graph and all its worlds are replaced.")) return;
+    start({
+      hypothesis: graph.hypothesis,
+      mode: graph.mode,
+      target: graph.target,
+      horizonDays: graph.horizonDays,
+      positions,
+    });
+  }, [graph, isLoading, positions, start]);
+
   const loadExample = useCallback(
     async (slug: string) => {
+      if (graph && !window.confirm("Replace the current graph and all its worlds?")) return;
       setStatus({ phase: "generating", message: `loading ${slug}…` });
       try {
         const res = await fetch(`/fixtures/${slug}.json`);
@@ -90,7 +106,7 @@ export default function Rail() {
         pushLog({ kind: "error", text: `Could not load the ${slug} example.` });
       }
     },
-    [pushLog, setGraph, setStatus],
+    [graph, pushLog, setGraph, setStatus],
   );
 
   // Named function expression: the retry button on a failed entry calls the
@@ -166,7 +182,6 @@ export default function Rail() {
       graph: s.graph,
       worlds: s.worlds,
       activeWorldId: s.activeWorldId,
-      compareWorldId: s.compareWorldId,
       positions: s.positions,
       thesis: s.thesis,
     };
@@ -203,87 +218,97 @@ export default function Rail() {
     }
   }, [reset]);
 
+  const primary =
+    "rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-white shadow-[0_1px_0_rgba(0,0,0,0.08)] hover:brightness-95 disabled:opacity-50";
+  const field = "w-full rounded-md px-2.5 py-1.5 text-[13px]";
+
   return (
     <aside
       data-testid="rail"
-      className="flex h-full w-full flex-col gap-3 overflow-y-auto border-r border-line bg-panel p-3 text-xs"
+      className="flex h-full w-full flex-col overflow-hidden border-r border-line bg-panel text-xs"
       aria-label="Hypothesis and history"
     >
-      <div className="flex gap-1" role="tablist" aria-label="Rail mode">
-        {(["hypothesis", "branch"] as const).map((p) => (
-          <button
-            key={p}
-            type="button"
-            role="tab"
-            data-testid={`rail-pane-${p}`}
-            aria-selected={pane === p}
-            onClick={() => setPane(p)}
-            className={`flex-1 rounded border px-2 py-1 ${
-              pane === p ? "border-gold text-gold" : "border-line text-muted"
-            }`}
-          >
-            {p === "branch" ? "what if" : "hypothesis"}
-          </button>
-        ))}
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+      <div className="p-3 pb-0">
+        <div className="flex rounded-md border border-line bg-bg p-0.5" role="tablist" aria-label="Rail mode">
+          {(["hypothesis", "branch"] as const).map((p) => (
+            <button
+              key={p}
+              type="button"
+              role="tab"
+              data-testid={`rail-pane-${p}`}
+              aria-selected={pane === p}
+              onClick={() => setPane(p)}
+              className={`flex-1 rounded-[5px] px-2 py-1 transition-colors ${
+                pane === p ? "bg-panel text-fg shadow-[0_1px_2px_rgba(20,20,19,0.08)]" : "text-muted hover:text-fg"
+              }`}
+            >
+              {p === "branch" ? "What if" : "Hypothesis"}
+            </button>
+          ))}
+        </div>
       </div>
 
       {pane === "hypothesis" ? (
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-wrap gap-1">
+        <div className="flex flex-col gap-3 p-3">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-muted">Try</span>
             {EXAMPLES.map((e) => (
               <button
                 key={e.slug}
                 type="button"
                 data-testid={`example-${e.slug}`}
                 onClick={() => void loadExample(e.slug)}
-                className="rounded-full border border-line px-2 py-0.5 text-muted hover:border-gold hover:text-gold"
+                className="rounded-full border border-line-strong px-2.5 py-0.5 text-muted hover:border-accent hover:text-accent"
               >
                 {e.label}
               </button>
             ))}
           </div>
 
-          <label className="text-muted" htmlFor="hypothesis">
-            Hypothesis
+          <label className="flex flex-col gap-1">
+            <span className="text-muted" id="hypothesis-label">
+              Hypothesis
+            </span>
+            <textarea
+              id="hypothesis"
+              data-testid="hypothesis-input"
+              rows={3}
+              value={hypothesis}
+              onChange={(e) => setHypothesis(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  submitHypothesis();
+                }
+              }}
+              placeholder="The Strait of Hormuz closes to commercial tanker traffic"
+              className={`${field} font-serif text-[15px] leading-snug`}
+            />
           </label>
-          <textarea
-            id="hypothesis"
-            data-testid="hypothesis-input"
-            rows={3}
-            value={hypothesis}
-            onChange={(e) => setHypothesis(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                submitHypothesis();
-              }
-            }}
-            placeholder="The Strait of Hormuz closes to commercial tanker traffic"
-            className="rounded border border-line bg-bg p-2 text-fg"
-          />
 
           <div className="flex gap-2">
-            <label className="flex-1 text-muted">
-              mode
+            <label className="flex flex-1 flex-col gap-1 text-muted">
+              Mode
               <select
                 value={mode}
                 onChange={(e) => setMode(e.target.value as GenerateInput["mode"])}
-                className="mt-1 w-full rounded border border-line bg-bg p-1 text-fg"
+                className={field}
               >
                 <option value="explore">explore</option>
                 <option value="chain">chain</option>
               </select>
             </label>
-            <label className="flex-1 text-muted">
-              horizon
+            <label className="flex flex-1 flex-col gap-1 text-muted">
+              Horizon
               <select
                 value={horizonDays}
                 onChange={(e) => setHorizonDays(Number(e.target.value))}
-                className="mt-1 w-full rounded border border-line bg-bg p-1 text-fg"
+                className={field}
               >
                 {HORIZONS.map((h) => (
                   <option key={h} value={h}>
-                    {h}d
+                    {h} days
                   </option>
                 ))}
               </select>
@@ -291,19 +316,19 @@ export default function Rail() {
           </div>
 
           {mode === "chain" ? (
-            <label className="text-muted">
-              target
+            <label className="flex flex-col gap-1 text-muted">
+              Target
               <input
                 value={target}
                 onChange={(e) => setTarget(e.target.value)}
                 placeholder="Brent settles above $100"
-                className="mt-1 w-full rounded border border-line bg-bg p-1 text-fg"
+                className={field}
               />
             </label>
           ) : null}
 
-          <label className="text-muted">
-            positions
+          <label className="flex flex-col gap-1 text-muted">
+            Positions
             <input
               data-testid="positions-input"
               value={positionsText || formatPositions(positions)}
@@ -312,7 +337,7 @@ export default function Rail() {
                 setPositions(parsePositions(e.target.value));
               }}
               placeholder="long USO 2 stop 8 target 15"
-              className="mt-1 w-full rounded border border-line bg-bg p-1 text-fg"
+              className={`${field} num`}
             />
           </label>
 
@@ -321,109 +346,120 @@ export default function Rail() {
             data-testid="generate"
             onClick={submitHypothesis}
             disabled={isLoading}
-            className="rounded border border-gold px-2 py-1 text-gold disabled:opacity-50"
+            className={primary}
           >
-            {isLoading ? "generating…" : graph ? "New hypothesis" : "Generate"}
+            {isLoading ? "Generating…" : graph ? "Start a new hypothesis" : "Build the causal map"}
           </button>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
-          <label className="text-muted" htmlFor="branch">
-            What if…
+        <div className="flex flex-col gap-3 p-3">
+          <label className="flex flex-col gap-1">
+            <span className="text-muted">What if…</span>
+            <textarea
+              id="branch"
+              data-testid="branch-input"
+              rows={2}
+              value={branchText}
+              onChange={(e) => setBranchText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  void submitBranch(branchText);
+                }
+              }}
+              placeholder="Iran is struck the next day"
+              className={`${field} font-serif text-[15px] leading-snug`}
+            />
           </label>
-          <textarea
-            id="branch"
-            data-testid="branch-input"
-            rows={2}
-            value={branchText}
-            onChange={(e) => setBranchText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                void submitBranch(branchText);
-              }
-            }}
-            placeholder="Iran is struck the next day"
-            className="rounded border border-line bg-bg p-2 text-fg"
-          />
           <button
             type="button"
             data-testid="branch"
             disabled={busy || !graph || atNodeLimit(graph)}
             onClick={() => void submitBranch(branchText)}
-            className="rounded border border-blue px-2 py-1 text-blue disabled:opacity-50"
+            className={primary}
           >
-            {busy ? "exploring…" : "Explore what if"}
+            {busy ? "Exploring…" : "Explore as a new world"}
           </button>
           <p className="text-muted">
             {atNodeLimit(graph)
               ? `This world is full at ${MAX_GRAPH_NODES} nodes.`
-              : `Creates a new world. Room for ${nodeBudget(graph)} more nodes.`}
+              : `Adds the event, assumes it happens, and opens the result as a new world forked from the current one. The original stays one click away in the world switcher. Room for ${nodeBudget(graph)} more nodes.`}
           </p>
         </div>
       )}
 
-      <div className="flex flex-1 flex-col gap-2 border-t border-line pt-2">
+      <div className="flex flex-1 flex-col gap-3 border-t border-line p-3">
         {status.phase !== "idle" && status.message ? (
-          <p className="text-muted" role="status">
+          <p className="flex items-center gap-2 text-muted" role="status">
+            <span aria-hidden="true" className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
             {status.message}
           </p>
         ) : null}
         {log.map((entry) => (
-          <div
-            key={entry.id}
-            data-testid="log-entry"
-            className={
-              entry.kind === "error"
-                ? "text-red"
-                : entry.kind === "summary"
-                  ? "text-fg"
-                  : "text-muted"
-            }
-          >
-            <p
-              data-testid={
-                entry.kind === "summary"
-                  ? "log-summary"
-                  : entry.kind === "error"
-                    ? "log-error"
-                    : "log-text"
-              }
-            >
-              {entry.text}
-            </p>
+          <div key={entry.id} data-testid="log-entry">
+            {entry.kind === "summary" ? (
+              <blockquote
+                data-testid="log-summary"
+                className="border-l-2 border-accent pl-3 font-serif text-[15px] leading-snug text-fg"
+              >
+                {entry.text}
+              </blockquote>
+            ) : (
+              <p
+                data-testid={entry.kind === "error" ? "log-error" : "log-text"}
+                className={
+                  entry.kind === "error"
+                    ? "text-red"
+                    : entry.kind === "world"
+                      ? "rounded-md border-l-2 border-accent bg-accent-soft/50 px-2.5 py-1.5 text-fg"
+                      : "text-muted"
+                }
+              >
+                {entry.text}
+              </p>
+            )}
             {entry.followUps?.length ? (
-              <div className="mt-1 space-y-1">
-                {entry.followUps.map((f) =>
-                  looksLikeEvent(f) ? (
-                    <button
-                      key={f}
-                      type="button"
-                      onClick={() => {
-                        setPane("branch");
-                        setBranchText(f);
-                        setTab("map");
-                      }}
-                      className="block w-full rounded-full border border-line px-2 py-0.5 text-left text-muted hover:border-blue hover:text-blue"
-                      title="Explore this as a what-if"
-                    >
-                      What if: {f}
-                    </button>
-                  ) : (
-                    // Research actions are not counterfactuals; offering them as
-                    // one-click what-ifs would pin an instruction as an event.
-                    <p key={f} className="px-2 text-muted">
-                      Watch: {f}
-                    </p>
-                  ),
-                )}
+              <div className="mt-2 flex flex-col gap-1">
+                {entry.followUps.filter(looksLikeEvent).map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => {
+                      setPane("branch");
+                      setBranchText(f);
+                      setTab("map");
+                    }}
+                    className="rounded-md border border-line bg-bg px-2.5 py-1.5 text-left text-fg hover:border-accent"
+                    title="Explore this as a what-if"
+                  >
+                    <span className="text-accent">What if</span> {f}
+                  </button>
+                ))}
+                {entry.followUps.some((f) => !looksLikeEvent(f)) ? (
+                  // Research actions are not counterfactuals; offering them as
+                  // one-click what-ifs would pin an instruction as an event.
+                  <details className="group text-muted">
+                    <summary className="cursor-pointer list-none hover:text-fg">
+                      <span className="mr-1 inline-block transition-transform group-open:rotate-90">›</span>
+                      {entry.followUps.filter((f) => !looksLikeEvent(f)).length} things to watch
+                    </summary>
+                    <ul className="mt-1 space-y-1">
+                      {entry.followUps.filter((f) => !looksLikeEvent(f)).map((f) => (
+                        <li key={f} className="flex gap-2 px-1">
+                          <span aria-hidden="true" className="mt-[7px] inline-block h-1 w-1 shrink-0 rounded-full bg-faint" />
+                          <span>{f.replace(/^watch\s+/i, "")}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                ) : null}
               </div>
             ) : null}
             {entry.retry ? (
               <button
                 type="button"
                 onClick={entry.retry}
-                className="mt-1 rounded border border-line px-2 py-0.5 text-muted hover:text-fg"
+                className="mt-1.5 rounded-md border border-line-strong px-2 py-0.5 text-muted hover:text-fg"
               >
                 Retry
               </button>
@@ -431,17 +467,18 @@ export default function Rail() {
           </div>
         ))}
       </div>
+      </div>
 
-      <div className="flex gap-1 border-t border-line pt-2">
+      <div className="flex shrink-0 gap-1 border-t border-line px-2 py-1.5 text-[11px]">
         <button
           type="button"
           data-testid="export"
           onClick={exportWorkspace}
-          className="flex-1 rounded border border-line px-2 py-1 text-muted hover:text-fg"
+          className="rounded-md px-2 py-1 text-muted hover:bg-panel-2 hover:text-fg"
         >
           Export
         </button>
-        <label className="flex-1 cursor-pointer rounded border border-line px-2 py-1 text-center text-muted hover:text-fg">
+        <label className="cursor-pointer rounded-md px-2 py-1 text-muted hover:bg-panel-2 hover:text-fg">
           Import
           <input
             data-testid="import"
@@ -454,11 +491,24 @@ export default function Rail() {
             }}
           />
         </label>
+        {graph ? (
+          <button
+            type="button"
+            data-testid="regenerate"
+            onClick={regenerate}
+            disabled={isLoading}
+            title={`Re-ask: ${graph.hypothesis}`}
+            className="rounded-md px-2 py-1 text-muted hover:bg-panel-2 hover:text-fg disabled:opacity-50"
+          >
+            {isLoading ? "Regenerating…" : "Regenerate"}
+          </button>
+        ) : null}
+        <span className="flex-1" />
         <button
           type="button"
           data-testid="clear"
           onClick={clearWorkspace}
-          className="flex-1 rounded border border-line px-2 py-1 text-muted hover:text-red"
+          className="rounded-md px-2 py-1 text-muted hover:bg-red-soft hover:text-red"
         >
           Clear
         </button>

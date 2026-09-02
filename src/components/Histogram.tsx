@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import type { ReactElement } from "react";
 
 interface Quantiles {
@@ -18,14 +18,28 @@ interface HistogramProps {
   samples: Float64Array;
   q: Quantiles;
   unit: string;
+  /** Today's level, when the variable has a price. Turns a move into a level. */
+  current?: number | null;
+  /** The unit that level is quoted in, e.g. USD/oz. */
+  priceUnit?: string;
   markers?: Marker[];
   bins?: number;
 }
 
 const DEFAULT_BINS = 40;
 
-function formatValue(value: number, unit: string): string {
-  return `${value.toFixed(2)} ${unit}`;
+const dp = (v: number) => (Math.abs(v) >= 100 ? 0 : Math.abs(v) >= 10 ? 1 : 2);
+
+/**
+ * Every simulated series is a percent move, so that is what the readout leads
+ * with. When the variable has a price, the level follows — the same pair the
+ * map card shows, so the two screens can be read against each other.
+ */
+function formatValue(value: number, unit: string, current?: number | null, priceUnit?: string): string {
+  const move = `${value > 0 ? "+" : ""}${value.toFixed(dp(value))}${unit === "%" ? "%" : ` ${unit}`}`;
+  if (unit !== "%" || current == null || !Number.isFinite(current)) return move;
+  const level = current * (1 + value / 100);
+  return `${move} · ${level.toFixed(dp(level))}${priceUnit ? ` ${priceUnit}` : ""}`;
 }
 
 function toFinite(value: number, fallback: number): number {
@@ -36,33 +50,24 @@ export function Histogram({
   samples,
   q,
   unit,
+  current = null,
+  priceUnit = "",
   markers = [],
   bins = DEFAULT_BINS,
 }: HistogramProps): ReactElement {
-  const { bars, maxCount, width, height, min, max, p10x, p50x, p90x } = useMemo(() => {
-    const finiteSamples = Array.from(samples)
-      .map((value) => toFinite(value, NaN))
-      .filter((value) => Number.isFinite(value));
+  const { bars, maxCount, width, height, min, max, x } = useMemo(() => {
+    const finiteSamples = Array.from(samples).filter((value) => Number.isFinite(value));
 
-    const allValues = [
-      q.p10,
-      q.p50,
-      q.p90,
-      ...markers.map((marker) => marker.value),
-      ...finiteSamples,
-    ];
+    const allValues = [q.p10, q.p50, q.p90, ...markers.map((marker) => marker.value), ...finiteSamples];
 
     const rawMin = Math.min(...allValues);
     const rawMax = Math.max(...allValues);
-    const fallbackMin = q.p10;
-    const fallbackMax = q.p90;
-
-    const safeMin = toFinite(rawMin, fallbackMin) || fallbackMin;
-    const safeMax = toFinite(rawMax, fallbackMax) || fallbackMax;
+    const safeMin = toFinite(rawMin, q.p10) || q.p10;
+    const safeMax = toFinite(rawMax, q.p90) || q.p90;
     const range = safeMax - safeMin || 1;
 
     const plotWidth = 720;
-    const plotHeight = 160;
+    const plotHeight = 140;
     const bucketCount = Math.max(1, Math.min(80, Math.floor(bins)));
 
     const buckets = new Array<number>(bucketCount).fill(0);
@@ -73,97 +78,62 @@ export function Histogram({
       buckets[idx] += 1;
     }
 
-    const maxBucket = Math.max(...buckets, 1);
-
     return {
       bars: buckets,
-      maxCount: maxBucket,
+      maxCount: Math.max(...buckets, 1),
       width: plotWidth,
       height: plotHeight,
       min: safeMin,
       max: safeMax,
-      p10x: ((q.p10 - safeMin) / range) * plotWidth,
-      p50x: ((q.p50 - safeMin) / range) * plotWidth,
-      p90x: ((q.p90 - safeMin) / range) * plotWidth,
+      x: (v: number) => ((v - safeMin) / range) * plotWidth,
     };
   }, [samples, q.p10, q.p50, q.p90, bins, markers]);
 
-  const safeBin = Math.max(1, bars.length);
-  const barW = width / safeBin;
+  const barW = width / Math.max(1, bars.length);
+  const inBand = (i: number) => {
+    const v = min + ((i + 0.5) / bars.length) * (max - min);
+    return v >= q.p10 && v <= q.p90;
+  };
 
   return (
-    <div className="w-full rounded border border-line bg-bg p-2">
+    <div className="w-full">
       <svg
         aria-label="Sample histogram with quantile markers"
-        className="h-56 w-full"
-        viewBox={`0 0 ${width} ${height + 24}`}
+        className="h-44 w-full"
+        viewBox={`0 0 ${width} ${height + 20}`}
         preserveAspectRatio="none"
       >
-        <rect x="0" y="0" width={width} height={height} fill="var(--color-panel)" />
-
         {bars.map((count, i) => {
-          const x = i * barW;
-          const h = (count / maxCount) * (height - 12);
-          const y = height - h;
+          const h = (count / maxCount) * (height - 8);
           return (
             <rect
               key={i}
-              x={x + 1}
-              y={y}
+              x={i * barW + 1}
+              y={height - h}
               width={Math.max(1, barW - 2)}
               height={h}
-              fill="var(--color-blue)"
-              opacity={0.25}
+              rx={1.5}
+              fill={inBand(i) ? "var(--blue)" : "var(--line-strong)"}
+              opacity={inBand(i) ? 0.75 : 0.7}
             />
           );
         })}
+        <line x1={0} x2={width} y1={height} y2={height} stroke="var(--line-strong)" />
 
+        <line x1={x(q.p50)} x2={x(q.p50)} y1={0} y2={height} stroke="var(--fg)" strokeWidth={2} />
         {[
-          { x: p10x, label: "p10", color: "var(--color-green)" },
-          { x: p50x, label: "p50", color: "var(--color-gold)" },
-          { x: p90x, label: "p90", color: "var(--color-orange)" },
-        ].map((marker) => (
-          <g key={marker.label}>
-            <line
-              x1={marker.x}
-              x2={marker.x}
-              y1={0}
-              y2={height}
-              stroke={marker.color}
-              strokeWidth={2}
-            />
-            <text
-              x={marker.x + 4}
-              y={12}
-              fill="var(--color-fg)"
-              className="text-xs"
-              style={{ fontSize: "10px" }}
-            >
-              {marker.label}
-            </text>
-          </g>
+          { v: q.p10, label: "p10" },
+          { v: q.p90, label: "p90" },
+        ].map((m) => (
+          <line key={m.label} x1={x(m.v)} x2={x(m.v)} y1={0} y2={height} stroke="var(--fg)" strokeWidth={1} strokeDasharray="3 3" opacity={0.5} />
         ))}
 
         {markers.map((marker) => {
-          const x = ((marker.value - min) / (max - min || 1)) * width;
+          const mx = x(marker.value);
           return (
             <g key={`${marker.label}-${marker.value}`}>
-              <line
-                x1={x}
-                x2={x}
-                y1={0}
-                y2={height}
-                stroke="var(--color-red)"
-                strokeWidth={1.5}
-                strokeDasharray="4 3"
-              />
-              <text
-                x={x + 4}
-                y={24}
-                fill="var(--color-fg)"
-                className="text-xs"
-                style={{ fontSize: "10px" }}
-              >
+              <line x1={mx} x2={mx} y1={0} y2={height} stroke="var(--accent)" strokeWidth={1.5} strokeDasharray="4 3" />
+              <text x={mx + 4} y={12} fill="var(--accent)" fontSize={11} fontFamily="var(--font-mono)">
                 {marker.label}
               </text>
             </g>
@@ -171,10 +141,19 @@ export function Histogram({
         })}
       </svg>
 
-      <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted">
-        <span className="text-green">p10: {formatValue(q.p10, unit)}</span>
-        <span className="text-gold">p50: {formatValue(q.p50, unit)}</span>
-        <span className="text-orange">p90: {formatValue(q.p90, unit)}</span>
+      <div className="mt-1 grid grid-cols-3 text-xs">
+        <div>
+          <div className="text-muted">p10</div>
+          <div className="num text-[15px] text-fg">{formatValue(q.p10, unit, current, priceUnit)}</div>
+        </div>
+        <div className="text-center">
+          <div className="text-muted">median</div>
+          <div className="num text-[15px] text-fg">{formatValue(q.p50, unit, current, priceUnit)}</div>
+        </div>
+        <div className="text-right">
+          <div className="text-muted">p90</div>
+          <div className="num text-[15px] text-fg">{formatValue(q.p90, unit, current, priceUnit)}</div>
+        </div>
       </div>
     </div>
   );

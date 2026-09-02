@@ -35,7 +35,7 @@ export default function SessionId() {
     <button
       type="button"
       data-testid="session-id"
-      title="Session id — quote this when reporting a problem. Click to copy."
+      title="Session id. Quote this when reporting a problem. Click to copy."
       aria-label={`Session ${id}, click to copy`}
       onClick={() => {
         void navigator.clipboard?.writeText(id).then(
@@ -46,10 +46,9 @@ export default function SessionId() {
           () => setCopied(false),
         );
       }}
-      className="rounded border border-line px-2 py-0.5 text-muted hover:text-fg"
+      className="num rounded-md px-2 py-1 text-[11px] text-faint hover:bg-panel-2 hover:text-muted"
     >
-      session {id}
-      {copied ? " ✓" : ""}
+      {copied ? "copied" : id}
     </button>
   );
 }

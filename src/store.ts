@@ -4,6 +4,7 @@ import { create, type StoreApi, type UseBoundStore } from "zustand";
 import { persist, type StateStorage } from "zustand/middleware";
 import { useMemo } from "react";
 import {
+  WorkspaceSchema,
   type Edit,
   type Graph,
   type LlmThesis,
@@ -29,6 +30,9 @@ export type Status = {
   phase: "idle" | "generating" | "branching" | "thesis" | "error";
   message: string;
 };
+
+/** Enough branches to read back, few enough that the rail stays a rail. */
+const LOG_LIMIT = 30;
 
 export type LogEntry = {
   id: string;
@@ -60,7 +64,6 @@ export type State = Workspace & {
   commitTransient(asNew: boolean, name?: string): void;
   addWorld(w: World, activate: boolean): void;
   setActiveWorld(id: string): void;
-  setCompareWorld(id: string | null): void;
   select(s: Selection): void;
   setTab(t: State["tab"]): void;
   setPositions(p: Position[]): void;
@@ -78,7 +81,6 @@ export const EMPTY_WORKSPACE: Workspace = {
   graph: null,
   worlds: [],
   activeWorldId: null,
-  compareWorldId: null,
   positions: [],
   thesis: {},
 };
@@ -110,9 +112,11 @@ export function createCatalystStore(storage: StateStorage | null): UseBoundStore
       set(() => ({
         graph,
         draft: null,
+        // A new graph is a new session: keeping the old summaries would stack
+        // the history of every hypothesis ever run into one scroll.
+        log: [],
         worlds: [newWorld(BASELINE_NAME, BASELINE_ID)],
         activeWorldId: BASELINE_ID,
-        compareWorldId: null,
         thesis: {},
         selection: null,
         transient: null,
@@ -197,12 +201,12 @@ export function createCatalystStore(storage: StateStorage | null): UseBoundStore
       })),
 
     setActiveWorld: (activeWorldId) => set(() => ({ activeWorldId, transient: null })),
-    setCompareWorld: (compareWorldId) => set(() => ({ compareWorldId })),
     select: (selection) => set(() => ({ selection })),
     setTab: (tab) => set(() => ({ tab })),
     setPositions: (positions) => set(() => ({ positions })),
 
-    pushLog: (entry) => set((s) => ({ log: [...s.log, { ...entry, id: nextLogId() }] })),
+    pushLog: (entry) =>
+      set((s) => ({ log: [...s.log, { ...entry, id: nextLogId() }].slice(-LOG_LIMIT) })),
 
     // A failed call must never touch graph, worlds or thesis.
     setStatus: (status) => set(() => ({ status })),
@@ -243,6 +247,11 @@ export function createCatalystStore(storage: StateStorage | null): UseBoundStore
     persist(init, {
       name: "catalyst.workspace",
       version: 1,
+      // The server has no localStorage, so a store that rehydrated at creation
+      // would make the client's first render disagree with the server's HTML —
+      // React abandons the tree rather than patching it. The workspace is
+      // loaded from `rehydrateWorkspace` on mount instead.
+      skipHydration: true,
       storage: {
         getItem: (name) => {
           const raw = storage.getItem(name);
@@ -260,12 +269,20 @@ export function createCatalystStore(storage: StateStorage | null): UseBoundStore
       // the workspace slice alone is enough; an unknown version resets.
       migrate: (persisted, version) =>
         (version === 1 ? persisted : EMPTY_WORKSPACE) as State,
+      // migrate only runs when the stored version differs, so validation lives
+      // here: valid JSON is not a valid workspace, and merging a malformed one
+      // crashes every consumer downstream of it.
+      merge: (persisted, current) => {
+        const parsed = WorkspaceSchema.safeParse(persisted);
+        if (!parsed.success) return current;
+        const { graph, worlds, activeWorldId, positions, thesis } = parsed.data;
+        return { ...current, graph, worlds, activeWorldId, positions, thesis };
+      },
       partialize: (s) => ({
         version: 1,
         graph: s.graph,
         worlds: s.worlds,
         activeWorldId: s.activeWorldId,
-        compareWorldId: s.compareWorldId,
         positions: s.positions,
         thesis: s.thesis,
       }) as unknown as State,
@@ -306,11 +323,24 @@ export const safeStorage: StateStorage = {
 
 export const useStore = createCatalystStore(safeStorage);
 
+/**
+ * Loads the persisted workspace. Call once, after mount.
+ *
+ * A store built without storage (tests, and the server) has no persist API and
+ * nothing to load, so this is a no-op there.
+ */
+export function rehydrateWorkspace(): void {
+  (useStore as unknown as { persist?: { rehydrate: () => void } }).persist?.rehydrate();
+}
+
 export type Computation = {
   graph: Graph | null;
+  /** The graph before any world's edits: what a per-world calculation starts from. */
+  base: Graph | null;
   world: World | null;
   fixed: Fixed;
   computed: Computed | null;
+  /** The same world before an in-flight edit, so a drag can show its own effect. */
   compare: Computed | null;
   mc: McResult | null;
   diff: ReturnType<typeof worldDiff> | null;
@@ -331,14 +361,12 @@ export function useComputed(): Computation {
   const draft = useStore((s) => s.draft);
   const worlds = useStore((s) => s.worlds);
   const activeWorldId = useStore((s) => s.activeWorldId);
-  const compareWorldId = useStore((s) => s.compareWorldId);
   const transient = useStore((s) => s.transient);
   const positions = useStore((s) => s.positions);
   const quotes = useStore((s) => s.quotes);
 
   const source = draft ?? graph;
   const world = worlds.find((w) => w.id === activeWorldId) ?? null;
-  const compareWorld = worlds.find((w) => w.id === compareWorldId) ?? null;
 
   const priced = useMemo(() => {
     if (!source) return null;
@@ -367,24 +395,21 @@ export function useComputed(): Computation {
     [applied],
   );
 
-  // With no compare world chosen, an in-flight slider still needs something to
-  // measure against, so it is compared with the same world before the drag.
+  // An in-flight slider needs something to measure against: the same world as
+  // it stood before the drag. Nothing is compared once the drag settles.
   const compare = useMemo(() => {
-    if (!priced) return null;
-    const baseEdits = compareWorld ? compareWorld.edits : transient ? world?.edits : null;
-    if (!baseEdits) return null;
-    const c = applyEdits(priced, baseEdits);
-    return propagate(c.graph, c.fixed);
-  }, [priced, compareWorld, transient, world]);
+    if (!priced || !transient || !world) return null;
+    const before = applyEdits(priced, world.edits);
+    return propagate(before.graph, before.fixed);
+  }, [priced, transient, world]);
 
-  // Without an explicit comparison, "new" means new relative to the world this
-  // one was forked from, which is what a freshly branched node should read as.
+  // "New" means new relative to the world this one was forked from, which is
+  // what a freshly branched node should read as.
   const diff = useMemo(() => {
     if (!world) return null;
-    const against =
-      compareWorld ?? worlds.find((w) => w.id === world.parentId) ?? null;
+    const against = worlds.find((w) => w.id === world.parentId) ?? null;
     return against ? worldDiff(world, against) : null;
-  }, [world, compareWorld, worlds]);
+  }, [world, worlds]);
 
   const verdict = useMemo(() => {
     if (!applied || applied.graph.mode !== "chain") return null;
@@ -410,6 +435,7 @@ export function useComputed(): Computation {
     // The applied graph, not the raw one: worlds add nodes and cut edges, and
     // every consumer wants what the active world actually contains.
     graph: applied?.graph ?? priced,
+    base: priced,
     world,
     fixed: applied?.fixed ?? EMPTY_FIXED,
     computed,

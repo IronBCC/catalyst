@@ -302,6 +302,41 @@ export function repairBranch(
   return { node, edges: accepted };
 }
 
+/**
+ * A correction rewrites one existing node in place. The id is forced back to
+ * the one the graph already uses — every other edge still points at it — and
+ * only the edges touching that node are replaced.
+ */
+export function repairCorrection(
+  item: z.infer<typeof LlmBranchItem>,
+  graph: Graph,
+  nodeId: string,
+): { node: Node; edges: Edge[] } {
+  const existing = graph.nodes.find((entry) => entry.id === nodeId);
+  if (!existing) throw new Error(`unknown node ${nodeId}`);
+  const node = repairNode(item.node, nodeId);
+  if (node.kind !== existing.kind) throw new Error("a correction cannot change the node kind");
+
+  const nodes = graph.nodes.map((entry) => (entry.id === nodeId ? node : entry));
+  const ids = new Map(nodes.map((entry) => [entry.id, entry.id]));
+  ids.set(item.node.id, nodeId);
+  ids.set(slugify(item.node.id), nodeId);
+
+  const untouched = graph.edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId);
+  const candidates = repairEdges(item.edges, nodes, ids, graph.sources).filter(
+    (edge) => edge.source === nodeId || edge.target === nodeId,
+  );
+  const accepted: Edge[] = [];
+  let combined = [...untouched];
+  for (const candidate of candidates) {
+    const result = breakCycles(nodes.map((entry) => entry.id), [...combined, candidate], edgeWeight);
+    if (result.removed.length > 0) continue;
+    combined = [...combined, candidate];
+    accepted.push(candidate);
+  }
+  return { node, edges: accepted };
+}
+
 const object = (value: unknown): Record<string, unknown> | null =>
   typeof value === "object" && value !== null && !Array.isArray(value) ? (value as Record<string, unknown>) : null;
 const optionalNumber = (value: unknown) => (typeof value === "number" && Number.isFinite(value) ? value : null);

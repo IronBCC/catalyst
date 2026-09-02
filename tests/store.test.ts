@@ -60,6 +60,22 @@ describe("workspace store", () => {
     expect(s.activeWorldId).toBe(BASELINE_ID);
   });
 
+  it("setGraph drops the log of the hypothesis it replaces", () => {
+    const st = store.getState();
+    st.setGraph(graph);
+    st.pushLog({ kind: "summary", text: "first run" });
+    st.setGraph({ ...graph, id: "g2" });
+    expect(store.getState().log).toEqual([]);
+  });
+
+  it("pushLog keeps the rail bounded", () => {
+    const st = store.getState();
+    for (let i = 0; i < 45; i += 1) st.pushLog({ kind: "world", text: `branch ${i}` });
+    const log = store.getState().log;
+    expect(log).toHaveLength(30);
+    expect(log[log.length - 1].text).toBe("branch 44");
+  });
+
   it("mutate on baseline forks instead of editing it", () => {
     store.getState().setGraph(graph);
     store.getState().mutate({ type: "pin", nodeId: "root", value: true }, "Pinned root");
@@ -144,10 +160,36 @@ describe("persistence", () => {
     expect(parsed.state).not.toHaveProperty("status");
   });
 
+  it("loads a stored workspace only once rehydrate is called", async () => {
+    const seed = JSON.stringify({
+      version: 1,
+      state: { version: 1, graph, worlds: [], activeWorldId: null, compareWorldId: null, positions: [], thesis: {} },
+    });
+    const store = createCatalystStore(memoryStorage(seed));
+
+    // Nothing is read at creation: the server has no storage, and a client that
+    // read it here would render something the server never sent.
+    expect(store.getState().graph).toBeNull();
+
+    await (store as unknown as { persist: { rehydrate: () => Promise<void> } }).persist.rehydrate();
+    expect(store.getState().graph?.id).toBe("g1");
+  });
+
   it("hydrates to an empty workspace when the stored value is not JSON", () => {
     const store = createCatalystStore(memoryStorage("{not json"));
     expect(store.getState().graph).toBeNull();
     expect(store.getState().worlds).toEqual(EMPTY_WORKSPACE.worlds);
+  });
+
+  it("discards a stored workspace that is not a valid one", async () => {
+    const store = createCatalystStore(
+      memoryStorage(JSON.stringify({ version: 1, state: { version: 1, graph: { id: "half" } } })),
+    );
+
+    await (store as unknown as { persist: { rehydrate: () => Promise<void> } }).persist.rehydrate();
+
+    expect(store.getState().graph).toBeNull();
+    expect(store.getState().worlds).toEqual([]);
   });
 
   it("migrates an older version to an empty workspace", () => {

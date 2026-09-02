@@ -17,548 +17,627 @@
   "llm": {
     "nodes": [
       {
-        "id": "legacy-controls-expand",
+        "id": "root",
         "kind": "event",
-        "statement": "The United States extends semiconductor export controls to selected legacy-node equipment",
-        "resolution": "Commerce publishes a rule adding defined legacy-node equipment to licensing controls",
-        "base": 0.34,
+        "statement": "BIS publishes a rule extending US semiconductor export controls to legacy-node (≥28nm) chips or equipment by 2026-06-30",
+        "resolution": "Federal Register notice from BIS covering mature-node chips/tools; resolves YES on publication, NO if 180 days pass without one",
+        "base": 0.22,
         "lagDays": [
-          20,
-          90
+          30,
+          120
         ],
-        "rationale": "Policy pressure has shifted from frontier AI chips toward the equipment stack that supports military and industrial demand.",
+        "rationale": "BIS has signaled mature-node scrutiny (2024 RFI, Section 232 semiconductor probe). Reference class: prior control expansions (Oct 2022, Oct 2023, Dec 2024 HBM rule) took 6-18 months from signal to rule. A legacy rule is contested internally, so base rate below 50%.",
         "analogs": [
-          "2022 and 2023 BIS semiconductor rules"
+          "Oct 2022 China rule (signal-to-rule ~9mo)",
+          "Dec 2024 HBM controls",
+          "Jan 2025 AI diffusion rule"
         ],
         "assumptions": [
-          "The rule covers meaningful tool categories rather than a symbolic list"
+          "BIS retains rulemaking staff capacity through 2026",
+          "No US-China détente freezes new controls",
+          "Section 232 probe supplies legal predicate"
         ],
-        "confidence": "medium",
-        "marketQuery": "US legacy semiconductor export controls 2026",
+        "confidence": "low",
+        "marketQuery": "Will BIS extend semiconductor export controls to legacy-node chips before 2026-06-30?",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "china-retaliation",
+        "id": "ev232",
         "kind": "event",
-        "statement": "China responds with procurement guidance favoring domestic semiconductor suppliers",
-        "resolution": "A central or provincial procurement notice specifies domestic-sourcing preferences",
-        "base": 0.42,
+        "statement": "Commerce Section 232 semiconductor investigation concludes national-security threat finding citing mature-node capacity",
+        "resolution": "Public 232 report or presidential action citing legacy chips; resolves on official release",
+        "base": 0.45,
         "lagDays": [
-          15,
-          75
+          0,
+          90
         ],
-        "rationale": "Procurement restrictions are easier to implement than an immediate broad export ban.",
+        "rationale": "232 probe initiated Sep 2025; statutory timeline and precedent (steel/aluminum) favor an affirmative finding. It is the cleanest legal vehicle for legacy-node controls.",
         "analogs": [
-          "China critical-minerals export controls"
+          "2018 steel 232 (finding in ~3mo)",
+          "2025 semiconductor probe initiation"
         ],
         "assumptions": [
-          "Domestic suppliers can meet minimum qualification thresholds"
+          "Report is not withheld for negotiation leverage",
+          "Findings cover chips, not only downstream products"
         ],
         "confidence": "medium",
-        "marketQuery": "China domestic semiconductor procurement guidance",
+        "marketQuery": "Will the Section 232 semiconductor investigation produce an affirmative national security finding by 2026-06-30?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "inventory-build",
+        "id": "evchina",
         "kind": "event",
-        "statement": "Affected Chinese fabs pull forward equipment and spare-parts orders",
-        "resolution": "Supplier commentary reports order acceleration from affected Chinese customers",
-        "base": 0.31,
+        "statement": "China retaliates against US chipmakers or toolmakers (entity-list additions, procurement bans) within 60 days of any legacy rule",
+        "resolution": "MOFCOM announcement or official Chinese measures targeting US semiconductor firms after a legacy rule",
+        "base": 0.55,
         "lagDays": [
-          5,
-          35
+          7,
+          60
         ],
-        "rationale": "Customers often build buffer inventory ahead of licensing uncertainty.",
+        "rationale": "Analog: China's Apr 2025 rare-earth and entity responses followed US controls within weeks. Legacy-node controls hit Chinese industrial champions directly, raising retaliation odds versus prior rules.",
         "analogs": [
-          "2020 Huawei supply-chain pull-forward"
+          "Apr 2025 rare-earth export response",
+          "2023 Ga/Ge controls",
+          "Micron procurement ban 2023"
         ],
         "assumptions": [
-          "Suppliers can ship before the effective date"
-        ],
-        "confidence": "high",
-        "marketQuery": "China semiconductor equipment inventory pull forward",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "foundry-capex-slowdown",
-        "kind": "event",
-        "statement": "Affected foundries defer part of 2027 capacity expansion",
-        "resolution": "Capex guidance is cut by at least 5 percent versus the prior plan",
-        "base": 0.38,
-        "lagDays": [
-          60,
-          180
-        ],
-        "rationale": "Restricted tools and uncertain end demand can delay marginal fab projects.",
-        "analogs": [
-          "2019 memory capex cuts"
-        ],
-        "assumptions": [
-          "Financing and local subsidies do not fully offset the restriction"
+          "Retaliation targets US firms, not only symbolic goods",
+          "China does not pre-empt with talks"
         ],
         "confidence": "medium",
-        "marketQuery": "China foundry capex reduction 2027",
+        "marketQuery": "Will China announce semiconductor-related retaliation against US firms within 60 days of new US legacy-node controls?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "allied-exemption",
+        "id": "evwaiver",
         "kind": "event",
-        "statement": "Allied fabs receive a narrow licensing exemption for existing facilities",
-        "resolution": "A Commerce clarification grants case-by-case licenses for named allied facilities",
+        "statement": "Final legacy rule is narrower than proposed (equipment-only or China-only, no broad chip licensing)",
+        "resolution": "Published rule scope excludes broad legacy-chip licensing; resolves on rule text",
+        "base": 0.5,
+        "lagDays": [
+          0,
+          30
+        ],
+        "rationale": "Inhibitor path: broad legacy controls would raise US consumer/industrial costs; industry lobbying (autos, power) historically narrows scope, as in the 2024 Section 301 tariff carve-outs.",
+        "analogs": [
+          "2024 tariff exclusions",
+          "AI diffusion rule 2025 walk-back"
+        ],
+        "assumptions": [
+          "Domestic cost pressure outweighs hawkish pressure",
+          "Lobbying window exists before final rule"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Will the final US legacy-node export rule be limited to equipment or China-only scope?",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "evsmh",
+        "kind": "event",
+        "statement": "SMH falls more than 10% from announcement-date level within 30 days of a broad legacy rule",
+        "resolution": "Close-to-close drawdown >10% from the close on rule-publication day, within 30 calendar days",
         "base": 0.35,
         "lagDays": [
-          20,
-          100
+          1,
+          30
         ],
-        "rationale": "An exemption can protect allied supply chains without removing leverage over Chinese expansion.",
+        "rationale": "Analog: SMH dropped ~8-12% in the month after Oct 2022 controls; a legacy rule hits a larger revenue base (mature-node equipment, fabs), but index is now more AI-weighted, damping beta.",
         "analogs": [
-          "Validated end-user licensing arrangements"
+          "Oct 2022 SOX -12% month",
+          "Dec 2024 HBM rule (muted, ~-3%)"
         ],
         "assumptions": [
-          "Allies accept reporting conditions"
+          "No offsetting AI earnings surprise in window",
+          "Rule is broad, not equipment-only"
         ],
         "confidence": "low",
-        "marketQuery": "semiconductor export control allied licensing exemption",
+        "marketQuery": "Will SMH decline more than 10% within 30 days of new legacy-node export controls?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "tool-vendor-guidance-cut",
-        "kind": "event",
-        "statement": "Equipment vendors reduce China revenue guidance",
-        "resolution": "A major equipment vendor cuts China revenue guidance by more than 5 percent",
-        "base": 0.29,
-        "lagDays": [
-          45,
-          150
-        ],
-        "rationale": "Licensing uncertainty hits service and spare-parts revenue before new tool orders are formally canceled.",
-        "analogs": [
-          "2022 equipment-vendor China guidance revisions"
-        ],
-        "assumptions": [
-          "China remains a material share of revenue"
-        ],
-        "confidence": "medium",
-        "marketQuery": "semiconductor equipment vendor China revenue guidance cut",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "semiconductor-etf",
+        "id": "numsmh",
         "kind": "numeric",
         "name": "VanEck Semiconductor ETF",
-        "unit": "USD/share",
+        "unit": "USD",
         "ticker": "SMH",
-        "current": 260,
-        "baselineMove": 0,
-        "sigma": 20,
-        "rationale": "The ETF captures equipment, logic, and memory exposure while diversifying company-specific effects.",
+        "current": null,
+        "baselineMove": -6,
+        "sigma": 9,
+        "rationale": "Legacy controls pressure equipment and China-exposed names; AI-heavy weights and possible narrow rule cap downside. Baseline modest decline with wide sigma reflecting rule-scope uncertainty.",
         "assumptions": [
-          "AI demand remains a partial offset to China weakness"
+          "No concurrent AI capex shock",
+          "180-day horizon"
         ],
-        "confidence": "high"
+        "confidence": "low"
       },
       {
-        "id": "tsmc-adr",
+        "id": "numamat",
         "kind": "numeric",
-        "name": "Taiwan Semiconductor ADR",
-        "unit": "USD/share",
-        "ticker": "TSM",
-        "current": 210,
-        "baselineMove": 0,
-        "sigma": 18,
-        "rationale": "TSMC is sensitive to both broader semiconductor risk appetite and demand from the China supply chain.",
+        "name": "Applied Materials",
+        "unit": "USD",
+        "ticker": "AMAT",
+        "current": null,
+        "baselineMove": -10,
+        "sigma": 12,
+        "rationale": "Mature-node deposition/etch tools are a large China revenue share; direct target of any equipment-side legacy rule. Analog: AMAT fell ~15% on Oct 2022 rule over a month.",
         "assumptions": [
-          "Leading-edge demand stays resilient"
+          "Rule covers tools, not chips only",
+          "China revenue share stays >25%"
         ],
-        "confidence": "high"
+        "confidence": "medium"
+      },
+      {
+        "id": "numtsem",
+        "kind": "numeric",
+        "name": "Texas Instruments",
+        "unit": "USD",
+        "ticker": "TXN",
+        "current": null,
+        "baselineMove": 4,
+        "sigma": 8,
+        "rationale": "Counter-force: TXN is a US legacy-node producer; controls on Chinese mature-node supply raise its pricing power and US share, partially offsetting sector weakness.",
+        "assumptions": [
+          "Rule restricts Chinese legacy chips into US",
+          "No Chinese retaliation on TXN products"
+        ],
+        "confidence": "low"
+      },
+      {
+        "id": "numsox",
+        "kind": "numeric",
+        "name": "SOX Philadelphia Semiconductor Index",
+        "unit": "index points",
+        "ticker": "^SOX",
+        "current": null,
+        "baselineMove": -5,
+        "sigma": 10,
+        "rationale": "Sector-level proxy; historical control-event drawdowns of 3-12% with 20-40 day lags inform baseline and sigma.",
+        "assumptions": [
+          "No macro rate shock conflated",
+          "180-day horizon"
+        ],
+        "confidence": "low"
       }
     ],
     "edges": [
       {
-        "source": "legacy-controls-expand",
-        "target": "china-retaliation",
-        "mechanism": "New restrictions increase the incentive for procurement retaliation",
-        "assumptions": [],
+        "source": "ev232",
+        "target": "root",
+        "mechanism": "Affirmative 232 finding supplies legal predicate and political cover for BIS legacy-node rulemaking",
+        "assumptions": [
+          "232 finding cites mature-node chips/tools",
+          "BIS acts within 90 days of finding"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "ev232"
+        ],
         "polarity": "promote",
-        "strength": 0.52,
-        "impact": null,
-        "beta": null,
+        "strength": 0.6,
+        "impact": 25,
+        "beta": 0.6,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 30
       },
       {
-        "source": "legacy-controls-expand",
-        "target": "inventory-build",
-        "mechanism": "Fabs pull forward purchases before licensing uncertainty bites",
-        "assumptions": [],
-        "confidence": "high",
-        "sourceIds": [],
-        "polarity": "promote",
-        "strength": 0.68,
-        "impact": null,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "legacy-controls-expand",
-        "target": "foundry-capex-slowdown",
-        "mechanism": "Tool uncertainty delays marginal capacity projects",
-        "assumptions": [],
+        "source": "root",
+        "target": "evchina",
+        "mechanism": "Chinese retaliation playbook against US semiconductor firms after each control round",
+        "assumptions": [
+          "Retaliation within 60 days",
+          "Targets procurement/entity-list, not force"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "root"
+        ],
         "polarity": "promote",
         "strength": 0.55,
-        "impact": null,
-        "beta": null,
+        "impact": 15,
+        "beta": 0.5,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 45
       },
       {
-        "source": "legacy-controls-expand",
-        "target": "allied-exemption",
-        "mechanism": "Supply-chain risk creates pressure for narrow allied licenses",
-        "assumptions": [],
+        "source": "root",
+        "target": "evwaiver",
+        "mechanism": "Industry and downstream-user lobbying narrows final rule scope",
+        "assumptions": [
+          "Lobbying window before finalization",
+          "Cost concerns reach White House"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "root"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.5,
+        "impact": -20,
+        "beta": -0.5,
+        "threshold": null,
+        "direction": null,
+        "width": 40
+      },
+      {
+        "source": "root",
+        "target": "evsmh",
+        "mechanism": "Control announcements trigger sector de-rating on China revenue risk",
+        "assumptions": [
+          "Rule is broad-scope",
+          "No offsetting earnings catalyst"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "root"
+        ],
+        "polarity": "promote",
+        "strength": 0.45,
+        "impact": 20,
+        "beta": 0.45,
+        "threshold": null,
+        "direction": null,
+        "width": 60
+      },
+      {
+        "source": "evwaiver",
+        "target": "evsmh",
+        "mechanism": "Narrow rule removes the drawdown catalyst",
+        "assumptions": [
+          "Equipment-only scope seen as manageable",
+          "Market prices scope quickly"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "evwaiver"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.6,
+        "impact": -25,
+        "beta": -0.6,
+        "threshold": null,
+        "direction": null,
+        "width": 30
+      },
+      {
+        "source": "evchina",
+        "target": "evsmh",
+        "mechanism": "Retaliation deepens China revenue uncertainty for US chip/toolmakers",
+        "assumptions": [
+          "Retaliation hits large-cap index members",
+          "No rapid negotiation rollback"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "evchina"
+        ],
         "polarity": "promote",
         "strength": 0.4,
-        "impact": null,
-        "beta": null,
+        "impact": 12,
+        "beta": 0.4,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 50
       },
       {
-        "source": "china-retaliation",
-        "target": "tool-vendor-guidance-cut",
-        "mechanism": "Domestic procurement preference reduces addressable demand",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": "promote",
-        "strength": 0.46,
-        "impact": null,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "allied-exemption",
-        "target": "inventory-build",
-        "mechanism": "A clear exemption reduces the need for precautionary orders",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
+        "source": "root",
+        "target": "numsmh",
+        "mechanism": "Sector beta to control events; AI weights damp legacy exposure",
+        "assumptions": [
+          "Baseline -6% conditional on rule",
+          "Sigma from 2022/2024 analogs"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "root"
+        ],
         "polarity": "inhibit",
-        "strength": 0.45,
-        "impact": null,
-        "beta": null,
+        "strength": 0.4,
+        "impact": -6,
+        "beta": -0.4,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 9
       },
       {
-        "source": "inventory-build",
-        "target": "semiconductor-etf",
-        "mechanism": "Near-term pull-forward temporarily supports equipment revenue",
-        "assumptions": [],
+        "source": "root",
+        "target": "numamat",
+        "mechanism": "Direct equipment-control exposure via China mature-node tool sales",
+        "assumptions": [
+          "Tools in scope",
+          "China >25% of revenue"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 3,
-        "beta": null,
+        "sourceIds": [
+          "root"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.6,
+        "impact": -10,
+        "beta": -0.6,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 12
       },
       {
-        "source": "foundry-capex-slowdown",
-        "target": "semiconductor-etf",
-        "mechanism": "Deferred capacity lowers equipment and materials demand",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": -7,
-        "beta": null,
+        "source": "root",
+        "target": "numtsem",
+        "mechanism": "Counter-force: US legacy producer gains pricing power from restricted Chinese supply",
+        "assumptions": [
+          "Rule restricts Chinese chips into US",
+          "No retaliation on TXN"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "root"
+        ],
+        "polarity": "promote",
+        "strength": 0.35,
+        "impact": 4,
+        "beta": 0.35,
         "threshold": null,
         "direction": null,
-        "width": null
+        "width": 8
       },
       {
-        "source": "tool-vendor-guidance-cut",
-        "target": "semiconductor-etf",
-        "mechanism": "Lower China guidance reprices equipment earnings",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
+        "source": "root",
+        "target": "numsox",
+        "mechanism": "Index-level sensitivity to export-control shocks per historical analogs",
+        "assumptions": [
+          "No macro confounder",
+          "180-day horizon"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "root"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.4,
         "impact": -5,
-        "beta": null,
+        "beta": -0.4,
         "threshold": null,
         "direction": null,
-        "width": null
-      },
-      {
-        "source": "allied-exemption",
-        "target": "semiconductor-etf",
-        "mechanism": "A narrow carve-out limits the downside to global supply chains",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 2.5,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "semiconductor-etf",
-        "target": "tsmc-adr",
-        "mechanism": "Sector risk appetite transmits into the leading foundry valuation",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": null,
-        "beta": 0.78,
-        "threshold": null,
-        "direction": null,
-        "width": null
+        "width": 10
       }
     ],
     "summary": {
-      "headline": "Legacy-node controls create a short inventory pull-forward but a larger medium-term capex and vendor-guidance risk.",
-      "mainUncertainty": "How broadly the rule defines controlled equipment and whether allied licenses arrive quickly.",
+      "headline": "Legacy-node export controls by mid-2026 are a ~22% event, most likely via a Section 232 predicate; a broad rule would hit equipment makers (AMAT) hardest while US legacy producers (TXN) could benefit, and rule-narrowing is the key inhibitor.",
+      "mainUncertainty": "Whether the final rule is broad (chips + equipment, China-wide) or narrowed to equipment-only scope — this swings both probability of passage and market impact.",
       "followUps": [
-        "BIS rule text",
-        "Equipment-vendor China bookings",
-        "Foundry capex guidance"
+        "Track Section 232 semiconductor report release and its mature-node language",
+        "Monitor BIS pre-publication rule drafts and OIRA review for scope signals",
+        "Watch Chinese MOFCOM/entity-list responses within 60 days of any rule",
+        "Check SMH/AMAT China revenue disclosures in upcoming earnings"
       ]
     }
   },
   "graph": {
-    "id": "a3140d30-5fb0-46f8-90ae-43a9363015c7",
+    "id": "27bb4f2b-4720-4734-89bc-990d29c7656b",
     "hypothesis": "The US extends semiconductor export controls to legacy nodes",
     "mode": "explore",
     "target": null,
     "horizonDays": 180,
     "nodes": [
       {
-        "id": "legacy-controls-expand",
+        "id": "root",
         "kind": "event",
-        "statement": "The United States extends semiconductor export controls to selected legacy-node equipment",
-        "resolution": "Commerce publishes a rule adding defined legacy-node equipment to licensing controls",
-        "base": 0.34,
+        "statement": "BIS publishes a rule extending US semiconductor export controls to legacy-node (≥28nm) chips or equipment by 2026-06-30",
+        "resolution": "Federal Register notice from BIS covering mature-node chips/tools; resolves YES on publication, NO if 180 days pass without one",
+        "base": 0.22,
         "lagDays": [
-          20,
-          90
+          30,
+          120
         ],
-        "rationale": "Policy pressure has shifted from frontier AI chips toward the equipment stack that supports military and industrial demand.",
+        "rationale": "BIS has signaled mature-node scrutiny (2024 RFI, Section 232 semiconductor probe). Reference class: prior control expansions (Oct 2022, Oct 2023, Dec 2024 HBM rule) took 6-18 months from signal to rule. A legacy rule is contested internally, so base rate below 50%.",
         "analogs": [
-          "2022 and 2023 BIS semiconductor rules"
+          "Oct 2022 China rule (signal-to-rule ~9mo)",
+          "Dec 2024 HBM controls",
+          "Jan 2025 AI diffusion rule"
         ],
         "assumptions": [
-          "The rule covers meaningful tool categories rather than a symbolic list"
+          "BIS retains rulemaking staff capacity through 2026",
+          "No US-China détente freezes new controls",
+          "Section 232 probe supplies legal predicate"
         ],
-        "confidence": "medium",
-        "marketQuery": "US legacy semiconductor export controls 2026",
+        "confidence": "low",
+        "marketQuery": "Will BIS extend semiconductor export controls to legacy-node chips before 2026-06-30?",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "china-retaliation",
+        "id": "ev232",
         "kind": "event",
-        "statement": "China responds with procurement guidance favoring domestic semiconductor suppliers",
-        "resolution": "A central or provincial procurement notice specifies domestic-sourcing preferences",
-        "base": 0.42,
+        "statement": "Commerce Section 232 semiconductor investigation concludes national-security threat finding citing mature-node capacity",
+        "resolution": "Public 232 report or presidential action citing legacy chips; resolves on official release",
+        "base": 0.45,
         "lagDays": [
-          15,
-          75
+          0,
+          90
         ],
-        "rationale": "Procurement restrictions are easier to implement than an immediate broad export ban.",
+        "rationale": "232 probe initiated Sep 2025; statutory timeline and precedent (steel/aluminum) favor an affirmative finding. It is the cleanest legal vehicle for legacy-node controls.",
         "analogs": [
-          "China critical-minerals export controls"
+          "2018 steel 232 (finding in ~3mo)",
+          "2025 semiconductor probe initiation"
         ],
         "assumptions": [
-          "Domestic suppliers can meet minimum qualification thresholds"
+          "Report is not withheld for negotiation leverage",
+          "Findings cover chips, not only downstream products"
         ],
         "confidence": "medium",
-        "marketQuery": "China domestic semiconductor procurement guidance",
+        "marketQuery": "Will the Section 232 semiconductor investigation produce an affirmative national security finding by 2026-06-30?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "inventory-build",
+        "id": "evchina",
         "kind": "event",
-        "statement": "Affected Chinese fabs pull forward equipment and spare-parts orders",
-        "resolution": "Supplier commentary reports order acceleration from affected Chinese customers",
-        "base": 0.31,
+        "statement": "China retaliates against US chipmakers or toolmakers (entity-list additions, procurement bans) within 60 days of any legacy rule",
+        "resolution": "MOFCOM announcement or official Chinese measures targeting US semiconductor firms after a legacy rule",
+        "base": 0.55,
         "lagDays": [
-          5,
-          35
+          7,
+          60
         ],
-        "rationale": "Customers often build buffer inventory ahead of licensing uncertainty.",
+        "rationale": "Analog: China's Apr 2025 rare-earth and entity responses followed US controls within weeks. Legacy-node controls hit Chinese industrial champions directly, raising retaliation odds versus prior rules.",
         "analogs": [
-          "2020 Huawei supply-chain pull-forward"
+          "Apr 2025 rare-earth export response",
+          "2023 Ga/Ge controls",
+          "Micron procurement ban 2023"
         ],
         "assumptions": [
-          "Suppliers can ship before the effective date"
-        ],
-        "confidence": "high",
-        "marketQuery": "China semiconductor equipment inventory pull forward",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "foundry-capex-slowdown",
-        "kind": "event",
-        "statement": "Affected foundries defer part of 2027 capacity expansion",
-        "resolution": "Capex guidance is cut by at least 5 percent versus the prior plan",
-        "base": 0.38,
-        "lagDays": [
-          60,
-          180
-        ],
-        "rationale": "Restricted tools and uncertain end demand can delay marginal fab projects.",
-        "analogs": [
-          "2019 memory capex cuts"
-        ],
-        "assumptions": [
-          "Financing and local subsidies do not fully offset the restriction"
+          "Retaliation targets US firms, not only symbolic goods",
+          "China does not pre-empt with talks"
         ],
         "confidence": "medium",
-        "marketQuery": "China foundry capex reduction 2027",
+        "marketQuery": "Will China announce semiconductor-related retaliation against US firms within 60 days of new US legacy-node controls?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "allied-exemption",
+        "id": "evwaiver",
         "kind": "event",
-        "statement": "Allied fabs receive a narrow licensing exemption for existing facilities",
-        "resolution": "A Commerce clarification grants case-by-case licenses for named allied facilities",
+        "statement": "Final legacy rule is narrower than proposed (equipment-only or China-only, no broad chip licensing)",
+        "resolution": "Published rule scope excludes broad legacy-chip licensing; resolves on rule text",
+        "base": 0.5,
+        "lagDays": [
+          0,
+          30
+        ],
+        "rationale": "Inhibitor path: broad legacy controls would raise US consumer/industrial costs; industry lobbying (autos, power) historically narrows scope, as in the 2024 Section 301 tariff carve-outs.",
+        "analogs": [
+          "2024 tariff exclusions",
+          "AI diffusion rule 2025 walk-back"
+        ],
+        "assumptions": [
+          "Domestic cost pressure outweighs hawkish pressure",
+          "Lobbying window exists before final rule"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Will the final US legacy-node export rule be limited to equipment or China-only scope?",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "evsmh",
+        "kind": "event",
+        "statement": "SMH falls more than 10% from announcement-date level within 30 days of a broad legacy rule",
+        "resolution": "Close-to-close drawdown >10% from the close on rule-publication day, within 30 calendar days",
         "base": 0.35,
         "lagDays": [
-          20,
-          100
+          1,
+          30
         ],
-        "rationale": "An exemption can protect allied supply chains without removing leverage over Chinese expansion.",
+        "rationale": "Analog: SMH dropped ~8-12% in the month after Oct 2022 controls; a legacy rule hits a larger revenue base (mature-node equipment, fabs), but index is now more AI-weighted, damping beta.",
         "analogs": [
-          "Validated end-user licensing arrangements"
+          "Oct 2022 SOX -12% month",
+          "Dec 2024 HBM rule (muted, ~-3%)"
         ],
         "assumptions": [
-          "Allies accept reporting conditions"
+          "No offsetting AI earnings surprise in window",
+          "Rule is broad, not equipment-only"
         ],
         "confidence": "low",
-        "marketQuery": "semiconductor export control allied licensing exemption",
+        "marketQuery": "Will SMH decline more than 10% within 30 days of new legacy-node export controls?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "tool-vendor-guidance-cut",
-        "kind": "event",
-        "statement": "Equipment vendors reduce China revenue guidance",
-        "resolution": "A major equipment vendor cuts China revenue guidance by more than 5 percent",
-        "base": 0.29,
-        "lagDays": [
-          45,
-          150
-        ],
-        "rationale": "Licensing uncertainty hits service and spare-parts revenue before new tool orders are formally canceled.",
-        "analogs": [
-          "2022 equipment-vendor China guidance revisions"
-        ],
-        "assumptions": [
-          "China remains a material share of revenue"
-        ],
-        "confidence": "medium",
-        "marketQuery": "semiconductor equipment vendor China revenue guidance cut",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "semiconductor-etf",
+        "id": "numsmh",
         "kind": "numeric",
         "name": "VanEck Semiconductor ETF",
-        "unit": "USD/share",
+        "unit": "USD",
         "ticker": "SMH",
-        "current": 260,
-        "baselineMove": 0,
-        "sigma": 20,
-        "rationale": "The ETF captures equipment, logic, and memory exposure while diversifying company-specific effects.",
+        "current": null,
+        "baselineMove": -6,
+        "sigma": 9,
+        "rationale": "Legacy controls pressure equipment and China-exposed names; AI-heavy weights and possible narrow rule cap downside. Baseline modest decline with wide sigma reflecting rule-scope uncertainty.",
         "assumptions": [
-          "AI demand remains a partial offset to China weakness"
+          "No concurrent AI capex shock",
+          "180-day horizon"
         ],
-        "confidence": "high"
+        "confidence": "low"
       },
       {
-        "id": "tsmc-adr",
+        "id": "numamat",
         "kind": "numeric",
-        "name": "Taiwan Semiconductor ADR",
-        "unit": "USD/share",
-        "ticker": "TSM",
-        "current": 210,
-        "baselineMove": 0,
-        "sigma": 18,
-        "rationale": "TSMC is sensitive to both broader semiconductor risk appetite and demand from the China supply chain.",
+        "name": "Applied Materials",
+        "unit": "USD",
+        "ticker": "AMAT",
+        "current": null,
+        "baselineMove": -10,
+        "sigma": 12,
+        "rationale": "Mature-node deposition/etch tools are a large China revenue share; direct target of any equipment-side legacy rule. Analog: AMAT fell ~15% on Oct 2022 rule over a month.",
         "assumptions": [
-          "Leading-edge demand stays resilient"
+          "Rule covers tools, not chips only",
+          "China revenue share stays >25%"
         ],
-        "confidence": "high"
+        "confidence": "medium"
+      },
+      {
+        "id": "numtsem",
+        "kind": "numeric",
+        "name": "Texas Instruments",
+        "unit": "USD",
+        "ticker": "TXN",
+        "current": null,
+        "baselineMove": 4,
+        "sigma": 8,
+        "rationale": "Counter-force: TXN is a US legacy-node producer; controls on Chinese mature-node supply raise its pricing power and US share, partially offsetting sector weakness.",
+        "assumptions": [
+          "Rule restricts Chinese legacy chips into US",
+          "No Chinese retaliation on TXN products"
+        ],
+        "confidence": "low"
+      },
+      {
+        "id": "numsox",
+        "kind": "numeric",
+        "name": "SOX Philadelphia Semiconductor Index",
+        "unit": "index points",
+        "ticker": "^SOX",
+        "current": null,
+        "baselineMove": -5,
+        "sigma": 10,
+        "rationale": "Sector-level proxy; historical control-event drawdowns of 3-12% with 20-40 day lags inform baseline and sigma.",
+        "assumptions": [
+          "No macro rate shock conflated",
+          "180-day horizon"
+        ],
+        "confidence": "low"
       }
     ],
     "edges": [
       {
-        "id": "legacy-controls-expand->china-retaliation",
-        "source": "legacy-controls-expand",
-        "target": "china-retaliation",
-        "mechanism": "New restrictions increase the incentive for procurement retaliation",
-        "assumptions": [],
+        "id": "ev232->root",
+        "source": "ev232",
+        "target": "root",
+        "mechanism": "Affirmative 232 finding supplies legal predicate and political cover for BIS legacy-node rulemaking",
+        "assumptions": [
+          "232 finding cites mature-node chips/tools",
+          "BIS acts within 90 days of finding"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.52
+        "strength": 0.6
       },
       {
-        "id": "legacy-controls-expand->inventory-build",
-        "source": "legacy-controls-expand",
-        "target": "inventory-build",
-        "mechanism": "Fabs pull forward purchases before licensing uncertainty bites",
-        "assumptions": [],
-        "confidence": "high",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.68
-      },
-      {
-        "id": "legacy-controls-expand->foundry-capex-slowdown",
-        "source": "legacy-controls-expand",
-        "target": "foundry-capex-slowdown",
-        "mechanism": "Tool uncertainty delays marginal capacity projects",
-        "assumptions": [],
+        "id": "root->evchina",
+        "source": "root",
+        "target": "evchina",
+        "mechanism": "Chinese retaliation playbook against US semiconductor firms after each control round",
+        "assumptions": [
+          "Retaliation within 60 days",
+          "Targets procurement/entity-list, not force"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
@@ -567,11 +646,62 @@
         "strength": 0.55
       },
       {
-        "id": "legacy-controls-expand->allied-exemption",
-        "source": "legacy-controls-expand",
-        "target": "allied-exemption",
-        "mechanism": "Supply-chain risk creates pressure for narrow allied licenses",
-        "assumptions": [],
+        "id": "root->evwaiver",
+        "source": "root",
+        "target": "evwaiver",
+        "mechanism": "Industry and downstream-user lobbying narrows final rule scope",
+        "assumptions": [
+          "Lobbying window before finalization",
+          "Cost concerns reach White House"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.5
+      },
+      {
+        "id": "root->evsmh",
+        "source": "root",
+        "target": "evsmh",
+        "mechanism": "Control announcements trigger sector de-rating on China revenue risk",
+        "assumptions": [
+          "Rule is broad-scope",
+          "No offsetting earnings catalyst"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.45
+      },
+      {
+        "id": "evwaiver->evsmh",
+        "source": "evwaiver",
+        "target": "evsmh",
+        "mechanism": "Narrow rule removes the drawdown catalyst",
+        "assumptions": [
+          "Equipment-only scope seen as manageable",
+          "Market prices scope quickly"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.6
+      },
+      {
+        "id": "evchina->evsmh",
+        "source": "evchina",
+        "target": "evsmh",
+        "mechanism": "Retaliation deepens China revenue uncertainty for US chip/toolmakers",
+        "assumptions": [
+          "Retaliation hits large-cap index members",
+          "No rapid negotiation rollback"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
@@ -580,112 +710,209 @@
         "strength": 0.4
       },
       {
-        "id": "china-retaliation->tool-vendor-guidance-cut",
-        "source": "china-retaliation",
-        "target": "tool-vendor-guidance-cut",
-        "mechanism": "Domestic procurement preference reduces addressable demand",
-        "assumptions": [],
-        "confidence": "medium",
+        "id": "root->numsmh",
+        "source": "root",
+        "target": "numsmh",
+        "mechanism": "Sector beta to control events; AI weights damp legacy exposure",
+        "assumptions": [
+          "Baseline -6% conditional on rule",
+          "Sigma from 2022/2024 analogs"
+        ],
+        "confidence": "low",
         "support": "model_assumption",
         "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.46
+        "kind": "en",
+        "impact": -6
       },
       {
-        "id": "allied-exemption->inventory-build",
-        "source": "allied-exemption",
-        "target": "inventory-build",
-        "mechanism": "A clear exemption reduces the need for precautionary orders",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "inhibit",
-        "strength": 0.45
-      },
-      {
-        "id": "inventory-build->semiconductor-etf",
-        "source": "inventory-build",
-        "target": "semiconductor-etf",
-        "mechanism": "Near-term pull-forward temporarily supports equipment revenue",
-        "assumptions": [],
+        "id": "root->numamat",
+        "source": "root",
+        "target": "numamat",
+        "mechanism": "Direct equipment-control exposure via China mature-node tool sales",
+        "assumptions": [
+          "Tools in scope",
+          "China >25% of revenue"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": 3
+        "impact": -10
       },
       {
-        "id": "foundry-capex-slowdown->semiconductor-etf",
-        "source": "foundry-capex-slowdown",
-        "target": "semiconductor-etf",
-        "mechanism": "Deferred capacity lowers equipment and materials demand",
-        "assumptions": [],
-        "confidence": "medium",
+        "id": "root->numtsem",
+        "source": "root",
+        "target": "numtsem",
+        "mechanism": "Counter-force: US legacy producer gains pricing power from restricted Chinese supply",
+        "assumptions": [
+          "Rule restricts Chinese chips into US",
+          "No retaliation on TXN"
+        ],
+        "confidence": "low",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
-        "impact": -7
+        "impact": 4
       },
       {
-        "id": "tool-vendor-guidance-cut->semiconductor-etf",
-        "source": "tool-vendor-guidance-cut",
-        "target": "semiconductor-etf",
-        "mechanism": "Lower China guidance reprices equipment earnings",
-        "assumptions": [],
-        "confidence": "medium",
+        "id": "root->numsox",
+        "source": "root",
+        "target": "numsox",
+        "mechanism": "Index-level sensitivity to export-control shocks per historical analogs",
+        "assumptions": [
+          "No macro confounder",
+          "180-day horizon"
+        ],
+        "confidence": "low",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "en",
         "impact": -5
-      },
-      {
-        "id": "allied-exemption->semiconductor-etf",
-        "source": "allied-exemption",
-        "target": "semiconductor-etf",
-        "mechanism": "A narrow carve-out limits the downside to global supply chains",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "en",
-        "impact": 2.5
-      },
-      {
-        "id": "semiconductor-etf->tsmc-adr",
-        "source": "semiconductor-etf",
-        "target": "tsmc-adr",
-        "mechanism": "Sector risk appetite transmits into the leading foundry valuation",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "nn",
-        "beta": 0.78
       }
     ],
     "sources": [],
-    "model": "fixture-seed",
-    "generatedAt": "2026-09-01T21:26:57.931Z",
+    "model": "z-ai/glm-5.3-flash",
+    "generatedAt": "2026-09-02T02:01:30.903Z",
     "summary": {
-      "headline": "Legacy-node controls create a short inventory pull-forward but a larger medium-term capex and vendor-guidance risk.",
-      "mainUncertainty": "How broadly the rule defines controlled equipment and whether allied licenses arrive quickly.",
+      "headline": "Legacy-node export controls by mid-2026 are a ~22% event, most likely via a Section 232 predicate; a broad rule would hit equipment makers (AMAT) hardest while US legacy producers (TXN) could benefit, and rule-narrowing is the key inhibitor.",
+      "mainUncertainty": "Whether the final rule is broad (chips + equipment, China-wide) or narrowed to equipment-only scope — this swings both probability of passage and market impact.",
       "followUps": [
-        "BIS rule text",
-        "Equipment-vendor China bookings",
-        "Foundry capex guidance"
+        "Track Section 232 semiconductor report release and its mature-node language",
+        "Monitor BIS pre-publication rule drafts and OIRA review for scope signals",
+        "Watch Chinese MOFCOM/entity-list responses within 60 days of any rule",
+        "Check SMH/AMAT China revenue disclosures in upcoming earnings"
       ]
     }
   },
   "markets": {
-    "legacy-controls-expand": [],
-    "china-retaliation": [],
-    "inventory-build": [],
-    "foundry-capex-slowdown": [],
-    "allied-exemption": [],
-    "tool-vendor-guidance-cut": []
+    "root": [
+      {
+        "title": "Will Scott Jennings be the next White House Press Secretary?",
+        "url": "https://polymarket.com/event/who-will-trump-pick-as-the-next-press-secretary-20260812210729848",
+        "yes": 0.2085,
+        "volume": 92383.07411400002,
+        "endDate": "2026-12-31T23:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Anna Kelly be the next White House Press Secretary?",
+        "url": "https://polymarket.com/event/who-will-trump-pick-as-the-next-press-secretary-20260812210729848",
+        "yes": 0.28,
+        "volume": 48075.522368000005,
+        "endDate": "2026-12-31T23:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Alina Habba be the next White House Press Secretary?",
+        "url": "https://polymarket.com/event/who-will-trump-pick-as-the-next-press-secretary-20260812210729848",
+        "yes": 0.1005,
+        "volume": 14947.396616,
+        "endDate": "2026-12-31T23:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Natalie Harp be the next White House Press Secretary?",
+        "url": "https://polymarket.com/event/who-will-trump-pick-as-the-next-press-secretary-20260812210729848",
+        "yes": 0.033,
+        "volume": 11646.933091,
+        "endDate": "2026-12-31T23:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Margo Martin be the next White House Press Secretary?",
+        "url": "https://polymarket.com/event/who-will-trump-pick-as-the-next-press-secretary-20260812210729848",
+        "yes": 0.0935,
+        "volume": 9044.351082000001,
+        "endDate": "2026-12-31T23:59:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "ev232": [
+      {
+        "title": "Will FISA Section 702 reauthorization become law this year?",
+        "url": "https://polymarket.com/event/which-bills-will-become-law-in-2026",
+        "yes": 0.105,
+        "volume": 102626.989078,
+        "endDate": "2026-12-31T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Smithsonian Women’s History Museum become law this year?",
+        "url": "https://polymarket.com/event/which-bills-will-become-law-in-2026",
+        "yes": 0.0415,
+        "volume": 3522.286441,
+        "endDate": "2026-12-31T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Film/TV production expensing become law this year?",
+        "url": "https://polymarket.com/event/which-bills-will-become-law-in-2026",
+        "yes": 0.053,
+        "volume": 2322.1953900000003,
+        "endDate": "2026-12-31T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Trump Airport become law this year?",
+        "url": "https://polymarket.com/event/which-bills-will-become-law-in-2026",
+        "yes": 0.0285,
+        "volume": 1706.9038799999998,
+        "endDate": "2026-12-31T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will $2.50 Coin become law this year?",
+        "url": "https://polymarket.com/event/which-bills-will-become-law-in-2026",
+        "yes": 0.125,
+        "volume": 504.109016,
+        "endDate": "2026-12-31T00:00:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "evchina": [],
+    "evwaiver": [],
+    "evsmh": [
+      {
+        "title": "Will the Labour Party win 45-49 seats in the New Zealand House of Representatives in the 2026 New Zealand legislative election?",
+        "url": "https://polymarket.com/event/nz-election-labour-party-of-seats",
+        "yes": 0.071,
+        "volume": 7200.419521,
+        "endDate": "2026-11-07T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Labour Party win 35-39 seats in the New Zealand House of Representatives in the 2026 New Zealand legislative election?",
+        "url": "https://polymarket.com/event/nz-election-labour-party-of-seats",
+        "yes": 0.33,
+        "volume": 7110.363840000002,
+        "endDate": "2026-11-07T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Labour Party win 30-34 seats in the New Zealand House of Representatives in the 2026 New Zealand legislative election?",
+        "url": "https://polymarket.com/event/nz-election-labour-party-of-seats",
+        "yes": 0.19,
+        "volume": 3137.826125,
+        "endDate": "2026-11-07T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Labour Party win 40-44 seats in the New Zealand House of Representatives in the 2026 New Zealand legislative election?",
+        "url": "https://polymarket.com/event/nz-election-labour-party-of-seats",
+        "yes": 0.185,
+        "volume": 2762.692431,
+        "endDate": "2026-11-07T00:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will the Labour Party win 55 or more seats in the New Zealand House of Representatives in the 2026 New Zealand legislative election?",
+        "url": "https://polymarket.com/event/nz-election-labour-party-of-seats",
+        "yes": 0.066,
+        "volume": 1232.343332,
+        "endDate": "2026-11-07T00:00:00Z",
+        "source": "polymarket"
+      }
+    ]
   },
   "quotes": {
     "SMH": {
@@ -695,12 +922,26 @@
       "currency": "USD",
       "time": "2026-09-01T20:00:00.000Z"
     },
-    "TSM": {
-      "symbol": "TSM",
-      "price": 414,
-      "changePct": -0.318,
+    "AMAT": {
+      "symbol": "AMAT",
+      "price": 441.85,
+      "changePct": -3.608,
       "currency": "USD",
-      "time": "2026-09-01T20:00:02.000Z"
+      "time": "2026-09-01T20:00:01.000Z"
+    },
+    "TXN": {
+      "symbol": "TXN",
+      "price": 253.34,
+      "changePct": -2.901,
+      "currency": "USD",
+      "time": "2026-09-01T20:00:00.000Z"
+    },
+    "^SOX": {
+      "symbol": "^SOX",
+      "price": 11288.612,
+      "changePct": -2.136,
+      "currency": "USD",
+      "time": "2026-09-01T21:15:59.000Z"
     }
   }
 }

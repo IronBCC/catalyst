@@ -44,7 +44,11 @@ export const LlmEventNode = z.strictObject({
   statement: z.string(),
   resolution: z.string(),
   base: z.number().min(0).max(1),
-  lagDays: z.tuple([z.number().min(0), z.number().min(0)]),
+  // A fixed-length array rather than a tuple: `z.tuple` serialises to the
+  // draft-7 list form of `items`, which strict providers reject outright
+  // ("'items' must be a schema object, got list"). `repairGraph` narrows it
+  // back to [number, number] for the internal model.
+  lagDays: z.array(z.number().min(0)).length(2),
   rationale: z.string(),
   analogs: z.array(z.string()),
   assumptions: z.array(z.string()),

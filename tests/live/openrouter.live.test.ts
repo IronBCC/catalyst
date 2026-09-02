@@ -26,4 +26,6 @@ it.skipIf(!process.env.RUN_LIVE_OPENROUTER || !process.env.OPENROUTER_API_KEY)(
       expect(probability).toBeLessThanOrEqual(1);
     }
   },
+  // A full graph is a large tool-call payload; the client itself allows 120 s.
+  180_000,
 );

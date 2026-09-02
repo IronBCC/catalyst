@@ -9,712 +9,1110 @@
   "llm": {
     "nodes": [
       {
-        "id": "photonics-accelerates",
+        "id": "root",
         "kind": "event",
-        "statement": "Photonic interconnects are adopted in datacenters faster than expected",
-        "resolution": "Two hyperscalers disclose production deployments of photonic interconnects",
-        "base": 0.25,
+        "statement": "By 2026-05-20, at least one hyperscaler (Google, Microsoft, Meta, Amazon) publicly discloses co-packaged optics (CPO) deployment in production datacenter clusters at scale (≥1,000 switches/links).",
+        "resolution": "Resolves YES if a hyperscaler press release, earnings call, or OCP contribution confirms CPO in production at stated scale by date; NO if only pilots, demos, or roadmaps.",
+        "base": 0.3,
         "lagDays": [
           90,
-          365
+          270
         ],
-        "rationale": "AI cluster power density makes electrical reach and SerDes power a binding design constraint.",
+        "rationale": "Reference class: prior optical interconnect transitions (100G→400G) took ~3 years from demo to hyperscale production. CPO demos (Broadcom Tomahawk 5, NVIDIA Quantum-X) are 2024-25; production at 1,000+ links within 12 months is plausible but not majority-likely given thermal/reliability qualification cycles.",
         "analogs": [
-          "400G and 800G optical transceiver adoption"
+          "Broadcom Tomahawk 5 CPO switch (2024)",
+          "NVIDIA Quantum-X InfiniBand CPO (2025)",
+          "100G→400G Ethernet transition (2016-2019)"
         ],
         "assumptions": [
-          "AI cluster build-outs remain capital intensive"
+          "Hyperscalers disclose deployment publicly",
+          "CPO defined as co-packaged, not just pluggable optics",
+          "Scale threshold excludes lab pilots"
         ],
         "confidence": "medium",
-        "marketQuery": "hyperscaler photonic interconnect production deployment",
+        "marketQuery": "Will a hyperscaler announce production co-packaged optics deployment by May 2026?",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "co-packaged-optics-win",
-        "kind": "event",
-        "statement": "A co-packaged optics design wins a production AI-network slot",
-        "resolution": "A supplier names a production co-packaged optics program with shipment timing",
-        "base": 0.3,
-        "lagDays": [
-          90,
-          300
-        ],
-        "rationale": "A named production win turns optical interconnect demand from a lab roadmap into a bill-of-materials pull.",
-        "analogs": [
-          "Early 800G design-win disclosures"
-        ],
+        "id": "ai_capex",
+        "kind": "numeric",
+        "name": "Hyperscaler AI capex (Big-4 annualized)",
+        "unit": "USD billions/yr",
+        "ticker": "MSFT",
+        "current": 300,
+        "baselineMove": 15,
+        "sigma": 40,
+        "rationale": "Microsoft, Amazon, Alphabet, Meta guided combined 2025 capex near $300B, heavily AI-infrastructure weighted. Continued growth is the demand pull for bandwidth-dense optics; a capex pause would delay adoption.",
         "assumptions": [
-          "The customer does not revert to pluggable optics at qualification"
+          "Guidance holds through 2026",
+          "AI share of capex stays >50%"
         ],
-        "confidence": "low",
-        "marketQuery": "co-packaged optics production design win",
-        "isRoot": false,
-        "isTarget": false
+        "confidence": "medium"
       },
       {
-        "id": "switch-asic-power-wall",
-        "kind": "event",
-        "statement": "Switch ASIC power consumption breaches rack thermal design targets",
-        "resolution": "A hyperscaler technical disclosure reports a power or thermal limit requiring optical redesign",
-        "base": 0.46,
-        "lagDays": [
-          30,
-          240
-        ],
-        "rationale": "Electrical I/O power rises rapidly at higher speeds and creates a direct incentive for optical links closer to the ASIC.",
-        "analogs": [
-          "51.2T switch thermal constraints"
-        ],
+        "id": "pluggable_cost",
+        "kind": "numeric",
+        "name": "800G pluggable optics module price",
+        "unit": "USD per module",
+        "ticker": "COHR",
+        "current": 800,
+        "baselineMove": -12,
+        "sigma": 15,
+        "rationale": "Coherent/pluggable module prices historically fall 15-25%/yr (Infinera/Coherent analogs). Falling pluggable prices are the key inhibitor: cheap pluggables reduce CPO's power/cost advantage.",
         "assumptions": [
-          "Power is a higher priority than component-cost minimization"
+          "Price per 800G DR8-class module",
+          "Volume ramps at 2x+ YoY"
         ],
-        "confidence": "medium",
-        "marketQuery": "switch ASIC power thermal limit co packaged optics",
-        "isRoot": false,
-        "isTarget": false
+        "confidence": "medium"
       },
       {
-        "id": "hyperscaler-capex",
+        "id": "supply_yield",
         "kind": "event",
-        "statement": "Hyperscaler AI datacenter capex remains above guidance",
-        "resolution": "Two major hyperscalers raise annual AI infrastructure capex guidance",
-        "base": 0.58,
-        "lagDays": [
-          0,
-          180
-        ],
-        "rationale": "Higher cluster deployment volumes shorten the time needed to justify new interconnect architectures.",
-        "analogs": [
-          "2023 to 2025 AI capex revisions"
-        ],
-        "assumptions": [
-          "GPU supply remains available enough to deploy new clusters"
-        ],
-        "confidence": "high",
-        "marketQuery": "hyperscaler AI datacenter capex guidance",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "packaging-yield-delay",
-        "kind": "event",
-        "statement": "Advanced packaging yields delay photonic module qualification",
-        "resolution": "A supplier delays a planned volume-ramp date by at least one quarter for yield reasons",
-        "base": 0.36,
+        "statement": "CPO switch suppliers (Broadcom, NVIDIA) ship ≥10,000 cumulative CPO switch units by 2026-05-20.",
+        "resolution": "YES if supplier disclosures or credible supply-chain reports confirm cumulative shipments; NO if shipments remain in hundreds/thousands.",
+        "base": 0.35,
         "lagDays": [
           60,
-          270
+          240
         ],
-        "rationale": "Thermal alignment and heterogeneous integration can convert a design win into a slower revenue ramp.",
+        "rationale": "Analog: NVIDIA Quantum-X InfiniBand CPO targeted 2025 shipments; Broadcom Bailly ecosystem shipping since 2024. Yield on fiber-attach assembly is the bottleneck; 10k units implies yield maturity.",
         "analogs": [
-          "Silicon photonics packaging yield ramps"
+          "Broadcom Bailly 51.2T CPO",
+          "NVIDIA Quantum-X (2025)",
+          "Silicon photonics yield ramps at TSMC/GlobalFoundries"
         ],
         "assumptions": [
-          "Alternative packaging houses cannot qualify quickly"
+          "Fiber-attach assembly yields >90%",
+          "No major reliability recalls"
         ],
         "confidence": "medium",
-        "marketQuery": "silicon photonics packaging yield delay",
+        "marketQuery": "Will CPO switch shipments exceed 10,000 cumulative units by May 2026?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "interoperability-standard",
+        "id": "power_constraint",
         "kind": "event",
-        "statement": "An open optical-interconnect standard gains multi-vendor support",
-        "resolution": "Three major networking vendors announce compatible products or a formal standards profile",
+        "statement": "A major AI cluster buildout is publicly constrained by switch/network power or cooling before 2026-05-20, cited by a hyperscaler.",
+        "resolution": "YES if hyperscaler or grid operator cites networking power as a binding constraint in filings/statements; NO otherwise.",
+        "base": 0.45,
+        "lagDays": [
+          30,
+          180
+        ],
+        "rationale": "Optics already ~10% of cluster power at 800G scale; analogs: Microsoft's 2024 statements on power as top constraint. Power pressure is the strongest promoter of CPO (30-70% interconnect power savings).",
+        "analogs": [
+          "Microsoft power-constrained datacenter comments (2024)",
+          "Arista 800G power analyses"
+        ],
+        "assumptions": [
+          "Networking power share grows with AI scale-out",
+          "Hyperscalers disclose constraint publicly"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Will networking power constraints be cited as a datacenter bottleneck by 2026?",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "standards",
+        "kind": "event",
+        "statement": "OCP or IEEE finalizes an interoperable CPO/linear-pluggable spec enabling multi-vendor optics by 2026-05-20.",
+        "resolution": "YES if ratified/published spec; NO if still draft.",
+        "base": 0.4,
+        "lagDays": [
+          120,
+          300
+        ],
+        "rationale": "OCP has active CPO projects (LPO, CPO); historical analog: 400ZR took ~2 years draft-to-ratification. Standards reduce lock-in fear, a secondary promoter.",
+        "analogs": [
+          "OCP LPO spec (2024)",
+          "400ZR MSA timeline"
+        ],
+        "assumptions": [
+          "Multi-vendor participation continues",
+          "No fragmentation into competing specs"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Will OCP ratify a CPO interoperability spec by May 2026?",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "reliability_incident",
+        "kind": "event",
+        "statement": "A publicized field reliability failure in deployed CPO/LPO optics causes a hyperscaler to delay rollout plans by 2026-05-20.",
+        "resolution": "YES if credible reporting of incident plus stated delay; NO otherwise.",
+        "base": 0.2,
+        "lagDays": [
+          60,
+          300
+        ],
+        "rationale": "Counter-force: early fiber-attach and laser reliability issues (analog: early QSFP-DD failure rates, 2019). Non-repairable CPO packages raise stakes; a visible failure would push adoption right.",
+        "analogs": [
+          "Early 400G DR4 link-flap issues",
+          "Google TPU optical circuit switch learning curve"
+        ],
+        "assumptions": [
+          "Incident becomes public",
+          "Hyperscaler attributes delay to optics"
+        ],
+        "confidence": "low",
+        "marketQuery": "Will a CPO reliability incident delay hyperscaler adoption by 2026?",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "nvl_link",
+        "kind": "event",
+        "statement": "NVIDIA ships optical (silicon-photonics) transceivers at scale in NVLink/Quantum-X ecosystems by 2026-05-20.",
+        "resolution": "YES if confirmed volume shipments (>1,000 systems) in customer deployments; NO if limited to announced SKUs.",
         "base": 0.4,
         "lagDays": [
           90,
-          300
+          270
         ],
-        "rationale": "Interoperability lowers the procurement risk of adopting an interconnect architecture early.",
+        "rationale": "NVIDIA announced photonic Quantum-X for 2025-26; analog: InfiniBand adoption curve post-2010. NVIDIA's vertical integration makes it the fastest single promoter path into datacenters.",
         "analogs": [
-          "OIF and Ethernet optical standards"
+          "NVIDIA Quantum-X InfiniBand CPO",
+          "Mellanox acquisition-driven InfiniBand ramp"
         ],
         "assumptions": [
-          "Standards work maps to purchasable modules rather than a long research process"
+          "TSMC silicon photonics capacity available",
+          "Customer pull from rack-scale systems"
         ],
-        "confidence": "low",
-        "marketQuery": "open optical interconnect standard multi vendor",
+        "confidence": "medium",
+        "marketQuery": "Will NVIDIA ship silicon photonics transceivers at scale by May 2026?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "coherent",
-        "kind": "numeric",
-        "name": "Coherent Corp",
-        "unit": "USD/share",
-        "ticker": "COHR",
-        "current": 95,
-        "baselineMove": 0,
-        "sigma": 28,
-        "rationale": "Coherent has exposure to optical components and datacenter interconnect demand.",
-        "assumptions": [
-          "Datacenter optical mix matters more than legacy industrial demand"
+        "id": "lpo_interim",
+        "kind": "event",
+        "statement": "Linear pluggable optics (LPO) — a CPO substitute — captures majority of new 800G hyperscaler deployments by 2026-05-20.",
+        "resolution": "YES if LPO share of new 800G ports >50% per credible supply-chain data; NO otherwise.",
+        "base": 0.35,
+        "lagDays": [
+          90,
+          300
         ],
-        "confidence": "medium"
+        "rationale": "Counter-force: LPO offers much of CPO's power savings with pluggable serviceability, delaying CPO specifically. Analog: LRO delayed coherent adoption in 2015-17.",
+        "analogs": [
+          "LRO vs coherent (2015-2017)",
+          "OCP LPO momentum (2024)"
+        ],
+        "assumptions": [
+          "LPO interoperability matures",
+          "Hyperscalers prefer serviceable form factor"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Will LPO capture majority of new 800G deployments by May 2026?",
+        "isRoot": false,
+        "isTarget": false
       },
       {
-        "id": "lumentum",
-        "kind": "numeric",
-        "name": "Lumentum Holdings",
-        "unit": "USD/share",
-        "ticker": "LITE",
-        "current": 75,
-        "baselineMove": 0,
-        "sigma": 30,
-        "rationale": "Lumentum is a liquid optical-component proxy with leverage to higher-speed transceiver demand.",
-        "assumptions": [
-          "Inventory digestion does not dominate the optical demand cycle"
+        "id": "target",
+        "kind": "event",
+        "statement": "By 2026-05-20, co-packaged optics are adopted in datacenters faster than consensus expectations (production deployment at ≥1 hyperscaler plus ≥10,000 cumulative CPO switch shipments).",
+        "resolution": "YES if both root and supply_yield resolve YES; NO otherwise.",
+        "base": 0.18,
+        "lagDays": [
+          120,
+          330
         ],
-        "confidence": "medium"
+        "rationale": "Joint probability of hyperscaler production disclosure (~30%) and shipment scale (~35%), correlated upward by power pressure and NVIDIA pull, discounted by LPO substitution and pluggable cost declines.",
+        "analogs": [
+          "Broadcom Tomahawk 5 CPO",
+          "NVIDIA Quantum-X",
+          "400G transition timing"
+        ],
+        "assumptions": [
+          "Correlation between disclosure and shipments is positive",
+          "Consensus baseline is slower adoption"
+        ],
+        "confidence": "low",
+        "marketQuery": "Will CPO datacenter adoption beat consensus expectations by May 2026?",
+        "isRoot": false,
+        "isTarget": true
       }
     ],
     "edges": [
       {
-        "source": "switch-asic-power-wall",
-        "target": "photonics-accelerates",
-        "mechanism": "Power and thermal constraints increase the value of optical I/O",
-        "assumptions": [],
+        "source": "ai_capex",
+        "target": "power_constraint",
+        "mechanism": "Larger AI clusters raise networking power draw, making optics power a visible constraint",
+        "assumptions": [
+          "Capex converts to deployed clusters within 2-3 quarters",
+          "Networking share of power rises with scale-out"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "ai_capex"
+        ],
         "polarity": "promote",
-        "strength": 0.48,
-        "impact": null,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
+        "strength": 0.6,
+        "impact": 25,
+        "beta": 0.5,
+        "threshold": 320,
+        "direction": "above",
+        "width": 60
       },
       {
-        "source": "hyperscaler-capex",
-        "target": "photonics-accelerates",
-        "mechanism": "More AI clusters justify earlier architecture transitions",
-        "assumptions": [],
-        "confidence": "high",
-        "sourceIds": [],
-        "polarity": "promote",
-        "strength": 0.44,
-        "impact": null,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "interoperability-standard",
-        "target": "photonics-accelerates",
-        "mechanism": "Multi-vendor support reduces procurement and lock-in risk",
-        "assumptions": [],
+        "source": "power_constraint",
+        "target": "root",
+        "mechanism": "Power pressure pushes hyperscalers to adopt CPO's 30-70% interconnect power savings in production",
+        "assumptions": [
+          "CPO power savings verified in field",
+          "No equivalent savings from LPO at same timeline"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "power_constraint"
+        ],
         "polarity": "promote",
-        "strength": 0.4,
-        "impact": null,
-        "beta": null,
+        "strength": 0.55,
+        "impact": 20,
+        "beta": 0.4,
         "threshold": null,
         "direction": null,
         "width": null
       },
       {
-        "source": "photonics-accelerates",
-        "target": "co-packaged-optics-win",
-        "mechanism": "Faster adoption makes a production design win more likely",
-        "assumptions": [],
+        "source": "nvl_link",
+        "target": "root",
+        "mechanism": "NVIDIA's integrated photonic InfiniBand/NVLink ecosystem forces hyperscalers to qualify and deploy CPO",
+        "assumptions": [
+          "Quantum-X ships on schedule",
+          "Customers buy rack-scale systems including optics"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
+        "sourceIds": [
+          "nvl_link"
+        ],
         "polarity": "promote",
-        "strength": 0.66,
-        "impact": null,
-        "beta": null,
+        "strength": 0.6,
+        "impact": 22,
+        "beta": 0.45,
         "threshold": null,
         "direction": null,
         "width": null
       },
       {
-        "source": "packaging-yield-delay",
-        "target": "co-packaged-optics-win",
-        "mechanism": "Yield delays postpone qualification and volume shipments",
-        "assumptions": [],
-        "confidence": "high",
-        "sourceIds": [],
+        "source": "supply_yield",
+        "target": "root",
+        "mechanism": "Mature fiber-attach yields enable volume supply needed for production-scale deployment",
+        "assumptions": [
+          "Yield >90% at 10k units",
+          "Assembly capacity scales without recalls"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "supply_yield"
+        ],
+        "polarity": "promote",
+        "strength": 0.65,
+        "impact": 25,
+        "beta": 0.5,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "standards",
+        "target": "root",
+        "mechanism": "Interoperable specs reduce vendor lock-in risk, easing hyperscaler procurement approval",
+        "assumptions": [
+          "Spec covers CPO not just LPO",
+          "Multi-vendor optics available at ratification"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "standards"
+        ],
+        "polarity": "promote",
+        "strength": 0.35,
+        "impact": 10,
+        "beta": 0.25,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "pluggable_cost",
+        "target": "root",
+        "mechanism": "Falling pluggable prices erode CPO's total-cost advantage, delaying production commitment",
+        "assumptions": [
+          "Price decline >15% YoY",
+          "Pluggable power gap remains acceptable to hyperscalers"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "pluggable_cost"
+        ],
         "polarity": "inhibit",
-        "strength": 0.58,
-        "impact": null,
-        "beta": null,
+        "strength": 0.5,
+        "impact": -18,
+        "beta": -0.4,
+        "threshold": -10,
+        "direction": "below",
+        "width": 10
+      },
+      {
+        "source": "lpo_interim",
+        "target": "root",
+        "mechanism": "LPO captures power savings with serviceable pluggables, deferring CPO-specific adoption",
+        "assumptions": [
+          "LPO interoperability matures in 2025-26",
+          "Hyperscalers prefer field-replaceable optics"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "lpo_interim"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.55,
+        "impact": -20,
+        "beta": -0.45,
         "threshold": null,
         "direction": null,
         "width": null
       },
       {
-        "source": "photonics-accelerates",
-        "target": "coherent",
-        "mechanism": "Faster optical deployment lifts datacenter component demand",
-        "assumptions": [],
+        "source": "reliability_incident",
+        "target": "root",
+        "mechanism": "Publicized field failure of non-repairable CPO packages triggers qualification delays",
+        "assumptions": [
+          "Incident is attributable to CPO",
+          "Hyperscaler publicly links delay to optics"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "reliability_incident"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.45,
+        "impact": -22,
+        "beta": -0.5,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "reliability_incident",
+        "target": "supply_yield",
+        "mechanism": "Field failures force requalification, slowing cumulative shipment ramp",
+        "assumptions": [
+          "Root-cause analysis takes 1-2 quarters",
+          "Shipments pause during requalification"
+        ],
+        "confidence": "low",
+        "sourceIds": [
+          "reliability_incident"
+        ],
+        "polarity": "inhibit",
+        "strength": 0.4,
+        "impact": -15,
+        "beta": -0.35,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "root",
+        "target": "target",
+        "mechanism": "Hyperscaler production disclosure is the primary evidence of faster-than-expected adoption",
+        "assumptions": [
+          "Disclosure correlates with real deployment",
+          "Consensus baseline assumes pilot-only through 2026"
+        ],
         "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
+        "sourceIds": [
+          "root"
+        ],
+        "polarity": "promote",
+        "strength": 0.8,
+        "impact": 40,
+        "beta": 0.8,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "supply_yield",
+        "target": "target",
+        "mechanism": "Shipment scale confirms adoption is broader than a single announcement",
+        "assumptions": [
+          "10k units exceeds consensus shipment forecasts",
+          "Shipments reach end customers, not inventory"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "supply_yield"
+        ],
+        "polarity": "promote",
+        "strength": 0.6,
+        "impact": 30,
+        "beta": 0.6,
+        "threshold": null,
+        "direction": null,
+        "width": null
+      },
+      {
+        "source": "ai_capex",
+        "target": "nvl_link",
+        "mechanism": "AI capex demand pulls NVIDIA rack-scale systems that bundle photonic interconnects",
+        "assumptions": [
+          "Quantum-X attach rate follows system sales",
+          "Capex growth continues through 2026"
+        ],
+        "confidence": "medium",
+        "sourceIds": [
+          "ai_capex"
+        ],
+        "polarity": "promote",
+        "strength": 0.5,
         "impact": 18,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "co-packaged-optics-win",
-        "target": "coherent",
-        "mechanism": "A named program validates incremental component revenue",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 12,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "packaging-yield-delay",
-        "target": "coherent",
-        "mechanism": "Delayed qualification defers the expected revenue ramp",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": -8,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "photonics-accelerates",
-        "target": "lumentum",
-        "mechanism": "Higher-speed optical links increase demand for optical components",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": 14,
-        "beta": null,
-        "threshold": null,
-        "direction": null,
-        "width": null
-      },
-      {
-        "source": "coherent",
-        "target": "lumentum",
-        "mechanism": "Optical-component peers share part of the same demand cycle",
-        "assumptions": [],
-        "confidence": "medium",
-        "sourceIds": [],
-        "polarity": null,
-        "strength": null,
-        "impact": null,
-        "beta": 0.55,
-        "threshold": null,
-        "direction": null,
-        "width": null
+        "beta": 0.4,
+        "threshold": 300,
+        "direction": "above",
+        "width": 50
       }
     ],
     "summary": {
-      "headline": "Power constraints and capex can pull photonics forward, but packaging yield remains the gate on a production ramp.",
-      "mainUncertainty": "Whether co-packaged optics clears qualification before pluggable optics improve enough to defer adoption.",
+      "headline": "CPO adoption beats consensus within 12 months only if power pressure and NVIDIA's photonic ecosystem overcome cheap pluggables and LPO substitution; base ~18%.",
+      "mainUncertainty": "Whether hyperscalers commit to non-repairable CPO in production, or settle for LPO/pluggables that capture most power savings with less risk.",
       "followUps": [
-        "Hyperscaler network architecture disclosures",
-        "Supplier production design wins",
-        "Advanced packaging yield commentary"
+        "Track NVIDIA Quantum-X shipment disclosures quarterly",
+        "Monitor OCP CPO/LPO spec ratification status",
+        "Watch hyperscaler earnings calls for networking power constraint language",
+        "Track 800G pluggable module pricing trends (Coherent, Lumentum)"
       ]
     }
   },
   "graph": {
-    "id": "ef7eca79-a763-4b81-a59f-46d6c2faa639",
+    "id": "c21dfb25-c06e-4fd3-951f-ce72090f8e57",
     "hypothesis": "Photonic interconnects get adopted in datacenters faster than expected",
     "mode": "explore",
     "target": null,
     "horizonDays": 365,
     "nodes": [
       {
-        "id": "photonics-accelerates",
+        "id": "root",
         "kind": "event",
-        "statement": "Photonic interconnects are adopted in datacenters faster than expected",
-        "resolution": "Two hyperscalers disclose production deployments of photonic interconnects",
-        "base": 0.25,
+        "statement": "By 2026-05-20, at least one hyperscaler (Google, Microsoft, Meta, Amazon) publicly discloses co-packaged optics (CPO) deployment in production datacenter clusters at scale (≥1,000 switches/links).",
+        "resolution": "Resolves YES if a hyperscaler press release, earnings call, or OCP contribution confirms CPO in production at stated scale by date; NO if only pilots, demos, or roadmaps.",
+        "base": 0.3,
         "lagDays": [
           90,
-          365
+          270
         ],
-        "rationale": "AI cluster power density makes electrical reach and SerDes power a binding design constraint.",
+        "rationale": "Reference class: prior optical interconnect transitions (100G→400G) took ~3 years from demo to hyperscale production. CPO demos (Broadcom Tomahawk 5, NVIDIA Quantum-X) are 2024-25; production at 1,000+ links within 12 months is plausible but not majority-likely given thermal/reliability qualification cycles.",
         "analogs": [
-          "400G and 800G optical transceiver adoption"
+          "Broadcom Tomahawk 5 CPO switch (2024)",
+          "NVIDIA Quantum-X InfiniBand CPO (2025)",
+          "100G→400G Ethernet transition (2016-2019)"
         ],
         "assumptions": [
-          "AI cluster build-outs remain capital intensive"
+          "Hyperscalers disclose deployment publicly",
+          "CPO defined as co-packaged, not just pluggable optics",
+          "Scale threshold excludes lab pilots"
         ],
         "confidence": "medium",
-        "marketQuery": "hyperscaler photonic interconnect production deployment",
+        "marketQuery": "Will a hyperscaler announce production co-packaged optics deployment by May 2026?",
         "isRoot": true,
         "isTarget": false
       },
       {
-        "id": "co-packaged-optics-win",
-        "kind": "event",
-        "statement": "A co-packaged optics design wins a production AI-network slot",
-        "resolution": "A supplier names a production co-packaged optics program with shipment timing",
-        "base": 0.3,
-        "lagDays": [
-          90,
-          300
-        ],
-        "rationale": "A named production win turns optical interconnect demand from a lab roadmap into a bill-of-materials pull.",
-        "analogs": [
-          "Early 800G design-win disclosures"
-        ],
+        "id": "ai-capex",
+        "kind": "numeric",
+        "name": "Hyperscaler AI capex (Big-4 annualized)",
+        "unit": "USD billions/yr",
+        "ticker": "MSFT",
+        "current": 300,
+        "baselineMove": 15,
+        "sigma": 40,
+        "rationale": "Microsoft, Amazon, Alphabet, Meta guided combined 2025 capex near $300B, heavily AI-infrastructure weighted. Continued growth is the demand pull for bandwidth-dense optics; a capex pause would delay adoption.",
         "assumptions": [
-          "The customer does not revert to pluggable optics at qualification"
+          "Guidance holds through 2026",
+          "AI share of capex stays >50%"
         ],
-        "confidence": "low",
-        "marketQuery": "co-packaged optics production design win",
-        "isRoot": false,
-        "isTarget": false
+        "confidence": "medium"
       },
       {
-        "id": "switch-asic-power-wall",
-        "kind": "event",
-        "statement": "Switch ASIC power consumption breaches rack thermal design targets",
-        "resolution": "A hyperscaler technical disclosure reports a power or thermal limit requiring optical redesign",
-        "base": 0.46,
-        "lagDays": [
-          30,
-          240
-        ],
-        "rationale": "Electrical I/O power rises rapidly at higher speeds and creates a direct incentive for optical links closer to the ASIC.",
-        "analogs": [
-          "51.2T switch thermal constraints"
-        ],
+        "id": "pluggable-cost",
+        "kind": "numeric",
+        "name": "800G pluggable optics module price",
+        "unit": "USD per module",
+        "ticker": "COHR",
+        "current": 800,
+        "baselineMove": -12,
+        "sigma": 15,
+        "rationale": "Coherent/pluggable module prices historically fall 15-25%/yr (Infinera/Coherent analogs). Falling pluggable prices are the key inhibitor: cheap pluggables reduce CPO's power/cost advantage.",
         "assumptions": [
-          "Power is a higher priority than component-cost minimization"
+          "Price per 800G DR8-class module",
+          "Volume ramps at 2x+ YoY"
         ],
-        "confidence": "medium",
-        "marketQuery": "switch ASIC power thermal limit co packaged optics",
-        "isRoot": false,
-        "isTarget": false
+        "confidence": "medium"
       },
       {
-        "id": "hyperscaler-capex",
+        "id": "supply-yield",
         "kind": "event",
-        "statement": "Hyperscaler AI datacenter capex remains above guidance",
-        "resolution": "Two major hyperscalers raise annual AI infrastructure capex guidance",
-        "base": 0.58,
-        "lagDays": [
-          0,
-          180
-        ],
-        "rationale": "Higher cluster deployment volumes shorten the time needed to justify new interconnect architectures.",
-        "analogs": [
-          "2023 to 2025 AI capex revisions"
-        ],
-        "assumptions": [
-          "GPU supply remains available enough to deploy new clusters"
-        ],
-        "confidence": "high",
-        "marketQuery": "hyperscaler AI datacenter capex guidance",
-        "isRoot": false,
-        "isTarget": false
-      },
-      {
-        "id": "packaging-yield-delay",
-        "kind": "event",
-        "statement": "Advanced packaging yields delay photonic module qualification",
-        "resolution": "A supplier delays a planned volume-ramp date by at least one quarter for yield reasons",
-        "base": 0.36,
+        "statement": "CPO switch suppliers (Broadcom, NVIDIA) ship ≥10,000 cumulative CPO switch units by 2026-05-20.",
+        "resolution": "YES if supplier disclosures or credible supply-chain reports confirm cumulative shipments; NO if shipments remain in hundreds/thousands.",
+        "base": 0.35,
         "lagDays": [
           60,
-          270
+          240
         ],
-        "rationale": "Thermal alignment and heterogeneous integration can convert a design win into a slower revenue ramp.",
+        "rationale": "Analog: NVIDIA Quantum-X InfiniBand CPO targeted 2025 shipments; Broadcom Bailly ecosystem shipping since 2024. Yield on fiber-attach assembly is the bottleneck; 10k units implies yield maturity.",
         "analogs": [
-          "Silicon photonics packaging yield ramps"
+          "Broadcom Bailly 51.2T CPO",
+          "NVIDIA Quantum-X (2025)",
+          "Silicon photonics yield ramps at TSMC/GlobalFoundries"
         ],
         "assumptions": [
-          "Alternative packaging houses cannot qualify quickly"
+          "Fiber-attach assembly yields >90%",
+          "No major reliability recalls"
         ],
         "confidence": "medium",
-        "marketQuery": "silicon photonics packaging yield delay",
+        "marketQuery": "Will CPO switch shipments exceed 10,000 cumulative units by May 2026?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "interoperability-standard",
+        "id": "power-constraint",
         "kind": "event",
-        "statement": "An open optical-interconnect standard gains multi-vendor support",
-        "resolution": "Three major networking vendors announce compatible products or a formal standards profile",
+        "statement": "A major AI cluster buildout is publicly constrained by switch/network power or cooling before 2026-05-20, cited by a hyperscaler.",
+        "resolution": "YES if hyperscaler or grid operator cites networking power as a binding constraint in filings/statements; NO otherwise.",
+        "base": 0.45,
+        "lagDays": [
+          30,
+          180
+        ],
+        "rationale": "Optics already ~10% of cluster power at 800G scale; analogs: Microsoft's 2024 statements on power as top constraint. Power pressure is the strongest promoter of CPO (30-70% interconnect power savings).",
+        "analogs": [
+          "Microsoft power-constrained datacenter comments (2024)",
+          "Arista 800G power analyses"
+        ],
+        "assumptions": [
+          "Networking power share grows with AI scale-out",
+          "Hyperscalers disclose constraint publicly"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Will networking power constraints be cited as a datacenter bottleneck by 2026?",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "standards",
+        "kind": "event",
+        "statement": "OCP or IEEE finalizes an interoperable CPO/linear-pluggable spec enabling multi-vendor optics by 2026-05-20.",
+        "resolution": "YES if ratified/published spec; NO if still draft.",
+        "base": 0.4,
+        "lagDays": [
+          120,
+          300
+        ],
+        "rationale": "OCP has active CPO projects (LPO, CPO); historical analog: 400ZR took ~2 years draft-to-ratification. Standards reduce lock-in fear, a secondary promoter.",
+        "analogs": [
+          "OCP LPO spec (2024)",
+          "400ZR MSA timeline"
+        ],
+        "assumptions": [
+          "Multi-vendor participation continues",
+          "No fragmentation into competing specs"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Will OCP ratify a CPO interoperability spec by May 2026?",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "reliability-incident",
+        "kind": "event",
+        "statement": "A publicized field reliability failure in deployed CPO/LPO optics causes a hyperscaler to delay rollout plans by 2026-05-20.",
+        "resolution": "YES if credible reporting of incident plus stated delay; NO otherwise.",
+        "base": 0.2,
+        "lagDays": [
+          60,
+          300
+        ],
+        "rationale": "Counter-force: early fiber-attach and laser reliability issues (analog: early QSFP-DD failure rates, 2019). Non-repairable CPO packages raise stakes; a visible failure would push adoption right.",
+        "analogs": [
+          "Early 400G DR4 link-flap issues",
+          "Google TPU optical circuit switch learning curve"
+        ],
+        "assumptions": [
+          "Incident becomes public",
+          "Hyperscaler attributes delay to optics"
+        ],
+        "confidence": "low",
+        "marketQuery": "Will a CPO reliability incident delay hyperscaler adoption by 2026?",
+        "isRoot": false,
+        "isTarget": false
+      },
+      {
+        "id": "nvl-link",
+        "kind": "event",
+        "statement": "NVIDIA ships optical (silicon-photonics) transceivers at scale in NVLink/Quantum-X ecosystems by 2026-05-20.",
+        "resolution": "YES if confirmed volume shipments (>1,000 systems) in customer deployments; NO if limited to announced SKUs.",
         "base": 0.4,
         "lagDays": [
           90,
-          300
+          270
         ],
-        "rationale": "Interoperability lowers the procurement risk of adopting an interconnect architecture early.",
+        "rationale": "NVIDIA announced photonic Quantum-X for 2025-26; analog: InfiniBand adoption curve post-2010. NVIDIA's vertical integration makes it the fastest single promoter path into datacenters.",
         "analogs": [
-          "OIF and Ethernet optical standards"
+          "NVIDIA Quantum-X InfiniBand CPO",
+          "Mellanox acquisition-driven InfiniBand ramp"
         ],
         "assumptions": [
-          "Standards work maps to purchasable modules rather than a long research process"
+          "TSMC silicon photonics capacity available",
+          "Customer pull from rack-scale systems"
         ],
-        "confidence": "low",
-        "marketQuery": "open optical interconnect standard multi vendor",
+        "confidence": "medium",
+        "marketQuery": "Will NVIDIA ship silicon photonics transceivers at scale by May 2026?",
         "isRoot": false,
         "isTarget": false
       },
       {
-        "id": "coherent",
-        "kind": "numeric",
-        "name": "Coherent Corp",
-        "unit": "USD/share",
-        "ticker": "COHR",
-        "current": 95,
-        "baselineMove": 0,
-        "sigma": 28,
-        "rationale": "Coherent has exposure to optical components and datacenter interconnect demand.",
-        "assumptions": [
-          "Datacenter optical mix matters more than legacy industrial demand"
+        "id": "lpo-interim",
+        "kind": "event",
+        "statement": "Linear pluggable optics (LPO) — a CPO substitute — captures majority of new 800G hyperscaler deployments by 2026-05-20.",
+        "resolution": "YES if LPO share of new 800G ports >50% per credible supply-chain data; NO otherwise.",
+        "base": 0.35,
+        "lagDays": [
+          90,
+          300
         ],
-        "confidence": "medium"
+        "rationale": "Counter-force: LPO offers much of CPO's power savings with pluggable serviceability, delaying CPO specifically. Analog: LRO delayed coherent adoption in 2015-17.",
+        "analogs": [
+          "LRO vs coherent (2015-2017)",
+          "OCP LPO momentum (2024)"
+        ],
+        "assumptions": [
+          "LPO interoperability matures",
+          "Hyperscalers prefer serviceable form factor"
+        ],
+        "confidence": "medium",
+        "marketQuery": "Will LPO capture majority of new 800G deployments by May 2026?",
+        "isRoot": false,
+        "isTarget": false
       },
       {
-        "id": "lumentum",
-        "kind": "numeric",
-        "name": "Lumentum Holdings",
-        "unit": "USD/share",
-        "ticker": "LITE",
-        "current": 75,
-        "baselineMove": 0,
-        "sigma": 30,
-        "rationale": "Lumentum is a liquid optical-component proxy with leverage to higher-speed transceiver demand.",
-        "assumptions": [
-          "Inventory digestion does not dominate the optical demand cycle"
+        "id": "target",
+        "kind": "event",
+        "statement": "By 2026-05-20, co-packaged optics are adopted in datacenters faster than consensus expectations (production deployment at ≥1 hyperscaler plus ≥10,000 cumulative CPO switch shipments).",
+        "resolution": "YES if both root and supply_yield resolve YES; NO otherwise.",
+        "base": 0.18,
+        "lagDays": [
+          120,
+          330
         ],
-        "confidence": "medium"
+        "rationale": "Joint probability of hyperscaler production disclosure (~30%) and shipment scale (~35%), correlated upward by power pressure and NVIDIA pull, discounted by LPO substitution and pluggable cost declines.",
+        "analogs": [
+          "Broadcom Tomahawk 5 CPO",
+          "NVIDIA Quantum-X",
+          "400G transition timing"
+        ],
+        "assumptions": [
+          "Correlation between disclosure and shipments is positive",
+          "Consensus baseline is slower adoption"
+        ],
+        "confidence": "low",
+        "marketQuery": "Will CPO datacenter adoption beat consensus expectations by May 2026?",
+        "isRoot": false,
+        "isTarget": true
       }
     ],
     "edges": [
       {
-        "id": "switch-asic-power-wall->photonics-accelerates",
-        "source": "switch-asic-power-wall",
-        "target": "photonics-accelerates",
-        "mechanism": "Power and thermal constraints increase the value of optical I/O",
-        "assumptions": [],
+        "id": "ai-capex->power-constraint",
+        "source": "ai-capex",
+        "target": "power-constraint",
+        "mechanism": "Larger AI clusters raise networking power draw, making optics power a visible constraint",
+        "assumptions": [
+          "Capex converts to deployed clusters within 2-3 quarters",
+          "Networking share of power rises with scale-out"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ne",
+        "threshold": 320,
+        "direction": "above",
+        "width": 60,
+        "strength": 0.6
+      },
+      {
+        "id": "power-constraint->root",
+        "source": "power-constraint",
+        "target": "root",
+        "mechanism": "Power pressure pushes hyperscalers to adopt CPO's 30-70% interconnect power savings in production",
+        "assumptions": [
+          "CPO power savings verified in field",
+          "No equivalent savings from LPO at same timeline"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.48
+        "strength": 0.55
       },
       {
-        "id": "hyperscaler-capex->photonics-accelerates",
-        "source": "hyperscaler-capex",
-        "target": "photonics-accelerates",
-        "mechanism": "More AI clusters justify earlier architecture transitions",
-        "assumptions": [],
-        "confidence": "high",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "ee",
-        "polarity": "promote",
-        "strength": 0.44
-      },
-      {
-        "id": "interoperability-standard->photonics-accelerates",
-        "source": "interoperability-standard",
-        "target": "photonics-accelerates",
-        "mechanism": "Multi-vendor support reduces procurement and lock-in risk",
-        "assumptions": [],
+        "id": "nvl-link->root",
+        "source": "nvl-link",
+        "target": "root",
+        "mechanism": "NVIDIA's integrated photonic InfiniBand/NVLink ecosystem forces hyperscalers to qualify and deploy CPO",
+        "assumptions": [
+          "Quantum-X ships on schedule",
+          "Customers buy rack-scale systems including optics"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.4
+        "strength": 0.6
       },
       {
-        "id": "photonics-accelerates->co-packaged-optics-win",
-        "source": "photonics-accelerates",
-        "target": "co-packaged-optics-win",
-        "mechanism": "Faster adoption makes a production design win more likely",
-        "assumptions": [],
+        "id": "supply-yield->root",
+        "source": "supply-yield",
+        "target": "root",
+        "mechanism": "Mature fiber-attach yields enable volume supply needed for production-scale deployment",
+        "assumptions": [
+          "Yield >90% at 10k units",
+          "Assembly capacity scales without recalls"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "promote",
-        "strength": 0.66
+        "strength": 0.65
       },
       {
-        "id": "packaging-yield-delay->co-packaged-optics-win",
-        "source": "packaging-yield-delay",
-        "target": "co-packaged-optics-win",
-        "mechanism": "Yield delays postpone qualification and volume shipments",
-        "assumptions": [],
-        "confidence": "high",
+        "id": "standards->root",
+        "source": "standards",
+        "target": "root",
+        "mechanism": "Interoperable specs reduce vendor lock-in risk, easing hyperscaler procurement approval",
+        "assumptions": [
+          "Spec covers CPO not just LPO",
+          "Multi-vendor optics available at ratification"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.35
+      },
+      {
+        "id": "pluggable-cost->root",
+        "source": "pluggable-cost",
+        "target": "root",
+        "mechanism": "Falling pluggable prices erode CPO's total-cost advantage, delaying production commitment",
+        "assumptions": [
+          "Price decline >15% YoY",
+          "Pluggable power gap remains acceptable to hyperscalers"
+        ],
+        "confidence": "medium",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ne",
+        "threshold": -10,
+        "direction": "below",
+        "width": 10,
+        "strength": 0.5
+      },
+      {
+        "id": "lpo-interim->root",
+        "source": "lpo-interim",
+        "target": "root",
+        "mechanism": "LPO captures power savings with serviceable pluggables, deferring CPO-specific adoption",
+        "assumptions": [
+          "LPO interoperability matures in 2025-26",
+          "Hyperscalers prefer field-replaceable optics"
+        ],
+        "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
         "kind": "ee",
         "polarity": "inhibit",
-        "strength": 0.58
+        "strength": 0.55
       },
       {
-        "id": "photonics-accelerates->coherent",
-        "source": "photonics-accelerates",
-        "target": "coherent",
-        "mechanism": "Faster optical deployment lifts datacenter component demand",
-        "assumptions": [],
+        "id": "reliability-incident->root",
+        "source": "reliability-incident",
+        "target": "root",
+        "mechanism": "Publicized field failure of non-repairable CPO packages triggers qualification delays",
+        "assumptions": [
+          "Incident is attributable to CPO",
+          "Hyperscaler publicly links delay to optics"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.45
+      },
+      {
+        "id": "reliability-incident->supply-yield",
+        "source": "reliability-incident",
+        "target": "supply-yield",
+        "mechanism": "Field failures force requalification, slowing cumulative shipment ramp",
+        "assumptions": [
+          "Root-cause analysis takes 1-2 quarters",
+          "Shipments pause during requalification"
+        ],
+        "confidence": "low",
+        "support": "model_assumption",
+        "sourceIds": [],
+        "kind": "ee",
+        "polarity": "inhibit",
+        "strength": 0.4
+      },
+      {
+        "id": "root->target",
+        "source": "root",
+        "target": "target",
+        "mechanism": "Hyperscaler production disclosure is the primary evidence of faster-than-expected adoption",
+        "assumptions": [
+          "Disclosure correlates with real deployment",
+          "Consensus baseline assumes pilot-only through 2026"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
-        "kind": "en",
-        "impact": 18
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.8
       },
       {
-        "id": "co-packaged-optics-win->coherent",
-        "source": "co-packaged-optics-win",
-        "target": "coherent",
-        "mechanism": "A named program validates incremental component revenue",
-        "assumptions": [],
+        "id": "supply-yield->target",
+        "source": "supply-yield",
+        "target": "target",
+        "mechanism": "Shipment scale confirms adoption is broader than a single announcement",
+        "assumptions": [
+          "10k units exceeds consensus shipment forecasts",
+          "Shipments reach end customers, not inventory"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
-        "kind": "en",
-        "impact": 12
+        "kind": "ee",
+        "polarity": "promote",
+        "strength": 0.6
       },
       {
-        "id": "packaging-yield-delay->coherent",
-        "source": "packaging-yield-delay",
-        "target": "coherent",
-        "mechanism": "Delayed qualification defers the expected revenue ramp",
-        "assumptions": [],
+        "id": "ai-capex->nvl-link",
+        "source": "ai-capex",
+        "target": "nvl-link",
+        "mechanism": "AI capex demand pulls NVIDIA rack-scale systems that bundle photonic interconnects",
+        "assumptions": [
+          "Quantum-X attach rate follows system sales",
+          "Capex growth continues through 2026"
+        ],
         "confidence": "medium",
         "support": "model_assumption",
         "sourceIds": [],
-        "kind": "en",
-        "impact": -8
-      },
-      {
-        "id": "photonics-accelerates->lumentum",
-        "source": "photonics-accelerates",
-        "target": "lumentum",
-        "mechanism": "Higher-speed optical links increase demand for optical components",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "en",
-        "impact": 14
-      },
-      {
-        "id": "coherent->lumentum",
-        "source": "coherent",
-        "target": "lumentum",
-        "mechanism": "Optical-component peers share part of the same demand cycle",
-        "assumptions": [],
-        "confidence": "medium",
-        "support": "model_assumption",
-        "sourceIds": [],
-        "kind": "nn",
-        "beta": 0.55
+        "kind": "ne",
+        "threshold": 300,
+        "direction": "above",
+        "width": 50,
+        "strength": 0.5
       }
     ],
     "sources": [],
-    "model": "fixture-seed",
-    "generatedAt": "2026-09-01T21:27:02.534Z",
+    "model": "z-ai/glm-5.3-flash",
+    "generatedAt": "2026-09-02T02:02:07.563Z",
     "summary": {
-      "headline": "Power constraints and capex can pull photonics forward, but packaging yield remains the gate on a production ramp.",
-      "mainUncertainty": "Whether co-packaged optics clears qualification before pluggable optics improve enough to defer adoption.",
+      "headline": "CPO adoption beats consensus within 12 months only if power pressure and NVIDIA's photonic ecosystem overcome cheap pluggables and LPO substitution; base ~18%.",
+      "mainUncertainty": "Whether hyperscalers commit to non-repairable CPO in production, or settle for LPO/pluggables that capture most power savings with less risk.",
       "followUps": [
-        "Hyperscaler network architecture disclosures",
-        "Supplier production design wins",
-        "Advanced packaging yield commentary"
+        "Track NVIDIA Quantum-X shipment disclosures quarterly",
+        "Monitor OCP CPO/LPO spec ratification status",
+        "Watch hyperscaler earnings calls for networking power constraint language",
+        "Track 800G pluggable module pricing trends (Coherent, Lumentum)"
       ]
     }
   },
   "markets": {
-    "photonics-accelerates": [],
-    "co-packaged-optics-win": [
+    "root": [],
+    "supply-yield": [
       {
-        "title": "Will the Republican Party win the CO-01 House seat?",
-        "url": "https://polymarket.com/event/co-01-house-election-winner",
-        "yes": 0.023,
-        "volume": 26100.245752000003,
-        "endDate": "2026-11-03T00:00:00Z",
+        "title": "Will Ethereum dip to $1,500 by December 31, 2026?",
+        "url": "https://polymarket.com/event/what-price-will-ethereum-hit-before-2027",
+        "yes": 0.147,
+        "volume": 2546764.8471829994,
+        "endDate": "2027-01-01T05:00:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will the Democratic Party win the CO-01 House seat?",
-        "url": "https://polymarket.com/event/co-01-house-election-winner",
-        "yes": 0.9685,
-        "volume": 16952.879496999998,
-        "endDate": "2026-11-03T00:00:00Z",
+        "title": "Will Ethereum dip to $1,000 by December 31, 2026?",
+        "url": "https://polymarket.com/event/what-price-will-ethereum-hit-before-2027",
+        "yes": 0.065,
+        "volume": 1979452.769096,
+        "endDate": "2027-01-01T05:00:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will the Democratic Party win the CO-05 House seat?",
-        "url": "https://polymarket.com/event/co-05-house-election-winner",
-        "yes": 0.285,
-        "volume": 10613.557347999998,
-        "endDate": "2026-11-03T00:00:00Z",
+        "title": "Will Ethereum dip to $800 by December 31, 2026?",
+        "url": "https://polymarket.com/event/what-price-will-ethereum-hit-before-2027",
+        "yes": 0.045,
+        "volume": 1617746.492514,
+        "endDate": "2027-01-01T05:00:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will the Republican Party win the CO-04 House seat?",
-        "url": "https://polymarket.com/event/co-04-house-election-winner",
-        "yes": 0.635,
-        "volume": 8920.506376000001,
-        "endDate": "2026-11-03T00:00:00Z",
+        "title": "Will Ethereum reach $10,000 by December 31, 2026?",
+        "url": "https://polymarket.com/event/what-price-will-ethereum-hit-before-2027",
+        "yes": 0.0165,
+        "volume": 789854.918976,
+        "endDate": "2027-01-01T05:00:00Z",
         "source": "polymarket"
       },
       {
-        "title": "Will the Democratic Party win the CO-08 House seat?",
-        "url": "https://polymarket.com/event/co-08-house-election-winner",
-        "yes": 0.78,
-        "volume": 8279.875027,
-        "endDate": "2026-11-04T00:00:00Z",
+        "title": "Will Ethereum reach $3,500 by December 31, 2026?",
+        "url": "https://polymarket.com/event/what-price-will-ethereum-hit-before-2027",
+        "yes": 0.245,
+        "volume": 616409.5203689998,
+        "endDate": "2027-01-01T05:00:00Z",
         "source": "polymarket"
       }
     ],
-    "switch-asic-power-wall": [
+    "power-constraint": [],
+    "standards": [
       {
-        "title": "Lisa Murkowski leaves the Republican Party in 2026?",
-        "url": "https://polymarket.com/event/lisa-murkowski-leaves-the-republican-party-in-2026",
-        "yes": 0.195,
-        "volume": 4783.528638,
+        "title": "Will Israel launch a ground operation in Iran by December 31, 2026?",
+        "url": "https://polymarket.com/event/israel-ground-operation-in-iran-confirmed-by",
+        "yes": 0.15,
+        "volume": 45683.869044,
         "endDate": "2027-01-01T04:59:00Z",
         "source": "polymarket"
       }
     ],
-    "hyperscaler-capex": [],
-    "packaging-yield-delay": [],
-    "interoperability-standard": []
+    "reliability-incident": [
+      {
+        "title": "Will Base launch a token by December 31, 2026?",
+        "url": "https://polymarket.com/event/will-base-launch-a-token-in-2025-341",
+        "yes": 0.145,
+        "volume": 703721.050929,
+        "endDate": "2028-01-01T05:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Base launch a token by September 30, 2026?",
+        "url": "https://polymarket.com/event/will-base-launch-a-token-in-2025-341",
+        "yes": 0.013,
+        "volume": 183676.417817,
+        "endDate": "2026-10-01T04:00:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Extended launch a token by September 30 2026?",
+        "url": "https://polymarket.com/event/will-extended-launch-a-token-by",
+        "yes": 0.035,
+        "volume": 87307.54575000002,
+        "endDate": "2026-10-01T03:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Extended launch a token by December 31 2026?",
+        "url": "https://polymarket.com/event/will-extended-launch-a-token-by",
+        "yes": 0.6675,
+        "volume": 64329.74955299999,
+        "endDate": "2027-01-01T04:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Base launch a token by December 31, 2027?",
+        "url": "https://polymarket.com/event/will-base-launch-a-token-in-2025-341",
+        "yes": 0.57,
+        "volume": 36588.10807,
+        "endDate": "2028-01-01T05:00:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "nvl-link": [],
+    "lpo-interim": [
+      {
+        "title": "Will Russia capture all of Stepnohirsk by September 30, 2026?",
+        "url": "https://polymarket.com/event/will-russia-capture-all-of-stepnohirsk-by",
+        "yes": 0.0205,
+        "volume": 1325123.4464969996,
+        "endDate": "2026-10-01T03:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Russia capture Lyman by December 31, 2026?",
+        "url": "https://polymarket.com/event/will-russia-capture-lyman-in-2025",
+        "yes": 0.22,
+        "volume": 443956.2437659999,
+        "endDate": "2027-01-01T04:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Russia capture Lyman by September 30, 2026?",
+        "url": "https://polymarket.com/event/will-russia-capture-lyman-in-2025",
+        "yes": 0.026,
+        "volume": 115676.55517400001,
+        "endDate": "2026-10-01T03:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Russia capture all of Prymorske by December 31, 2026?",
+        "url": "https://polymarket.com/event/will-russia-capture-all-of-prymorske-by",
+        "yes": 0.0255,
+        "volume": 113240.68844600001,
+        "endDate": "2027-01-01T04:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Russia capture all of Prymorske by September 30, 2026?",
+        "url": "https://polymarket.com/event/will-russia-capture-all-of-prymorske-by",
+        "yes": 0.0185,
+        "volume": 111667.90399399998,
+        "endDate": "2026-10-01T03:59:00Z",
+        "source": "polymarket"
+      }
+    ],
+    "target": [
+      {
+        "title": "Will Russia capture Lyman by December 31, 2026?",
+        "url": "https://polymarket.com/event/will-russia-capture-lyman-in-2025",
+        "yes": 0.22,
+        "volume": 443956.2437659999,
+        "endDate": "2027-01-01T04:59:00Z",
+        "source": "polymarket"
+      },
+      {
+        "title": "Will Russia capture Lyman by September 30, 2026?",
+        "url": "https://polymarket.com/event/will-russia-capture-lyman-in-2025",
+        "yes": 0.026,
+        "volume": 115676.55517400001,
+        "endDate": "2026-10-01T03:59:00Z",
+        "source": "polymarket"
+      }
+    ]
   },
   "quotes": {
+    "MSFT": {
+      "symbol": "MSFT",
+      "price": 501.02,
+      "changePct": -1.236,
+      "currency": "USD",
+      "time": "2026-09-01T20:00:01.000Z"
+    },
     "COHR": {
       "symbol": "COHR",
       "price": 272.03,
       "changePct": -2.088,
       "currency": "USD",
       "time": "2026-09-01T20:00:03.000Z"
-    },
-    "LITE": {
-      "symbol": "LITE",
-      "price": 868.95,
-      "changePct": -5.008,
-      "currency": "USD",
-      "time": "2026-09-01T20:00:01.000Z"
     }
   }
 }

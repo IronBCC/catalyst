@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:live": "RUN_LIVE_OPENROUTER=1 vitest run tests/live",
     "test:e2e": "playwright test",
-    "check": "npm test && npm run build && npm run test:e2e"
+    "check": "npm test && npm run build && npm run test:e2e",
+    "quality": "tsx scripts/quality.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.92",

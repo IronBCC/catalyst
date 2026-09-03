@@ -82,12 +82,12 @@ export function llm(deps: Deps) {
 const EMIT_DESCRIPTION = "Emit the result. Call this exactly once with the complete object.";
 
 /**
- * Five seconds under the routes' `maxDuration = 60`, so this abort always fires
+ * Five seconds under the routes' `maxDuration = 120`, so this abort always fires
  * first and the user gets the app's own "upstream timeout" with a Retry rather
  * than the platform's kill and a Vercel 504 page. Raise both together or not at
- * all.
+ * all. A production graph measured 45 s, so 60 s was too thin a margin.
  */
-export const TIMEOUT_MS = 55_000;
+export const TIMEOUT_MS = 115_000;
 
 /**
  * A whole graph is a large tool-call payload, and a model that writes densely

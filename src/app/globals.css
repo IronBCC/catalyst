@@ -142,17 +142,26 @@ input:focus {
 .react-flow__controls-button:hover {
   background: var(--panel-2) !important;
 }
+/* A wide graph is clipped on purpose, so this is the only cue that it continues
+   past the right edge. At 0.55 it read as a smudge and the cue was lost. */
 .react-flow__minimap {
+  border: 1px solid var(--line-strong);
   border-radius: 8px;
   box-shadow: var(--shadow-card);
-  opacity: 0.55;
+  opacity: 0.85;
   transition: opacity 150ms;
 }
 .react-flow__minimap:hover {
   opacity: 1;
 }
+/* React Flow is MIT, so hiding this is permitted — but the library asks that only
+   Pro subscribers do, and the credit costs a corner of one panel. Kept, muted. */
 .react-flow__attribution {
-  display: none;
+  background: transparent !important;
+}
+.react-flow__attribution a {
+  color: var(--muted) !important;
+  font-size: 9px;
 }
 .react-flow__handle {
   width: 6px !important;

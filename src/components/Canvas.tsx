@@ -189,13 +189,93 @@ function Flow() {
   if (!graph) {
     return (
       <div data-testid="canvas" className="grid h-full place-items-center px-6 text-center">
-        <div className="max-w-sm">
-          <p className="font-serif text-[22px] leading-tight text-fg">
+        <div className="max-w-md">
+          <p className="font-serif text-[26px] leading-tight text-fg">
             Start with a hypothesis about the world.
           </p>
-          <p className="mt-2 text-xs leading-relaxed text-muted">
-            Pick an example or write your own. Catalyst maps the events it sets off, the market
-            variables they move, and the mechanism behind every link.
+          <p className="mx-auto mt-2 max-w-sm text-xs leading-relaxed text-muted">
+            Pick an example on the left or write your own. Catalyst maps the events it sets off,
+            the market variables they move, and the mechanism behind every link.
+          </p>
+
+          {/*
+           * A miniature of the thing itself. The empty state used to describe a
+           * causal map in prose; showing one costs less to read and is the only
+           * artwork here that is also an explanation. Decorative to a screen
+           * reader — the paragraph above already says it in words.
+           */}
+          <svg
+            viewBox="0 0 380 118"
+            role="presentation"
+            aria-hidden="true"
+            className="mt-7 w-full text-line-strong"
+          >
+            <defs>
+              <marker
+                id="empty-arrow"
+                viewBox="0 0 8 8"
+                refX="7"
+                refY="4"
+                markerWidth="5"
+                markerHeight="5"
+                orient="auto"
+              >
+                <path d="M0 0 L8 4 L0 8 z" fill="currentColor" />
+              </marker>
+            </defs>
+
+            <g
+              stroke="currentColor"
+              strokeWidth="1.25"
+              fill="none"
+              markerEnd="url(#empty-arrow)"
+            >
+              <path d="M96 26 C122 26 118 51 140 55" />
+              <path d="M96 92 C122 92 118 67 140 63" />
+            </g>
+            <path
+              d="M240 59 H278"
+              stroke="var(--accent)"
+              strokeWidth="1.5"
+              fill="none"
+              markerEnd="url(#empty-arrow)"
+              className="text-accent"
+            />
+
+            <g fill="var(--panel)" stroke="currentColor" strokeWidth="1.25">
+              <rect x="1" y="11" width="94" height="30" rx="7" />
+              <rect x="1" y="77" width="94" height="30" rx="7" />
+              <rect x="142" y="44" width="96" height="30" rx="7" />
+            </g>
+            <rect
+              x="280"
+              y="44"
+              width="98"
+              height="30"
+              rx="7"
+              fill="var(--accent-soft)"
+              stroke="var(--accent)"
+              strokeWidth="1.25"
+            />
+
+            <g
+              fill="var(--muted)"
+              fontSize="10.5"
+              textAnchor="middle"
+              fontFamily="var(--font-sans, inherit)"
+            >
+              <text x="48" y="30">an event</text>
+              <text x="48" y="96">another</text>
+              <text x="190" y="63">a variable</text>
+              <text x="329" y="63" fill="var(--accent)">
+                the outcome
+              </text>
+            </g>
+          </svg>
+
+          <p className="mt-6 text-[11px] leading-relaxed text-muted">
+            Every link carries its mechanism and the assumptions it rests on. Nothing on screen
+            is a number the model simply asserted.
           </p>
         </div>
       </div>
@@ -221,6 +301,11 @@ function Flow() {
       >
         <Background color="var(--line-strong)" gap={28} size={1.2} />
         <Controls showInteractive={false} position="bottom-left" />
+        {/*
+         * A graph wider than the screen is left clipped on purpose (FIT_MIN_ZOOM
+         * keeps the cards readable), so the minimap is the only thing saying
+         * there is more to the right. Its resting opacity is set in globals.css.
+         */}
         <MiniMap
           pannable
           zoomable

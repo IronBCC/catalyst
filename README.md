@@ -1,10 +1,22 @@
-# Catalyst
+<h1 align="center">Catalyst</h1>
 
-**A hypothesis in, an auditable causal map out, and every number traceable to its
-inputs.**
+<p align="center">
+  <em>A hypothesis in, an auditable causal map out,<br />and every number traceable to its inputs.</em>
+</p>
 
-**[Try it →](https://catalyst-rho-inky.vercel.app)** — the four example chips work with
-no API key.
+<p align="center">
+  <a href="https://catalyst-rho-inky.vercel.app"><strong>Try it live →</strong></a><br />
+  <sub>The four example chips work with no API key.</sub>
+</p>
+
+<p align="center">
+  <img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-141413?style=flat-square" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-141413?style=flat-square" />
+  <img alt="164 tests" src="https://img.shields.io/badge/tests-148_unit_%2B_16_e2e-d97757?style=flat-square" />
+  <img alt="No database" src="https://img.shields.io/badge/database-none-6e6b63?style=flat-square" />
+</p>
+
+---
 
 Catalyst turns a hypothesis about the world into an auditable causal graph, lets you
 explore alternative versions of that graph side by side, and ends in a thesis card you
@@ -16,11 +28,17 @@ mechanism and a set of assumptions on every link. From there the browser does th
 arithmetic: probabilities propagate through the graph, a seeded Monte-Carlo samples
 five thousand paths, and a sensitivity pass ranks what actually moves the outcome.
 
-**Model estimates, not investment advice.**
+> **Model estimates, not investment advice.**
 
 ![Catalyst: a hypothesis becomes a causal map, a what-if forks a world, and the outcome distribution follows](docs/media/demo.gif)
 
 *16 seconds, no narration. [Same walkthrough as MP4](docs/media/demo.mp4).*
+
+**Contents** — [What it looks like](#what-it-looks-like) · [What it does](#what-it-does) ·
+[Why this and not a chatbot](#why-this-and-not-a-chatbot) · [Running it](#running-it) ·
+[Checks](#checks) · [Choosing a model](#choosing-a-model) ·
+[How the numbers work](#how-the-numbers-work) · [Architecture](#architecture) ·
+[Security](#security) · [Limitations](#limitations)
 
 ## What it looks like
 

@@ -245,7 +245,7 @@ export default function Rail() {
                 data-testid={`rail-pane-${p}`}
                 aria-selected={pane === p}
                 disabled={locked}
-                title={locked ? "Build a causal map first — what-ifs branch from it" : undefined}
+                aria-describedby={locked ? "rail-pane-branch-why" : undefined}
                 onClick={() => setPane(p)}
                 className={`flex-1 rounded-[5px] px-2 py-1 transition-colors ${
                   pane === p ? "bg-panel text-fg shadow-[0_1px_2px_rgba(20,20,19,0.08)]" : "text-muted hover:text-fg"
@@ -256,6 +256,15 @@ export default function Rail() {
             );
           })}
         </div>
+        {!graph ? (
+          // The disabled tab alone says "no", not why or until when. A tooltip
+          // would not: it is hover-only, so it is invisible on touch and to
+          // anyone who does not think to hover a dead control.
+          <p id="rail-pane-branch-why" className="mt-1.5 text-[11px] leading-snug text-muted">
+            <span className="text-fg">What if</span> unlocks once a map exists — a
+            what-if forks a world from the map, so there has to be one to fork.
+          </p>
+        ) : null}
       </div>
 
       {pane === "hypothesis" ? (

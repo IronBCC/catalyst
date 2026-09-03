@@ -1,5 +1,11 @@
 # Catalyst
 
+**A hypothesis in, an auditable causal map out, and every number traceable to its
+inputs.**
+
+**[Try it →](https://catalyst-rho-inky.vercel.app)** — the four example chips work with
+no API key.
+
 Catalyst turns a hypothesis about the world into an auditable causal graph, lets you
 explore alternative versions of that graph side by side, and ends in a thesis card you
 could actually trade against.
@@ -57,6 +63,48 @@ assumed changes to that map.
 - **Thesis card.** Primary leg, entry, stop, take-profit, what would invalidate it, what
   would confirm it, and the tail risks — with an optional written narrative that is
   forbidden from changing any number.
+
+## Why this and not a chatbot
+
+Ask a model the same question in a chat window and you get a paragraph. It reads well,
+it cannot be checked, and asking twice gives two different answers. The difference is
+not the model — it is the same model, behind the same key. It is what happens to the
+answer afterwards.
+
+- **The model proposes; the browser computes.** The LLM never returns a probability
+  that reaches the screen unexamined. It returns structure — nodes, edges, mechanisms,
+  base rates — and every number you see is then computed from that structure by pure,
+  deterministic, tested code in `src/lib/engine/**`. The Monte-Carlo is seeded, so the
+  same graph always gives the same numbers. A chatbot's arithmetic is a guess wearing
+  digits.
+- **Every number opens.** The inspector's audit block shows each term that produced the
+  value — which parents contributed, how much, and through which mechanism. There is no
+  step where the answer is "the model said so".
+- **What-ifs are interventions, not follow-up questions.** Pinning a node is a
+  do-operator: it fixes that node and lets only its descendants move, parents held.
+  Ask a chatbot "what if the strait closes" and it silently rewrites the upstream story
+  to match. Here the causal direction is enforced by the graph.
+- **Worlds are comparable.** Each what-if forks its own named world from wherever you
+  are, so two branches give two worlds to switch between rather than one conversation
+  that quietly accumulates every assumption you have ever floated. Baseline stays
+  read-only.
+- **It disagrees with itself in public.** Event nodes are matched against Polymarket
+  and numeric nodes against Yahoo, so the gap between the model's number and a live
+  market is on screen instead of hidden.
+- **The assumptions are the product.** Every edge carries its mechanism, its
+  assumptions, and whether it is evidence or a modelling assumption. That is what makes
+  a thesis arguable by someone who was not there when it was generated.
+
+### When it is the wrong tool
+
+If you want a forecast to act on without reading it, this is not that, and no tool
+honestly is. Base rates are a model's estimates, not measurements — nothing here
+verifies that 0.03 is *correct* against the world, only that the set of numbers is
+internally coherent. Two of the eight quality checks are keyword heuristics: lint, not
+proof. Noisy-OR assumes parents are conditionally independent, so two causes that are
+really one cause get double-counted. The value is a structure you can argue with, not
+an oracle. See "Limitations" and "What the numbers do and do not support" — both are
+part of the pitch, not a disclaimer bolted to the end of it.
 
 ## Running it
 
@@ -210,7 +258,7 @@ One Next.js 16 app on Vercel. No database.
 Responses carry a strict `Content-Security-Policy`, `X-Content-Type-Options: nosniff`
 and `Referrer-Policy: no-referrer`. POST routes require `application/json` (`415`), cap
 the body at 1 MB (`413`), validate against a schema (`400`), report a missing key as
-`503` and any upstream failure or 60-second timeout as `502`. Every external link is
+`503` and any upstream failure or 115-second timeout as `502`. Every external link is
 filtered through `safeHref`, which allows only `http:` and `https:`, and rendered with
 `rel="noopener noreferrer"`. Model output is treated as untrusted data throughout.
 

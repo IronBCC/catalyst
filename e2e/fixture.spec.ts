@@ -76,10 +76,17 @@ test("the What if tab is disabled until a map exists", async ({ page }) => {
   const whatIf = page.locator(sel(T.railPane("branch")));
   await expect(whatIf).toBeDisabled();
 
+  // Disabled alone says "no" without saying why or until when, so the reason is
+  // on the page rather than in a hover-only tooltip.
+  const why = page.locator("#rail-pane-branch-why");
+  await expect(why).toBeVisible();
+  await expect(why).toContainText("unlocks once a map exists");
+
   await page.locator(sel(T.exampleChip("hormuz"))).click();
   await expect(page.locator(sel(T.canvas))).toBeVisible();
 
   await expect(whatIf).toBeEnabled();
+  await expect(why).toHaveCount(0);
   await whatIf.click();
   await expect(page.locator(sel(T.branchInput))).toBeVisible();
 });

@@ -55,3 +55,31 @@ test("the workspace survives a reload", async ({ page }) => {
   await page.reload();
   await expect(page.locator(sel(T.node(rootId)))).toBeVisible();
 });
+
+test("the What if tab is disabled until a map exists", async ({ page }) => {
+  await freshWorkspace(page);
+  await mockApi(page);
+
+  const fixture = defaultFixture();
+  await page.route("**/fixtures/hormuz.json", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json; charset=utf-8",
+      body: JSON.stringify(fixture),
+    });
+  });
+
+  await page.goto("/");
+
+  // Before: the tab used to accept the click and then silently render the
+  // hypothesis pane anyway, which read as a dead button.
+  const whatIf = page.locator(sel(T.railPane("branch")));
+  await expect(whatIf).toBeDisabled();
+
+  await page.locator(sel(T.exampleChip("hormuz"))).click();
+  await expect(page.locator(sel(T.canvas))).toBeVisible();
+
+  await expect(whatIf).toBeEnabled();
+  await whatIf.click();
+  await expect(page.locator(sel(T.branchInput))).toBeVisible();
+});

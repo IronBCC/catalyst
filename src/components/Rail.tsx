@@ -231,21 +231,30 @@ export default function Rail() {
       <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
       <div className="p-3 pb-0">
         <div className="flex rounded-md border border-line bg-bg p-0.5" role="tablist" aria-label="Rail mode">
-          {(["hypothesis", "branch"] as const).map((p) => (
-            <button
-              key={p}
-              type="button"
-              role="tab"
-              data-testid={`rail-pane-${p}`}
-              aria-selected={pane === p}
-              onClick={() => setPane(p)}
-              className={`flex-1 rounded-[5px] px-2 py-1 transition-colors ${
-                pane === p ? "bg-panel text-fg shadow-[0_1px_2px_rgba(20,20,19,0.08)]" : "text-muted hover:text-fg"
-              }`}
-            >
-              {p === "branch" ? "What if" : "Hypothesis"}
-            </button>
-          ))}
+          {(["hypothesis", "branch"] as const).map((p) => {
+            // A what-if branches from an existing map, so the tab has nothing to
+            // show until one exists. `pane` above already forces "hypothesis" in
+            // that case; without this the tab still looked live and swallowed the
+            // click.
+            const locked = p === "branch" && !graph;
+            return (
+              <button
+                key={p}
+                type="button"
+                role="tab"
+                data-testid={`rail-pane-${p}`}
+                aria-selected={pane === p}
+                disabled={locked}
+                title={locked ? "Build a causal map first — what-ifs branch from it" : undefined}
+                onClick={() => setPane(p)}
+                className={`flex-1 rounded-[5px] px-2 py-1 transition-colors ${
+                  pane === p ? "bg-panel text-fg shadow-[0_1px_2px_rgba(20,20,19,0.08)]" : "text-muted hover:text-fg"
+                } ${locked ? "cursor-not-allowed opacity-40 hover:text-muted" : ""}`}
+              >
+                {p === "branch" ? "What if" : "Hypothesis"}
+              </button>
+            );
+          })}
         </div>
       </div>
 
